@@ -1,3 +1,4 @@
+#include <sstream>
 #include "Window.hpp"
 
 bool	Window::_glfwIsInit = false;
@@ -20,6 +21,9 @@ Window::~Window( void )
 		Window::_glfwIsInit = false;
 	}
 
+	std::stringstream ss;
+	ss << "Destroy window: " << this->_title << " [" << this->_width << " x " << this->_height << "]";
+	Logger::i( ss.str() );
 	return ;
 }
 
@@ -28,8 +32,6 @@ Window::Window( int width, int height, std::string const & title ) :
 	_height( height ),
 	_title( title )
 {
-	GLFWwindow *	window;
-
 	if ( ! Window::_glfwIsInit )
 		Window::initGLFW();
 
@@ -44,20 +46,20 @@ Window::Window( int width, int height, std::string const & title ) :
 	return ;
 }
 
-/*
-* FUNCTIONS
-*/
-void				Window::refresh( void )
+// FUNCTIONS
+void				Window::refresh( void ) const
 {
 	glfwSwapBuffers( this->_GLFWwindow );
 }
 
-/*
-* STATIC FUNCTIONS
-*/
+// STATIC FUNCTIONS
 Window *			Window::create( int width, int height, std::string const & title )
 {
 	Window *		window = new Window( width, height, title );
+
+	std::stringstream ss;
+	ss << "Create window: " << title << " [" << width << " x " << height << "]";
+	Logger::i( ss.str() );
 
 	return ( window );
 }
@@ -67,20 +69,26 @@ void				Window::initGLFW( void )
 	if ( ! glfwInit() )
 		throw ( EngineException( "Error: init GLFW" ) );
 
-	//TODO: logger, glfwGetVersion( major, minor, rev );
+	int		major;
+	int		minor;
+	int		rev;
+
+	glfwGetVersion( & major, & minor, & rev );
+
+	std::stringstream ss;
+	ss << "Init GLFW " << major << "." << minor << "." << rev;
+	Logger::i( ss.str() );
 
 	return ;
 }
 
-/*
-* GETTER
-*/
-int 				Window::getWidth( void ) const
+// GETTER
+int					Window::getWidth( void ) const
 {
 	return ( this->_width );
 }
 
-int 				Window::getHeight( void ) const
+int					Window::getHeight( void ) const
 {
 	return ( this->_height );
 }
@@ -90,17 +98,22 @@ std::string			Window::getTitle( void ) const
 	return ( this->_title );
 }
 
-GLFWwindow * 		Window::getGLFWWindow( void ) const
+GLFWwindow *		Window::getGLFWwindow( void ) const
 {
 	return ( this->_GLFWwindow );
 }
 
-bool				Window::isCloseRequested( void ) const
+// SETTER
+void				Window::setTitle( std::string const & title )
 {
-	return ( glfwWindowShouldClose( this->_GLFWwindow ) == 1 );
+	this->_title = title;
+	glfwSetWindowTitle( this->_GLFWwindow, title.c_str() );
+	return ;
 }
 
-
-/*
-* SETTER
-*/
+void				Window::setSize( int width, int height )
+{
+	this->_width = width;
+	this->_height = height;
+	glfwSetWindowSize( this->_GLFWwindow, width, height );
+}

@@ -28,4 +28,7 @@
 *.app
 
 # GLFW
-./glfw
+libs/
+
+# IDE
+.idea

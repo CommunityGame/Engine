@@ -1,29 +1,23 @@
-#include <string>
-#include <GLFW/glfw3.h>
+#include "CoreEngine.hpp"
+#include "debugs/Timer.hpp"
 
-#include "Window.hpp"
+#include "math/Math.hpp"
 
-int     main( void )
+int		main( void )
 {
-   	Window *	window;
+	CoreEngine *	coreEngine;
+	coreEngine = new CoreEngine( 60 );
 
-    window = Window::create( 850, 550, "First test" );
+	Logger::setVerbosity( VERBOSE );
+	Logger::setPrintLogs( true );
 
-    /* Make the window's context current */
-//    glfwMakeContextCurrent( window->getGLFWWindow() );
+	printf( "Pok: %lf\n", Timer::getNanotime() );
+//	std::cout << Timer::getTimestamp() << std::endl;
 
-    /* Loop until the user closes the window */
-    while ( ! window->isCloseRequested() )
-    {
-        /* Render here */
+	coreEngine->createWindow( 850, 550, "Test" );
+	coreEngine->start();
+	printf( "Pok: %lf\n", Timer::getNanotime() );
 
-        /* Swap front and back buffers */
-		window->refresh();
-
-        /* Poll for and process events */
-        glfwPollEvents();
-    }
-
-	delete window;
-    return ( 0 );
+	delete coreEngine;
+	return ( 0 );
 }
