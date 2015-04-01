@@ -20,28 +20,28 @@ public:
 	template < typename T >
 	static void				i( T const & msg )
 	{
-		if ( ( INFO & Logger::_VERBOSITY ) == INFO )
+		if ( ( Logger::_VERBOSITY & INFO ) == INFO )
 			Logger::log( "INFO", msg );
 	}
 
 	template < typename T >
 	static void				d( T const & msg )
 	{
-		if ( ( DEBUG & Logger::_VERBOSITY ) == DEBUG )
+		if ( ( Logger::_VERBOSITY & DEBUG ) == DEBUG )
 			Logger::log( "DEBUG", msg );
 	}
 
 	template < typename T >
 	static void				w( T const & msg )
 	{
-		if ( ( WARNING & Logger::_VERBOSITY ) == WARNING )
+		if ( ( Logger::_VERBOSITY & WARNING ) == WARNING )
 			Logger::log( "WARNING", msg );
 	}
 
 	template < typename T >
 	static void				e( T const & msg )
 	{
-		if ( ( ERROR & Logger::_VERBOSITY ) == ERROR )
+		if ( ( Logger::_VERBOSITY & ERROR ) == ERROR )
 			Logger::log( "ERROR", msg );
 	}
 
@@ -49,7 +49,7 @@ public:
 	static void				log( std::string const & mode, T const & msg )
 	{
 		//TODO: Timer
-		if ( mkdir( Logger::_logsPath.c_str(), 0775 ) == -1 && errno != EEXIST )
+		if ( mkdir( Logger::_logsPath.c_str(), 0755 ) == -1 && errno != EEXIST )
 		{
 			std::cerr << "Error, mkdir: " << errno << std::endl;
 			return ;

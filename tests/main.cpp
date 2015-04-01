@@ -1,7 +1,5 @@
-#include "CoreEngine.hpp"
-#include "debugs/Timer.hpp"
-
-#include "math/Math.hpp"
+#include "../srcs/CoreEngine.hpp"
+#include "../srcs/debugs/Timer.hpp"
 
 int		main( void )
 {
@@ -12,7 +10,6 @@ int		main( void )
 	Logger::setPrintLogs( true );
 
 	printf( "Pok: %lf\n", Timer::getNanotime() );
-//	std::cout << Timer::getTimestamp() << std::endl;
 
 	coreEngine->createWindow( 850, 550, "Test" );
 	coreEngine->start();

@@ -5,11 +5,11 @@
 # include <tgmath.h>
 # include "Point.tpp"
 
-template <typename T, int8_t D>
+template <typename T, u_int8_t D>
 class Vec : public Point<T, D>
 {
 public:
-	inline T		squaredLength( void ) const
+	inline T		squaredNorm( void ) const
 	{
 		T	result( 0 );
 
@@ -18,7 +18,7 @@ public:
 		return ( result );
 	}
 	
-	inline T		length( void ) const
+	inline T		norm( void ) const
 	{
 		return ( sqrt( this->squaredLength() ) );
 	}
@@ -73,15 +73,13 @@ public:
 
 	inline Vec &	operator*=( Vec const & rhs )
 	{
-		for ( int i = 0; i < D; ++i )
-			this->_values[i] *= rhs[i];
+		*this = *this * rhs;
 		return ( *this );
 	}
 
 	inline Vec &	operator*=( T const & value )
 	{
-		for ( int i = 0; i < D; ++i )
-			this->_values[i] *= value;
+		*this = *this * value;
 		return ( *this );
 	}
 
@@ -105,15 +103,13 @@ public:
 
 	inline Vec &	operator/=( Vec const & rhs )
 	{
-		for ( int i = 0; i < D; ++i )
-			this->_values[i] /= rhs[i];
+		*this = *this / rhs;
 		return ( *this );
 	}
 
 	inline Vec &	operator/=( T const & value )
 	{
-		for ( int i = 0; i < D; ++i )
-			this->_values[i] /= value;
+		*this = *this / value;
 		return ( *this );
 	}
 };

@@ -5,7 +5,7 @@
 #include <ostream>
 #include <tgmath.h>
 
-template <typename T, int8_t D>
+template <typename T, u_int8_t D>
 class Point
 {
 public:
@@ -34,7 +34,7 @@ public:
 		return ( *this );
 	}
 
-	inline bool		operator==( Point const & rhs )
+	inline bool		operator==( Point const & rhs ) const
 	{
 		for ( int i = 0; i < D; ++i )
 		{
@@ -44,7 +44,7 @@ public:
 		return ( true );
 	}
 
-	inline bool		operator!=( Point const & rhs )
+	inline bool		operator!=( Point const & rhs ) const
 	{
 		for ( int i = 0; i < D; ++i )
 		{
@@ -54,7 +54,7 @@ public:
 		return ( false );
 	}
 
-	inline Point	operator+( Point const & rhs )
+	inline Point	operator+( Point const & rhs ) const
 	{
 		Point		result;
 
@@ -70,7 +70,7 @@ public:
 		return ( *this );
 	}
 
-	inline Point	operator-( Point const & rhs )
+	inline Point	operator-( Point const & rhs ) const
 	{
 		Point		result;
 
@@ -86,12 +86,12 @@ public:
 		return ( *this );
 	}
 
-	inline T &		operator[]( int8_t i )
+	inline T &		operator[]( u_int8_t i )
 	{
 		return ( this->_values[i] );
 	}
 
-	inline T		operator[]( int8_t i ) const
+	inline T		operator[]( u_int8_t i ) const
 	{
 		return ( this->_values[i] );
 	}
@@ -105,17 +105,17 @@ protected:
 	T				_values[D];
 };
 
-template <typename T, int8_t D>
+template <typename T, u_int8_t D>
 std::ostream &		operator<<( std::ostream & o, Point<T, D> const & p )
 {
-	o << "Point<" << typeid( T ).name() << ", " << ( sizeof( p.getValues() ) / sizeof( T ) ) << ">(";
+	o << "(";
 	for ( int i = 0; i < D; ++i )
 	{
 		o << "[" << i << "]: " << p[i];
 		if ( i + 1 != D )
 			o << ", ";
 	}
-	o << ")" <<  std::endl;
+	o << ")";
 	return ( o );
 }
 
