@@ -3,12 +3,14 @@
 
 # include <vector>
 # include "Input.hpp"
-# include "render/RenderEngine.hpp"
 # include "AObjectComponent.hpp"
+# include "math/Math.hpp"
 
 class GameObject
 {
 public:
+	GameObject( void );
+
 	/*!
 	 * @function input
 	 * @param input: is a reference to the instance of Input
@@ -34,7 +36,7 @@ public:
 	 *
 	 * @return void
 	*/
-	virtual void		render( RenderEngine const & renderEngine ) const;
+	virtual void		render( RenderEngine const & renderEngine, Shader const & shader, Camera const & camera ) const;
 
 	/*!
 	 * @function inputAll
@@ -61,7 +63,7 @@ public:
 	 *
 	 * @return void
 	*/
-	void				renderAll( RenderEngine const & renderEngine ) const;
+	void				renderAll( RenderEngine const & renderEngine, Shader const & shader, Camera const & camera ) const;
 
 	/*!
 	 * @function addChild
@@ -81,9 +83,19 @@ public:
 	 */
 	void				addComponent( AObjectComponent * component );
 
+	//	GETTER
+	Transformf const &	getTransform( void ) const;
+	GameObject const *	getParent( void ) const;
+
+	//	SETTER
+	void				setTransform( Transformf const & transform );
+	void				setParent( GameObject * parent );
+
 private:
 	std::vector<GameObject *>			_childrens;
 	std::vector<AObjectComponent *>		_components;
+	GameObject *						_parent;
+	Transformf							_transform;
 };
 
 #endif // ! _GAME_OBJECT_H_

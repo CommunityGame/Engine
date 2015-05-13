@@ -5,29 +5,36 @@
 #include "Input.hpp"
 #include "render/RenderEngine.hpp"
 
+class AGame;
+
 class CoreEngine
 {
 public:
-	CoreEngine( int fpsExpected );
+	CoreEngine( AGame & game, int fpsExpected );
 	~CoreEngine( void );
 
 	// FUNCTIONS
-	bool				start( void );
-	bool				stop( void );
-	void				createWindow( int width, int height, std::string const & title );
+	bool					start( void );
+	bool					stop( void );
+	void					createWindow( int width, int height, std::string const & title );
+
 	// GETTER
+	Window const &			getWindow( void ) const;
+	RenderEngine const &	getRenderEngine( void ) const;
+	Input const &			getInput( void ) const;
 
 	// SETTER
 
 private:
-	void				run( void );
+	void					run( void );
 
-	Window *			_window;
-	Input *				_input;
-	RenderEngine *		_renderEngine;
+	AGame &					_game;
+	Window *				_window;
+	Input *					_input;
+	RenderEngine *			_renderEngine;
 	//Debuger *
-	bool				_isRunning;
-	double				_fpsExpected;
+	bool					_isRunning;
+	double					_fpsExpected;
 };
 
 #endif // ! _CORE_ENGINE_H_

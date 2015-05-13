@@ -1,19 +1,16 @@
 #include "../srcs/CoreEngine.hpp"
-#include "../srcs/debugs/Timer.hpp"
+#include "../tests/Test.hpp"
 
 int		main( void )
 {
 	CoreEngine *	coreEngine;
-	coreEngine = new CoreEngine( 60 );
+	coreEngine = new CoreEngine( * new Test(), 60 );
 
 	Logger::setVerbosity( VERBOSE );
 	Logger::setPrintLogs( true );
 
-	printf( "Pok: %lf\n", Timer::getNanotime() );
-
 	coreEngine->createWindow( 850, 550, "Test" );
 	coreEngine->start();
-	printf( "Pok: %lf\n", Timer::getNanotime() );
 
 	delete coreEngine;
 	return ( 0 );

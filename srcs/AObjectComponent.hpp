@@ -2,7 +2,11 @@
 # define _OBJECT_COMPONENT_H_
 
 #include "Input.hpp"
-#include "render/RenderEngine.hpp"
+
+class GameObject;
+class RenderEngine;
+class Shader;
+class Camera;
 
 class AObjectComponent
 {
@@ -32,7 +36,16 @@ public:
 	 *
 	 * @return void
 	*/
-	virtual void		render( RenderEngine const & renderEngine ) const = 0;
+	virtual void		render( RenderEngine const & renderEngine, Shader const & shader, Camera const & camera ) const = 0;
+
+	//	GETTER
+	GameObject const &	getParent( void ) const;
+
+	//	SETTER
+	void				setParent( GameObject * parent );
+
+protected:
+	GameObject *		_parent;
 };
 
 #endif // ! _OBJECT_COMPONENT_H_

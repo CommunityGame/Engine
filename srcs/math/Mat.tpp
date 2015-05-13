@@ -15,7 +15,7 @@ public:
 
 	inline Mat &	initIdentity( void )
 	{
-		return ( this->initScale( 1 ) );
+		return ( this->initScale( T( 1 ) ) );
 	}
 
 	inline Mat &	initScale( T scale )
@@ -124,6 +124,43 @@ public:
 	inline Mat &	operator-=( Mat const & rhs )
 	{
 		*this = *this - rhs;
+		return ( *this );
+	}
+};
+
+template <typename T>
+class Mat4 : public Mat<T, 4, 4>
+{
+public:
+	inline Mat4 &	initPerspective( T fov, T aspectRatio, T zNear, T zFar )
+	{
+		const T zRange     = zNear - zFar;
+		const T tanHalfFOV = tanf( fov / T(2) );
+
+		this->_values[0] = T( 1 ) / ( tanHalfFOV * aspectRatio );
+		this->_values[1] = T( 0 );
+		this->_values[2] = T( 0 );
+		this->_values[3] = T( 0 );
+
+		this->_values[4] = T( 0 );
+		this->_values[5] = T( 1 ) / tanHalfFOV;
+		this->_values[6] = T( 0 );
+		this->_values[7] = T( 0 );
+
+		this->_values[8] = T( 0 );
+		this->_values[9] = T( 0 );
+		this->_values[10] = ( -zNear - zFar ) / zRange;
+		this->_values[11] = T( 2 ) * zFar * zNear / zRange;
+
+		this->_values[12] = T( 0 );
+		this->_values[13] = T( 0 );
+		this->_values[14] = T( 1 );
+		this->_values[15] = T( 0 );
+//		(*this)[0][0] = T(1)/(tanHalfFOV * aspectRatio); (*this)[1][0] = T(0);   (*this)[2][0] = T(0);            (*this)[3][0] = T(0);
+//		(*this)[0][1] = T(0);                   (*this)[1][1] = T(1)/tanHalfFOV; (*this)[2][1] = T(0);            (*this)[3][1] = T(0);
+//		(*this)[0][2] = T(0);                   (*this)[1][2] = T(0);            (*this)[2][2] = (-zNear - zFar)/zRange ; (*this)[3][2] = T(2)*zFar*zNear/zRange;
+//		(*this)[0][3] = T(0);                   (*this)[1][3] = T(0);            (*this)[2][3] = T(1);            (*this)[3][3] = T(0);
+
 		return ( *this );
 	}
 };

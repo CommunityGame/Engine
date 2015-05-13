@@ -1,5 +1,11 @@
 #include "GameObject.hpp"
 
+GameObject::GameObject( void ) :
+	_transform( Transformf() )
+{
+	return ;
+}
+
 void	GameObject::input( Input const & input )
 {
 	std::vector< AObjectComponent *>::iterator it;
@@ -18,12 +24,12 @@ void	GameObject::update( double delta )
 	return ;
 }
 
-void	GameObject::render( RenderEngine const & renderEngine ) const
+void	GameObject::render( RenderEngine const & renderEngine, Shader const & shader, Camera const & camera ) const
 {
 	std::vector< AObjectComponent *>::const_iterator it;
 
 	for ( it = this->_components.begin(); it != this->_components.end(); it++ )
-		(*it)->render( renderEngine );
+		(*it)->render( renderEngine, shader, camera );
 	return ;
 }
 
@@ -45,21 +51,47 @@ void	GameObject::updateAll( double delta )
 		(*it)->updateAll( delta );
 }
 
-void	GameObject::renderAll( RenderEngine const & renderEngine ) const
+void	GameObject::renderAll( RenderEngine const & renderEngine, Shader const & shader, Camera const & camera ) const
 {
 	std::vector<GameObject *>::const_iterator it;
 
-	this->render( renderEngine );
+	this->render( renderEngine, shader, camera );
 	for ( it = this->_childrens.begin(); it != this->_childrens.end(); it++ )
-		(*it)->renderAll( renderEngine );
+		(*it)->renderAll( renderEngine, shader, camera );
 }
 
 void	GameObject::addChild( GameObject * object )
 {
+	object->setParent( this );
 	this->_childrens.push_back( object );
 }
 
 void	GameObject::addComponent( AObjectComponent * component )
 {
+	component->setParent( this );
 	this->_components.push_back( component );
+}
+
+//	GETTER
+Transformf const &		GameObject::getTransform( void ) const
+{
+	return ( this->_transform );
+}
+
+GameObject const *		GameObject::getParent( void ) const
+{
+	return ( this->_parent );
+}
+
+//	SETTER
+void					GameObject::setTransform( Transformf const & transform )
+{
+	this->_transform = transform;
+	return ;
+}
+
+void					GameObject::setParent( GameObject * parent )
+{
+	this->_parent = parent;
+	return ;
 }

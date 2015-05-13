@@ -9,6 +9,11 @@ template <typename T, u_int8_t D>
 class Vec : public Point<T, D>
 {
 public:
+	inline Vec( void ) : Point<T, D>()
+	{
+		return ;
+	}
+
 	inline T		squaredNorm( void ) const
 	{
 		T	result( 0 );
@@ -20,14 +25,14 @@ public:
 	
 	inline T		norm( void ) const
 	{
-		return ( sqrt( this->squaredLength() ) );
+		return ( sqrt( this->squaredNorm() ) );
 	}
 
 	inline Vec &	normalize( void )
 	{
 		T		length;
 
-		length = this->length();
+		length = this->norm();
 		for ( int i = 0; i < D; ++i )
 			(*this)[i] /= length;
 		return ( *this );
@@ -38,7 +43,7 @@ public:
 		Vec		result;
 		T		length;
 
-		length = this->length();
+		length = this->norm();
 		for ( int i = 0; i < D; ++i )
 			result[i] = (*this)[i] / length;
 		return ( result );

@@ -24,7 +24,7 @@ void	AGame::update( double delta )
 void	AGame::render( RenderEngine const & renderEngine ) const
 {
 	if ( this->_rootObject != nullptr )
-		this->_rootObject->renderAll( renderEngine );
+		renderEngine.render( * this->_rootObject );
 	return ;
 }
 

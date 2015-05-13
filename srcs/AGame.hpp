@@ -4,6 +4,7 @@
 #include "render/RenderEngine.hpp"
 #include "GameObject.hpp"
 #include "Input.hpp"
+#include "CoreEngine.hpp"
 
 class AGame
 {
@@ -16,7 +17,7 @@ public:
 	 *
 	 * @return void
 	 */
-	virtual void	init( void ) = 0;
+	virtual void	init( CoreEngine const & coreEngine ) = 0;
 
 	/*!
 	 * @function input

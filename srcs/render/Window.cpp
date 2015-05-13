@@ -35,13 +35,23 @@ Window::Window( int width, int height, std::string const & title ) :
 	if ( ! Window::_glfwIsInit )
 		Window::initGLFW();
 
-	this->_GLFWwindow = glfwCreateWindow( this->_width, this->_height, this->_title.c_str(), NULL, NULL );
+	GLFWmonitor *			monitor = glfwGetPrimaryMonitor();
+	const GLFWvidmode *		mode = glfwGetVideoMode( monitor );
 
+	glfwWindowHint( GLFW_RED_BITS, mode->redBits );
+	glfwWindowHint( GLFW_GREEN_BITS, mode->greenBits );
+	glfwWindowHint( GLFW_BLUE_BITS, mode->blueBits );
+	glfwWindowHint( GLFW_REFRESH_RATE, mode->refreshRate );
+
+	this->_GLFWwindow = glfwCreateWindow( this->_width, this->_height, this->_title.c_str(), nullptr, nullptr );
 	if ( ! this->_GLFWwindow )
 	{
 		this->_GLFWwindow = nullptr;
 		throw ( EngineException( "Error: create GLFW window" ) );
 	}
+	glfwMakeContextCurrent( this->_GLFWwindow );
+	gladLoadGLLoader( (GLADloadproc) glfwGetProcAddress );
+	glfwSetWindowPos( this->_GLFWwindow, mode->width / 2 - this->_width / 2, mode->height / 2 - this->_height / 2 );
 	Window::_nbWindow++;
 	return ;
 }
@@ -56,10 +66,21 @@ void				Window::refresh( void ) const
 Window *			Window::create( int width, int height, std::string const & title )
 {
 	Window *		window = new Window( width, height, title );
+	const GLubyte*	renderer = glGetString( GL_RENDERER );
+	const GLubyte*	version = glGetString( GL_VERSION );
 
 	std::stringstream ss;
 	ss << "Create window: " << title << " [" << width << " x " << height << "]";
 	Logger::i( ss.str() );
+	ss.str( "" );
+	ss << "Renderer: " << renderer;
+	Logger::i( ss.str() );
+	ss.str( "" );
+	ss << "OpenGL version supported " << version;
+	Logger::i( ss.str() );
+
+	glEnable( GL_DEPTH_TEST );
+	glDepthFunc( GL_LESS );
 
 	return ( window );
 }
