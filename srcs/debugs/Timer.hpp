@@ -12,7 +12,7 @@ typedef std::chrono::milliseconds				milliseconds;
 typedef std::chrono::microseconds				microseconds;
 typedef std::chrono::nanoseconds				nanoseconds;
 typedef std::chrono::high_resolution_clock		high_resolution_clock;
-typedef std::chrono::system_clock::time_point	time_point;
+typedef std::chrono::steady_clock::time_point	time_point;
 
 class Timer
 {
@@ -31,11 +31,11 @@ public:
 	 *
 	 * @return void
 	 */
-	static void									pushTimePoint( std::string name, time_point timePoint );
-	static void									pushTimePoint( std::string name );
+	// static void									pushTimePoint( std::string const & name, time_point timePoint );
+	// static void									pushTimePoint( std::string const & name );
 private:
 	static time_point							_epoch;
-	static std::map< std::string, time_point >	_timePoints;
+	// static std::map< std::string, time_point >	_timePoints;
 };
 
 #endif // ! _TIMER_H_

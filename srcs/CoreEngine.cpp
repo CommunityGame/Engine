@@ -97,7 +97,7 @@ void			CoreEngine::run( void )
 		title << this->_window->getTitle() << ", FPS: " << 1 / dt;
 		glfwSetWindowTitle( this->_window->getGLFWwindow(), title.str().c_str() );
 
-		usleep( (__useconds_t) ( ( SECOND / this->_fpsExpected ) - dt ) );
+		usleep( (useconds_t) ( ( SECOND / this->_fpsExpected ) - dt ) );
 	}
 }
 

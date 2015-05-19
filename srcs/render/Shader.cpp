@@ -134,6 +134,6 @@ void Shader::updateUniforms( RenderEngine const & renderEngine, Transformf const
 
 	for ( it = this->_uniforms.begin(); it != this->_uniforms.end(); it++ )
 	{
-		Logger::d( (*it)->getName() );
+		// Logger::d( (*it)->getName() );
 	}
 }

@@ -16,7 +16,7 @@ public:
 	}
 	virtual ~EngineException( void ) {};
 
-	virtual const char *	what( void ) const _GLIBCXX_USE_NOEXCEPT
+	virtual const char *	what( void )
 	{
 		return ( this->_msg.c_str() );
 	}

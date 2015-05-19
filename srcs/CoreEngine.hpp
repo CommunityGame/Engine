@@ -1,6 +1,7 @@
 #ifndef _CORE_ENGINE_H_
 # define _CORE_ENGINE_H_
 
+#include <sys/types.h>
 #include "render/Window.hpp"
 #include "Input.hpp"
 #include "render/RenderEngine.hpp"
