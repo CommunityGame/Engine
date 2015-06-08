@@ -139,7 +139,7 @@ void Shader::updateUniforms( RenderEngine const & renderEngine, Transformf const
 		if ( uniform->getName() == "model" )
 			glUniformMatrix4fv( uniform->getLocation(), 1, GL_FALSE, transform.getTransformedMatrix().getValues() );
 		else if ( uniform->getName() == "view" )
-			glUniformMatrix4fv( uniform->getLocation(), 1, GL_FALSE, camera.getTransform().getTransformedMatrix().getValues() );
+			glUniformMatrix4fv( uniform->getLocation(), 1, GL_FALSE, camera.getTransformedViewMatrix().getValues() );
 		else if ( uniform->getName() == "projection" )
 			glUniformMatrix4fv( uniform->getLocation(), 1, GL_FALSE, camera.getPerspectiveMatrix().getValues() );
 	}

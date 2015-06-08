@@ -1,9 +1,8 @@
 #ifndef _POINT_HPP_
 # define _POINT_HPP_
 
-#include <typeinfo>
-#include <ostream>
-#include <tgmath.h>
+# include <ostream>
+# include <cmath>
 
 template <typename T, u_int8_t D>
 class Point

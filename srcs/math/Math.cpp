@@ -11,3 +11,4 @@ T		Math::toRadians( T value )
 {
 	return ( value * T( MATH_PI ) / T( 180 ) );
 }
+

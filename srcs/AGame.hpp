@@ -26,7 +26,7 @@ public:
 	 *
 	 * @return void
 	 */
-	void			input( Input const & input );
+	void			input( Input & input );
 
 	/*!
 	 * @function update

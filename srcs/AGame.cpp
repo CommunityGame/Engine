@@ -7,7 +7,7 @@ AGame::~AGame( void )
 	return ;
 }
 
-void	AGame::input( Input const & input )
+void	AGame::input( Input & input )
 {
 	if ( this->_rootObject != nullptr )
 		this->_rootObject->inputAll( input );

@@ -19,7 +19,7 @@ public:
 	 *
 	 * @return void
 	 */
-	virtual void		input( Input const & input ) = 0;
+	virtual void		input( Input & input ) = 0;
 
 	/*!
 	 * @function update
@@ -41,7 +41,7 @@ public:
 
 	//	GETTER
 	GameObject const &	getParent( void ) const;
-	Transformf const &	getTransform( void ) const;
+	Transformf &		getTransform( void ) const;
 
 	//	SETTER
 	void				setParent( GameObject * parent );

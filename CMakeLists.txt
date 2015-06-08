@@ -6,7 +6,7 @@ project( CommunityGame_Engine )
 
 set( CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -std=c++11" )
 
-file( GLOB_RECURSE SOURCE_FILES "./srcs/**" )
+file( GLOB_RECURSE SOURCE_FILES "./srcs/**.cpp" )
 
 link_libraries(glfw "${OPENGL_glu_LIBRARY}")
 
@@ -33,7 +33,7 @@ set(TINYCTHREAD "${GLFW_SOURCE_DIR}/deps/tinycthread.h"
 
 add_executable( CommunityGame_Engine ${SOURCE_FILES} ${GLAD}
 tests/main.cpp
-tests/Test.cpp srcs/debugs/Debugger.cpp srcs/debugs/Debugger.hpp)
+tests/Test.cpp)
 
 # GLFW
 set( GLFW_VERSION 3.1 )

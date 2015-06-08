@@ -12,7 +12,7 @@ void				AObjectComponent::setParent( GameObject * parent )
 	return ;
 }
 
-Transformf const &	AObjectComponent::getTransform( void ) const
+Transformf &		AObjectComponent::getTransform( void ) const
 {
 	return ( * this->_parent->getTransform() );
 }

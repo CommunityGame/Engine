@@ -125,10 +125,10 @@ public:
 	{
 		Quat		result;
 
-		result[0] = ( rhs.getR() * this->getR() - rhs.getI() * this->getI() - rhs.getJ() * this->getJ() - rhs.getK() * this->getK() );
-		result[1] = ( rhs.getR() * this->getI() + rhs.getI() * this->getR() - rhs.getJ() * this->getK() + rhs.getK() * this->getJ() );
-		result[2] = ( rhs.getR() * this->getJ() + rhs.getI() * this->getK() + rhs.getJ() * this->getR() - rhs.getK() * this->getI() );
-		result[3] = ( rhs.getR() * this->getK() - rhs.getI() * this->getJ() + rhs.getJ() * this->getI() + rhs.getK() * this->getR() );
+		result[0] = rhs.getR() * this->getR() - rhs.getI() * this->getI() - rhs.getJ() * this->getJ() - rhs.getK() * this->getK();
+		result[1] = rhs.getR() * this->getI() + rhs.getI() * this->getR() - rhs.getJ() * this->getK() + rhs.getK() * this->getJ();
+		result[2] = rhs.getR() * this->getJ() + rhs.getI() * this->getK() + rhs.getJ() * this->getR() - rhs.getK() * this->getI();
+		result[3] = rhs.getR() * this->getK() - rhs.getI() * this->getJ() + rhs.getJ() * this->getI() + rhs.getK() * this->getR();
 		return ( result );
 	}
 
@@ -136,6 +136,16 @@ public:
 	{
 		*this = *this * rhs;
 		return ( *this );
+	}
+
+	inline Quat		operator*( Vec3<T> const & rhs ) const
+	{
+		Quat		result;
+		result[0] = - ( this->getI() * rhs.getX() ) - ( this->getJ() * rhs.getY() ) - ( this->getK() * rhs.getZ() );
+		result[1] =   ( this->getR() * rhs.getX() ) + ( this->getJ() * rhs.getZ() ) - ( this->getK() * rhs.getY() );
+		result[2] =   ( this->getR() * rhs.getY() ) + ( this->getK() * rhs.getX() ) - ( this->getI() * rhs.getZ() );
+		result[3] =   ( this->getR() * rhs.getZ() ) + ( this->getI() * rhs.getY() ) - ( this->getJ() * rhs.getX() );
+		return ( result );
 	}
 
 	inline Quat		operator/( Quat const & rhs ) const
@@ -146,10 +156,10 @@ public:
 		div += T( rhs.getJ() * rhs.getJ());
 		div += T( rhs.getK() * rhs.getK());
 
-		result[0] = (rhs.getR() * this->getR() + rhs.getI() * this->getI() + rhs.getJ() * this->getJ() + rhs.getK() * this->getK()) / div;
-		result[1] = (rhs.getR() * this->getI() - rhs.getI() * this->getR() - rhs.getJ() * this->getK() + rhs.getK() * this->getJ()) / div;
-		result[2] = (rhs.getR() * this->getJ() + rhs.getI() * this->getK() - rhs.getJ() * this->getR() - rhs.getK() * this->getI()) / div;
-		result[3] = (rhs.getR() * this->getK() - rhs.getI() * this->getJ() + rhs.getJ() * this->getI() - rhs.getK() * this->getR()) / div;
+		result[0] = ( rhs.getR() * this->getR() + rhs.getI() * this->getI() + rhs.getJ() * this->getJ() + rhs.getK() * this->getK() ) / div;
+		result[1] = ( rhs.getR() * this->getI() - rhs.getI() * this->getR() - rhs.getJ() * this->getK() + rhs.getK() * this->getJ() ) / div;
+		result[2] = ( rhs.getR() * this->getJ() + rhs.getI() * this->getK() - rhs.getJ() * this->getR() - rhs.getK() * this->getI() ) / div;
+		result[3] = ( rhs.getR() * this->getK() - rhs.getI() * this->getJ() + rhs.getJ() * this->getI() - rhs.getK() * this->getR() ) / div;
 		return (result);
 	}
 
@@ -180,6 +190,36 @@ public:
 	inline T		getK( void ) const
 	{
 		return ( (*this)[3] );
+	}
+
+	inline Vec3<T>	getForward( void )
+	{
+		return ( Vec3<T>( 0, 0, 1 ).rotate( * this ) );
+	}
+
+	inline Vec3<T>	getBack( void )
+	{
+		return ( Vec3<T>( 0, 0, -1 ).rotate( * this ) );
+	}
+
+	inline Vec3<T>	getRight( void )
+	{
+		return ( Vec3<T>( 1, 0, 0 ).rotate( * this ) );
+	}
+
+	inline Vec3<T>	getLeft( void )
+	{
+		return ( Vec3<T>( -1, 0, 0 ).rotate( * this ) );
+	}
+
+	inline Vec3<T>	getUp( void )
+	{
+		return ( Vec3<T>( 0, 1, 0 ).rotate( * this ) );
+	}
+
+	inline Vec3<T>	getDown( void )
+	{
+		return ( Vec3<T>( 0, -1, 0 ).rotate( * this ) );
 	}
 
 	/**

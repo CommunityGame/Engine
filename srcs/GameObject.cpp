@@ -6,7 +6,7 @@ GameObject::GameObject( void ) :
 	return ;
 }
 
-void	GameObject::input( Input const & input )
+void	GameObject::input( Input & input )
 {
 	std::vector< AObjectComponent *>::iterator it;
 
@@ -33,7 +33,7 @@ void	GameObject::render( RenderEngine const & renderEngine, Shader const & shade
 	return ;
 }
 
-void	GameObject::inputAll( Input const & input )
+void	GameObject::inputAll( Input & input )
 {
 	std::vector<GameObject *>::iterator it;
 
@@ -66,10 +66,11 @@ void	GameObject::addChild( GameObject * object )
 	this->_childrens.push_back( object );
 }
 
-void	GameObject::addComponent( AObjectComponent * component )
+GameObject	*GameObject::addComponent( AObjectComponent * component )
 {
 	component->setParent( this );
 	this->_components.push_back( component );
+	return ( this );
 }
 
 //	GETTER

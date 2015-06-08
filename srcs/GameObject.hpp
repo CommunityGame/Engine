@@ -18,7 +18,7 @@ public:
 	 *
 	 * @return void
 	 */
-	virtual void		input( Input const & input );
+	virtual void		input( Input & input );
 
 	/*!
 	 * @function update
@@ -45,7 +45,7 @@ public:
 	 *
 	 * @return void
 	 */
-	void				inputAll( Input const & input );
+	void				inputAll( Input & input );
 
 	/*!
 	 * @function updateAll
@@ -81,11 +81,11 @@ public:
 	 *
 	 * @return void
 	 */
-	void				addComponent( AObjectComponent * component );
+	GameObject			*addComponent( AObjectComponent * component );
 
 	//	GETTER
-	Transformf *				getTransform( void );
-	Transformf const &			getTransform( void ) const;
+	Transformf *		getTransform( void );
+	Transformf const &	getTransform( void ) const;
 	GameObject *		getParent( void ) const;
 
 	//	SETTER

@@ -47,7 +47,7 @@ void	Mesh::draw( void ) const
 	return ;
 }
 
-void	Mesh::input( Input const & input )
+void	Mesh::input( Input & input )
 {
 	return ;
 }
