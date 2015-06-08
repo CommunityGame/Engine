@@ -2,6 +2,7 @@
 # define _OBJECT_COMPONENT_H_
 
 #include "Input.hpp"
+#include "math/Math.hpp"
 
 class GameObject;
 class RenderEngine;
@@ -40,6 +41,7 @@ public:
 
 	//	GETTER
 	GameObject const &	getParent( void ) const;
+	Transformf const &	getTransform( void ) const;
 
 	//	SETTER
 	void				setParent( GameObject * parent );

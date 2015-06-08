@@ -20,3 +20,9 @@ void Camera::render( RenderEngine const & renderEngine, Shader const & shader, C
 {
 	return ;
 }
+
+// GETTER
+Mat4f const	Camera::getPerspectiveMatrix( void ) const
+{
+	return ( this->_perspective );
+}

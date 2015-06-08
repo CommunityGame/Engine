@@ -49,10 +49,16 @@ Window::Window( int width, int height, std::string const & title ) :
 		this->_GLFWwindow = nullptr;
 		throw ( EngineException( "Error: create GLFW window" ) );
 	}
-	glfwMakeContextCurrent( this->_GLFWwindow );
-	gladLoadGLLoader( (GLADloadproc) glfwGetProcAddress );
+
+	if ( Window::_nbWindow == 0 )
+	{
+		glfwMakeContextCurrent( this->_GLFWwindow );
+		gladLoadGLLoader( (GLADloadproc) glfwGetProcAddress );
+	}
+
 	glfwSetWindowPos( this->_GLFWwindow, mode->width / 2 - this->_width / 2, mode->height / 2 - this->_height / 2 );
-	Window::_nbWindow++;
+
+	glfwSwapInterval( Window::_nbWindow++ );
 	return ;
 }
 
@@ -137,4 +143,15 @@ void				Window::setSize( int width, int height )
 	this->_width = width;
 	this->_height = height;
 	glfwSetWindowSize( this->_GLFWwindow, width, height );
+}
+
+void Window::setWindowPos( int x, int y )
+{
+	glfwSetWindowPos( this->_GLFWwindow, x, y );
+}
+
+void Window::destroyWindow( void )
+{
+	glfwDestroyWindow( this->_GLFWwindow );
+	this->_GLFWwindow = nullptr;
 }

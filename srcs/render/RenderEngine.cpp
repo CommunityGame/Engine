@@ -11,6 +11,10 @@ RenderEngine::RenderEngine( Window const & window ) :
 	glEnable( GL_CULL_FACE );
 	glEnable( GL_DEPTH_TEST );
 
+	GLuint vertexArrayID;
+	glGenVertexArrays( 1, &vertexArrayID );
+	glBindVertexArray( vertexArrayID );
+
 	this->_defaultShader = new Shader( "basic" );
 	return ;
 }
@@ -29,9 +33,9 @@ void			RenderEngine::render( GameObject const & object ) const
 }
 
 //	GETTER
-const Camera &	RenderEngine::getCamera( void ) const
+Camera *		RenderEngine::getCamera( void ) const
 {
-	return ( * this->_camera );
+	return ( this->_camera );
 }
 
 //	SETTER

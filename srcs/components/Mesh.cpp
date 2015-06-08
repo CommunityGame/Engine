@@ -1,7 +1,6 @@
 #include <glad/glad.h>
 #include "Mesh.hpp"
 #include "../render/Shader.hpp"
-#include "../GameObject.hpp"
 
 Mesh::Mesh( void )
 {
@@ -43,6 +42,8 @@ void	Mesh::draw( void ) const
 
 	glBindBuffer( GL_ELEMENT_ARRAY_BUFFER, this->_indexBufferObject );
 	glDrawElements( GL_TRIANGLES, (GLsizei) this->_indices.size(), GL_UNSIGNED_INT, nullptr );
+	glDisableVertexAttribArray( 0 );
+
 	return ;
 }
 
@@ -62,10 +63,4 @@ void	Mesh::render( RenderEngine const & renderEngine, Shader const & shader, Cam
 	shader.updateUniforms( renderEngine, this->getTransform(), camera/*, material*/ );
 	this->draw();
 	return ;
-}
-
-//	GETTER
-Transformf const &	Mesh::getTransform( void ) const
-{
-	return ( this->_parent->getTransform() );
 }

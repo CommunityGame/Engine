@@ -18,7 +18,6 @@ public:
 	void				bufferData( void ) const;
 
 	//	GETTER
-	Transformf const &	getTransform( void ) const;
 
 private:
 	void				draw( void ) const;

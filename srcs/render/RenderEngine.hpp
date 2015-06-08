@@ -13,7 +13,7 @@ public:
 	void				render( GameObject const & object ) const;
 
 	//	GETTER
-	const Camera &		getCamera( void ) const;
+	Camera *			getCamera( void ) const;
 
 	//	SETTER
 	void				setCamera( Camera * camera ) const;

@@ -10,7 +10,7 @@ class Quat : public Point<T, 4>
 public:
 	inline Quat( void )
 	{
-		this->_values[0] = 0;
+		this->_values[0] = 1;
 		this->_values[1] = 0;
 		this->_values[2] = 0;
 		this->_values[3] = 0;
@@ -24,6 +24,17 @@ public:
 		this->_values[2] = j;
 		this->_values[3] = k;
 		return ;
+	}
+
+	inline Quat( const Vec3<T> & axis, T angle )
+	{
+		T sinHalfAngle = sinf( angle / T( 2 ) );
+		T cosHalfAngle = cosf( angle / T( 2 ) );
+
+		(*this)[0] = cosHalfAngle;
+		(*this)[1] = axis.getX() * sinHalfAngle;
+		(*this)[2] = axis.getY() * sinHalfAngle;
+		(*this)[3] = axis.getZ() * sinHalfAngle;
 	}
 
 	inline Quat		conjugated( void ) const
@@ -88,14 +99,25 @@ public:
 		return ( *this );
 	}
 
-	inline Mat<T, 4, 4>	toMatrix( void )
+	inline Mat<T, 4, 4>	toMatrix( void ) const
 	{
 		Mat<T, 4, 4>	result;
-
-		result[0] = this->getR();	result[1] = this->getI();	result[2] = this->getJ();	result[3] = this->getK();
-		result[4] = -this->getI();	result[5] = this->getR();	result[6] = -this->getK();	result[7] = this->getJ();
-		result[8] = -this->getJ();	result[9] = this->getK();	result[10] = this->getR();	result[11] = -this->getI();
-		result[12] = -this->getK();	result[13] = -this->getJ();	result[14] = this->getI();	result[15] = this->getR();
+		result[0] = T(1) - T(2) * getJ() * getJ() - T(2) * getK() * getK();
+		result[1] = T(2) * getI() * getJ() - T(2) * getK() * getR();
+		result[2] = T(2) * getI() * getK() + T(2) * getJ() * getR();
+		result[3] = T(0);
+		result[4] = T(2) * getI() * getJ() + T(2) * getK() * getR();
+		result[5] = T(1) - T(2) * getI() * getI() - T(2) * getK() * getK();
+		result[6] = T(2) * getJ() * getK() - T(2) * getI() * getR();
+		result[7] = T(0);
+		result[8] = T(2) * getI() * getK() - T(2) * getJ() * getR();
+		result[9] = T(2) * getJ() * getK() + T(2) * getI() * getR();
+		result[10] = T(1) - T(2) * getI() * getI() - T(2) * getJ() * getJ();
+		result[11] = T(0);
+		result[12] = T(0);
+		result[13] = T(0);
+		result[14] = T(0);
+		result[15] = T(1);
 		return ( result );
 	}
 

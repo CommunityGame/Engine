@@ -10,6 +10,7 @@ int		main( void )
 	Logger::setPrintLogs( true );
 
 	coreEngine->createWindow( 850, 550, "Test" );
+//	coreEngine->startDebugWindow();
 	coreEngine->start();
 
 	delete coreEngine;

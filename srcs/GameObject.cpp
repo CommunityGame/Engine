@@ -73,12 +73,17 @@ void	GameObject::addComponent( AObjectComponent * component )
 }
 
 //	GETTER
-Transformf const &		GameObject::getTransform( void ) const
+Transformf *		GameObject::getTransform( void )
+{
+	return ( & this->_transform );
+}
+
+Transformf const &	GameObject::getTransform( void ) const
 {
 	return ( this->_transform );
 }
 
-GameObject const *		GameObject::getParent( void ) const
+GameObject *		GameObject::getParent( void ) const
 {
 	return ( this->_parent );
 }

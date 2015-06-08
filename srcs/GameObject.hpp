@@ -84,8 +84,9 @@ public:
 	void				addComponent( AObjectComponent * component );
 
 	//	GETTER
-	Transformf const &	getTransform( void ) const;
-	GameObject const *	getParent( void ) const;
+	Transformf *				getTransform( void );
+	Transformf const &			getTransform( void ) const;
+	GameObject *		getParent( void ) const;
 
 	//	SETTER
 	void				setTransform( Transformf const & transform );

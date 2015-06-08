@@ -4,6 +4,8 @@
 #include <fstream>
 #include <sys/stat.h>
 #include <sys/types.h>
+#include <sstream>
+#include "Timer.hpp"
 
 # define INFO		( 1 )
 # define DEBUG		( 2 )
@@ -14,6 +16,7 @@
 class Logger
 {
 public:
+
 	static void				setVerbosity( int verbosity );
 	static void				setPrintLogs( bool state );
 
@@ -48,20 +51,23 @@ public:
 	template < typename T >
 	static void				log( std::string const & mode, T const & msg )
 	{
-		//TODO: Timer
+		std::stringstream log;
+
 		if ( mkdir( Logger::_logsPath.c_str(), 0755 ) == -1 && errno != EEXIST )
 		{
 			std::cerr << "Error, mkdir: " << errno << std::endl;
 			return ;
 		}
 
-		if ( Logger::_PRINT_LOGS )
-			std::cout << "[" << mode << "] : " << msg << std::endl;
+		log << Timer::currentDateTime( "%C/%m/%d %H:%M:%S" ) << "\t[" << mode << "] : " << msg << std::endl;
+
+		if ( Logger::_printLogs )
+			std::cout << log.str();
 
 		std::ofstream outFile( Logger::_logsPath + Logger::_logsName + "." + Logger::_extension, std::ios::app );
 		if ( outFile.is_open() )
 		{
-			outFile << "[" << mode << "] : " << msg << std::endl;
+			outFile << log.str();
 			outFile.close();
 		}
 		else
@@ -71,7 +77,7 @@ public:
 
 private:
 	static int				_VERBOSITY;
-	static bool				_PRINT_LOGS;
+	static bool				_printLogs;
 	static std::string		_extension;
 	static std::string		_logsPath;
 	static std::string		_logsName;

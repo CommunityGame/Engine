@@ -33,7 +33,7 @@ set(TINYCTHREAD "${GLFW_SOURCE_DIR}/deps/tinycthread.h"
 
 add_executable( CommunityGame_Engine ${SOURCE_FILES} ${GLAD}
 tests/main.cpp
-tests/Test.cpp)
+tests/Test.cpp srcs/debugs/Debugger.cpp srcs/debugs/Debugger.hpp)
 
 # GLFW
 set( GLFW_VERSION 3.1 )
@@ -41,10 +41,3 @@ add_subdirectory( ./libs/glfw-${GLFW_VERSION} )
 include_directories( ./libs/glfw-${GLFW_VERSION}/include )
 
 target_link_libraries( CommunityGame_Engine glfw ${GLFW_LIBRARIES} ${GLEW_LIBRARIES} )
-
-##
-#   MATH TESTS
-##
-#project( CommunityGame_Math )
-#add_executable( CommunityGame_Math ${SOURCE_FILES} tests/math.cpp)
-#target_link_libraries( CommunityGame_Math glfw ${GLFW_LIBRARIES} )

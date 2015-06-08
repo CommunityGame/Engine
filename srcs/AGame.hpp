@@ -55,8 +55,24 @@ public:
 	 */
 	void			addObject( GameObject * object );
 
+	/*!
+	 * @function setCamera
+	 * @param camera: set the main camera
+	 *
+	 * @return void
+	 */
+	void			setCamera( Camera * camera );
+
+	/*!
+	 * @function getCamera
+	 *
+	 * @return the main camera
+	 */
+	Camera *		getCamera( void ) const;
+
 private:
 	GameObject *		_rootObject;
+	Camera *			_camera;
 };
 
 #endif // ! _A_GAME_H_

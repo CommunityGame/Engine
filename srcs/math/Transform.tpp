@@ -9,7 +9,7 @@ class Transform
 public:
 	inline Transform<T>( void ) :
 			_position( Vec<T, 3>() ),
-			_scale( Vec<T, 3>() ),
+			_scale( Vec3<T>( 1, 1, 1 ) ),
 			_rotation( Quat<T>() )
 	{
 		return ;
@@ -37,6 +37,18 @@ public:
 	inline Quat<T>		getRotation( void ) const
 	{
 		return ( this->_rotation );
+	}
+
+	inline Mat<T, 4, 4>	getTransformedMatrix( void ) const
+	{
+		Mat<T, 4, 4>	translationMatrix;
+		Mat<T, 4, 4>	scaleMatrix;
+		Mat<T, 4, 4>	rotationMatrix;
+
+		translationMatrix.initTranslation( this->_position );
+		scaleMatrix.initScale( this->_scale );
+		rotationMatrix = this->_rotation.toMatrix();
+		return ( translationMatrix * rotationMatrix * scaleMatrix );
 	}
 
 	//	SETTER

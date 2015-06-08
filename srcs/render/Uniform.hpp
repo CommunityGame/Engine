@@ -23,6 +23,7 @@ public:
 
 	// GETTER
 	std::string			getName( void ) const;
+	GLint				getLocation( void ) const;
 
 //	void				update( T );
 
@@ -30,8 +31,8 @@ public:
 	static std::string	typeEnumToString( Type const & t );
 
 private:
-	GLint				_location;
-//	GLuint				_program;
+	mutable GLint		_location;
+	GLuint				_program;
 	Type				_type;
 	std::string			_name;
 };

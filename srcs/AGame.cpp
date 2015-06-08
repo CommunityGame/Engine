@@ -35,3 +35,13 @@ void	AGame::addObject( GameObject * object )
 	this->_rootObject->addChild( object );
 	return ;
 }
+
+void AGame::setCamera( Camera * camera )
+{
+	this->_camera = camera;
+}
+
+Camera * AGame::getCamera( void ) const
+{
+	return ( this->_camera );
+}

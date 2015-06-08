@@ -13,8 +13,12 @@ public:
 	virtual void		update( double delta );
 	virtual void		render( RenderEngine const & renderEngine, Shader const & shader, Camera const & camera ) const;
 
+	// GETTER
+	Mat4f const			getPerspectiveMatrix( void ) const;
 private:
 	Mat4f				_perspective;
+
+	//TODO: remove AObjectComponent heritage and set it own Transform
 
 };
 
