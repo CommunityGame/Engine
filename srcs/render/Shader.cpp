@@ -1,5 +1,6 @@
 #include <glad/glad.h>
 #include "Shader.hpp"
+#include "../components/Camera.hpp"
 #include "../utils/Utils.hpp"
 
 Shader::Shader( const std::string & file ) :
@@ -134,6 +135,12 @@ void Shader::updateUniforms( RenderEngine const & renderEngine, Transformf const
 
 	for ( it = this->_uniforms.begin(); it != this->_uniforms.end(); it++ )
 	{
-		// Logger::d( (*it)->getName() );
+		Uniform *uniform = *it;
+		if ( uniform->getName() == "model" )
+			glUniformMatrix4fv( uniform->getLocation(), 1, GL_FALSE, transform.getTransformedMatrix().getValues() );
+		else if ( uniform->getName() == "view" )
+			glUniformMatrix4fv( uniform->getLocation(), 1, GL_FALSE, camera.getTransformedViewMatrix().getValues() );
+		else if ( uniform->getName() == "projection" )
+			glUniformMatrix4fv( uniform->getLocation(), 1, GL_FALSE, camera.getPerspectiveMatrix().getValues() );
 	}
 }

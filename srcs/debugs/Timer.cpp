@@ -3,23 +3,29 @@
 time_point		Timer::_epoch = high_resolution_clock::now();
 // std::map< std::string, time_point >	Timer::_timePoints = std::map< std::string, time_point >();
 
-
-// FUNCTIONS
-double			Timer::getNanotime( void )
+// GETTER
+double			Timer::getMicrotime( void )
 {
-	return ( std::chrono::duration_cast< nanoseconds >( high_resolution_clock::now() - Timer::_epoch ).count() / 1000000000.0 );
+	return ( ( (double)clock() / (double)CLOCKS_PER_SEC ) );
 }
 
-// void			Timer::pushTimePoint( std::string const & name, time_point timePoint )
-// {
-// 	Timer::_timePoints.insert( std::pair< std::string, time_point >( name, timePoint ) );
-// 	return ;
-// }
+long double		Timer::currentNanoSecond( void )
+{
+	return ( time(0) );
+}
 
-// void			Timer::pushTimePoint( std::string const & name )
-// {
-// 	Timer::pushTimePoint( name, high_resolution_clock::now() );
-// 	return ;
-// }
+const std::string	Timer::currentDateTime( void )
+{
+	return ( Timer::currentDateTime( "%Y-%m-%d.%X" ) );
+}
 
-// GETTER
+const std::string	Timer::currentDateTime( const std::string & format )
+{
+	time_t		now = time( 0 );
+	struct tm	tStruct;
+	char		buf[80];
+
+	tStruct = *localtime( &now );
+	strftime( buf, sizeof( buf ), format.c_str(), &tStruct );
+	return ( buf );
+}

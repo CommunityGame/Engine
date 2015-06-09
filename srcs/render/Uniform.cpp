@@ -12,9 +12,11 @@ const char *	Uniform::typeEnum[] =
 
 Uniform::Uniform( GLuint const program, Type const & type, std::string const & name ) :
 	_type( type ),
-	_name( name )
+	_name( name ),
+	_location( -1 ),
+	_program( program )
 {
-	this->_location = glGetUniformLocation( program, name.c_str() );
+	this->_location = -1;
 	return ;
 }
 
@@ -54,4 +56,15 @@ std::string			Uniform::typeEnumToString( Uniform::Type const & t )
 std::string Uniform::getName( void ) const
 {
 	return ( this->_name );
+}
+
+GLint Uniform::getLocation( void ) const
+{
+	if ( this->_location == -1 )
+	{
+		this->_location = glGetUniformLocation( this->_program, this->_name.c_str() );
+//		if ( this->_location == -1 )
+//			Logger::e( "Can't find uniform" );
+	}
+	return ( this->_location );
 }

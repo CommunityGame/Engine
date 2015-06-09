@@ -1,5 +1,6 @@
 #ifndef _TRANSFORM_H_
 # define _TRANSFORM_H_
+
 # include "Vec.tpp"
 # include "Quat.tpp"
 
@@ -9,13 +10,13 @@ class Transform
 public:
 	inline Transform<T>( void ) :
 			_position( Vec<T, 3>() ),
-			_scale( Vec<T, 3>() ),
+			_scale( Vec3<T>( 1, 1, 1 ) ),
 			_rotation( Quat<T>() )
 	{
 		return ;
 	}
 
-	inline Transform<T>( Vec<T, 3> position, Vec<T, 3> scale, Quat<T> rotation ) :
+	inline Transform<T>( Vec<T, 3> const & position, Vec<T, 3> const & scale, Quat<T> const & rotation ) :
 			_position( position ),
 			_scale( scale ),
 			_rotation( rotation )
@@ -23,13 +24,37 @@ public:
 		return ;
 	}
 
+	inline Transform<T> &	translate( Vec<T, 3> const & vec )
+	{
+		this->_position += vec;
+		return ( *this );
+	}
+
+	inline Transform<T> &	translate( T x, T y, T z )
+	{
+		this->_position += Vec3<T>( x, y, z );
+		return ( *this );
+	}
+
+	inline Transform<T> &	rotate( Quat<T> rot )
+	{
+		this->_rotation = ( rot * this->_rotation ).normalized();
+		return ( *this );
+	}
+
+	inline Transform<T> &	rotate( Vec3<T> axis, T angle )
+	{
+		this->_rotation = ( Quat<T>( axis, angle ) * this->_rotation ).normalized();
+		return ( *this );
+	}
+
 	//	GETTER
-	inline Vec<T, 3>	getPosition( void ) const
+	inline Vec<T, 3>		getPosition( void ) const
 	{
 		return ( this->_position );
 	}
 
-	inline Vec<T, 3>	getScale( void ) const
+	inline Vec<T, 3>		getScale( void ) const
 	{
 		return ( this->_scale );
 	}
@@ -37,6 +62,18 @@ public:
 	inline Quat<T>		getRotation( void ) const
 	{
 		return ( this->_rotation );
+	}
+
+	inline Mat<T, 4, 4>	getTransformedMatrix( void ) const
+	{
+		Mat<T, 4, 4>	translationMatrix;
+		Mat<T, 4, 4>	scaleMatrix;
+		Mat<T, 4, 4>	rotationMatrix;
+
+		translationMatrix.initTranslation( this->_position );
+		scaleMatrix.initScale( this->_scale );
+		rotationMatrix = this->_rotation.toMatrix();
+		return ( translationMatrix * rotationMatrix * scaleMatrix );
 	}
 
 	//	SETTER

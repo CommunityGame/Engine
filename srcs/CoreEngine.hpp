@@ -5,6 +5,7 @@
 #include "render/Window.hpp"
 #include "Input.hpp"
 #include "render/RenderEngine.hpp"
+#include "debugs/Debugger.hpp"
 
 class AGame;
 
@@ -18,6 +19,7 @@ public:
 	bool					start( void );
 	bool					stop( void );
 	void					createWindow( int width, int height, std::string const & title );
+	void					startDebugWindow( void );
 
 	// GETTER
 	Window const &			getWindow( void ) const;
@@ -25,6 +27,7 @@ public:
 	Input const &			getInput( void ) const;
 
 	// SETTER
+	void					setDebugMode( bool mode );
 
 private:
 	void					run( void );
@@ -33,9 +36,10 @@ private:
 	Window *				_window;
 	Input *					_input;
 	RenderEngine *			_renderEngine;
-	//Debuger *
+	Debugger *				_debugger;
 	bool					_isRunning;
 	double					_fpsExpected;
+	bool					_debugMode;
 };
 
 #endif // ! _CORE_ENGINE_H_

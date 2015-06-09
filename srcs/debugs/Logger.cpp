@@ -4,7 +4,7 @@ std::string			Logger::_extension = "log";
 std::string			Logger::_logsPath = "logs/";
 std::string			Logger::_logsName = "Engine";
 int					Logger::_VERBOSITY = INFO;
-bool				Logger::_PRINT_LOGS = false;
+bool				Logger::_printLogs = false;
 
 void				Logger::setVerbosity( int verbosity )
 {
@@ -13,5 +13,5 @@ void				Logger::setVerbosity( int verbosity )
 
 void				Logger::setPrintLogs( bool state )
 {
-	Logger::_PRINT_LOGS = state;
+	Logger::_printLogs = state;
 }

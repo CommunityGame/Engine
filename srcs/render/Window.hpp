@@ -56,6 +56,9 @@ public:
 	void					setTitle( std::string const & title );
 	void					setSize( int width, int height );
 
+	void					setWindowPos( int x, int y );
+	void					destroyWindow( void );
+
 private:
 	Window( void );
 	Window( int width, int height, std::string const & title );
@@ -63,6 +66,7 @@ private:
 	int						_width;
 	int						_height;
 	std::string				_title;
+	bool					_haveFocus;
 	GLFWwindow *			_GLFWwindow;
 
 	static bool				_glfwIsInit;

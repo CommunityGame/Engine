@@ -43,16 +43,28 @@ Window::Window( int width, int height, std::string const & title ) :
 	glfwWindowHint( GLFW_BLUE_BITS, mode->blueBits );
 	glfwWindowHint( GLFW_REFRESH_RATE, mode->refreshRate );
 
+	glfwWindowHint( GLFW_CONTEXT_VERSION_MAJOR, 4 );
+	glfwWindowHint( GLFW_CONTEXT_VERSION_MINOR, 1 );
+	glfwWindowHint( GLFW_OPENGL_FORWARD_COMPAT, GL_TRUE );
+	glfwWindowHint( GLFW_OPENGL_PROFILE, GLFW_OPENGL_CORE_PROFILE );
+	glfwWindowHint( GLFW_SAMPLES, 4 );
+
 	this->_GLFWwindow = glfwCreateWindow( this->_width, this->_height, this->_title.c_str(), nullptr, nullptr );
 	if ( ! this->_GLFWwindow )
 	{
 		this->_GLFWwindow = nullptr;
 		throw ( EngineException( "Error: create GLFW window" ) );
 	}
-	glfwMakeContextCurrent( this->_GLFWwindow );
-	gladLoadGLLoader( (GLADloadproc) glfwGetProcAddress );
+
+	if ( Window::_nbWindow == 0 )
+	{
+		glfwMakeContextCurrent( this->_GLFWwindow );
+		gladLoadGLLoader( (GLADloadproc) glfwGetProcAddress );
+	}
+
 	glfwSetWindowPos( this->_GLFWwindow, mode->width / 2 - this->_width / 2, mode->height / 2 - this->_height / 2 );
-	Window::_nbWindow++;
+
+	glfwSwapInterval( Window::_nbWindow++ );
 	return ;
 }
 
@@ -68,6 +80,7 @@ Window *			Window::create( int width, int height, std::string const & title )
 	Window *		window = new Window( width, height, title );
 	const GLubyte*	renderer = glGetString( GL_RENDERER );
 	const GLubyte*	version = glGetString( GL_VERSION );
+	const GLubyte*	glslVersion = glGetString( GL_SHADING_LANGUAGE_VERSION );
 
 	std::stringstream ss;
 	ss << "Create window: " << title << " [" << width << " x " << height << "]";
@@ -77,6 +90,9 @@ Window *			Window::create( int width, int height, std::string const & title )
 	Logger::i( ss.str() );
 	ss.str( "" );
 	ss << "OpenGL version supported " << version;
+	Logger::i( ss.str() );
+	ss.str( "" );
+	ss << "OpenGL shader language version supported " << glslVersion;
 	Logger::i( ss.str() );
 
 	glEnable( GL_DEPTH_TEST );
@@ -137,4 +153,15 @@ void				Window::setSize( int width, int height )
 	this->_width = width;
 	this->_height = height;
 	glfwSetWindowSize( this->_GLFWwindow, width, height );
+}
+
+void Window::setWindowPos( int x, int y )
+{
+	glfwSetWindowPos( this->_GLFWwindow, x, y );
+}
+
+void Window::destroyWindow( void )
+{
+	glfwDestroyWindow( this->_GLFWwindow );
+	this->_GLFWwindow = nullptr;
 }

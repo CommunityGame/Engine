@@ -7,7 +7,7 @@ AGame::~AGame( void )
 	return ;
 }
 
-void	AGame::input( Input const & input )
+void	AGame::input( Input & input )
 {
 	if ( this->_rootObject != nullptr )
 		this->_rootObject->inputAll( input );
@@ -34,4 +34,14 @@ void	AGame::addObject( GameObject * object )
 		this->_rootObject = new GameObject();
 	this->_rootObject->addChild( object );
 	return ;
+}
+
+void AGame::setCamera( Camera * camera )
+{
+	this->_camera = camera;
+}
+
+Camera * AGame::getCamera( void ) const
+{
+	return ( this->_camera );
 }

@@ -1,19 +1,15 @@
 #ifndef _VEC_HPP_
 # define _VEC_HPP_
 
-# include <ostream>
-# include <tgmath.h>
 # include "Point.tpp"
+
+template <typename T>
+class Quat;
 
 template <typename T, u_int8_t D>
 class Vec : public Point<T, D>
 {
 public:
-	inline Vec( void ) : Point<T, D>()
-	{
-		return ;
-	}
-
 	inline T		squaredNorm( void ) const
 	{
 		T	result( 0 );
@@ -22,7 +18,7 @@ public:
 			result += this->_values[i] * this->_values[i];
 		return ( result );
 	}
-	
+
 	inline T		norm( void ) const
 	{
 		return ( sqrt( this->squaredNorm() ) );
@@ -33,6 +29,8 @@ public:
 		T		length;
 
 		length = this->norm();
+		if ( length == T(0) )
+			return ( *this );
 		for ( int i = 0; i < D; ++i )
 			(*this)[i] /= length;
 		return ( *this );
@@ -44,6 +42,8 @@ public:
 		T		length;
 
 		length = this->norm();
+		if ( length == T(0) )
+			return ( result );
 		for ( int i = 0; i < D; ++i )
 			result[i] = (*this)[i] / length;
 		return ( result );
@@ -129,6 +129,12 @@ public:
 		(*this)[1] = y;
 	}
 
+	Vec2( Point< T, 2 > point )
+	{
+		(*this)[0] = point[0];
+		(*this)[1] = point[1];
+	}
+
 	T				cross( const Vec2<T>& r ) const
 	{
 		return ( this->getX() * r.getX() - this->getY() * r.getY() );
@@ -176,6 +182,13 @@ public:
 		(*this)[2] = z;
 	}
 
+	Vec3( Point< T, 3 > point )
+	{
+		(*this)[0] = point[0];
+		(*this)[1] = point[1];
+		(*this)[2] = point[2];
+	}
+
 	inline Vec3<T>	cross( const Vec3<T> & r ) const
 	{
 		T x = (*this)[1] * r[2] - (*this)[2] * r[1];
@@ -185,13 +198,7 @@ public:
 		return ( Vec3<T>( x, y, z ) );
 	}
 
-//	inline Vec3<T>	rotate( T angle, const Vec3<T> & axis ) const
-//	{
-//		const T sinAngle = sin( -angle );
-//		const T cosAngle = cos( -angle );
-//
-//		return ( this->cross( axis * sinAngle ) + ( *this * cosAngle ) + ( axis * this->dot( axis * ( 1 - cosAngle ) ) ) );
-//	}
+	Vec3<T>			rotate( const Quat<T> & rot );
 
 	/**
 	 * GETTER
@@ -237,4 +244,13 @@ public:
 	}
 };
 
-#endif //_VEC_HPP_
+template <typename T>
+Vec3<T>	Vec3<T>::rotate( const Quat<T> & rot )
+{
+	Quat<T> conjugateQ = rot.conjugated();
+	Quat<T> w = rot * ( * this ) * conjugateQ;
+
+	return ( Vec3<T>( w.getI(), w.getJ(), w.getK() ) );
+}
+
+#endif // ! _VEC_HPP_

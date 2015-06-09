@@ -1,8 +1,12 @@
-#version 110
+#version 330 core
 
-uniform mat4 model;
+uniform mat4	model;
+uniform mat4	view;
+uniform mat4	projection;
+
+in vec3			pos;
 
 void main()
 {
-    gl_Position = gl_ProjectionMatrix * gl_ModelViewMatrix * gl_Vertex;
+	gl_Position = projection * view * model * vec4( pos, 1 );
 }

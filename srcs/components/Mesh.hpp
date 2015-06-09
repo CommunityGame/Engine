@@ -11,14 +11,13 @@ public:
 	Mesh( void );
 	virtual ~Mesh( void );
 
-	virtual void		input( Input const & input );
+	virtual void		input( Input & input );
 	virtual void		update( double delta );
 	virtual void		render( RenderEngine const & renderEngine, Shader const & shader, Camera const & camera ) const;
 	void				putVertex( Vec3f const & vertex );
 	void				bufferData( void ) const;
 
 	//	GETTER
-	Transformf const &	getTransform( void ) const;
 
 private:
 	void				draw( void ) const;

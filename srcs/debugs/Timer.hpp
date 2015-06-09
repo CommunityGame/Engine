@@ -1,10 +1,11 @@
 #ifndef _TIMER_H_
 # define _TIMER_H_
 
-#include <map>
+// #include <map>
+#include <string>
 #include <chrono>
 
-#define SECOND			( 1000000 )
+#define SECOND			( 1000000.0 )
 
 typedef std::chrono::minutes					minutes;
 typedef std::chrono::seconds					seconds;
@@ -18,12 +19,30 @@ class Timer
 {
 public:
 	/*!
-	 * @function getNanotime
+	 * @function getMicrotime
 	 * Return the nanoseconds since the program run
 	 *
 	 * @return double
 	 */
-	static double								getNanotime( void );
+	static double								getMicrotime( void );
+
+	static long double							currentNanoSecond( void );
+
+	/*!
+	 * @function currentDateTime
+	 * Get current date/time, format is YYYY-MM-DD.HH:mm:ss
+	 *
+	 * @return string
+	 */
+	static const std::string					currentDateTime( void );
+
+	/*!
+	 * @function currentDateTime
+	 * Get current date/time
+	 *
+	 * @return string
+	 */
+	static const std::string					currentDateTime( std::string const & format );
 
 	/*!
 	 * @function pushTimePoint

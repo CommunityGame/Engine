@@ -1,7 +1,6 @@
 #include <unistd.h>
 #include <sstream>
 #include "CoreEngine.hpp"
-#include "debugs/Timer.hpp"
 #include "AGame.hpp"
 
 CoreEngine::CoreEngine( AGame & game, int fpsExpected ) :
@@ -9,7 +8,8 @@ CoreEngine::CoreEngine( AGame & game, int fpsExpected ) :
 	_window( nullptr ),
 	_input( nullptr ),
 	_isRunning( false ),
-	_fpsExpected( fpsExpected )
+	_fpsExpected( fpsExpected ),
+	_debugMode( false )
 {
 	return ;
 }
@@ -63,9 +63,12 @@ void			CoreEngine::run( void )
 	double	end_ticks;
 	double	dt;
 
+	dt = (1.0 / this->_fpsExpected) * SECOND;
 	this->_isRunning = true;
 
-	begin_ticks = Timer::getNanotime();
+	begin_ticks = Timer::getMicrotime();
+
+	std::cout << begin_ticks << std::endl;
 
 	this->_game.init( *this );
 
@@ -83,21 +86,36 @@ void			CoreEngine::run( void )
 		// UPDATE
 		this->_game.update( dt );
 
+		if ( this->_game.getCamera() != this->_renderEngine->getCamera() )
+			this->_renderEngine->setCamera( this->_game.getCamera() );
+
 		// RENDER
 		this->_game.render( * this->_renderEngine );
 
 		// REFRESH
 		this->_window->refresh();
 
-		end_ticks = Timer::getNanotime();
+		end_ticks = Timer::getMicrotime();
 		dt = ( end_ticks - begin_ticks );
 		begin_ticks = end_ticks;
 
 		std::stringstream	title;
-		title << this->_window->getTitle() << ", FPS: " << 1 / dt;
+		double fps = 1.0 / dt;
+		if ( fps > this->_fpsExpected )
+			title << this->_window->getTitle() << ", real FPS: 60";
+		else
+			title << this->_window->getTitle() << ", real FPS: " << fps;
+		title << ", FPS could be done: " << fps;
 		glfwSetWindowTitle( this->_window->getGLFWwindow(), title.str().c_str() );
 
-		usleep( (useconds_t) ( ( SECOND / this->_fpsExpected ) - dt ) );
+		if ( fps < this->_fpsExpected )
+		{
+			std::stringstream	log;
+			log << "Frames dropped: " << (this->_fpsExpected - fps);
+			Logger::w( log.str() );
+		}
+		else
+			std::this_thread::sleep_for( std::chrono::microseconds( (useconds_t) ( ( ( 1.0 / this->_fpsExpected ) - dt ) * SECOND ) ) );
 	}
 }
 
@@ -114,4 +132,14 @@ RenderEngine const & CoreEngine::getRenderEngine( void ) const
 Input const & CoreEngine::getInput( void ) const
 {
 	return ( * this->_input );
+}
+
+void		CoreEngine::startDebugWindow( void )
+{
+	this->_debugger = new Debugger();
+}
+
+void		CoreEngine::setDebugMode( bool mode )
+{
+	this->_debugMode = mode;
 }
