@@ -68,8 +68,6 @@ void			CoreEngine::run( void )
 
 	begin_ticks = Timer::getMicrotime();
 
-	std::cout << begin_ticks << std::endl;
-
 	this->_game.init( *this );
 
 	while ( this->_isRunning )

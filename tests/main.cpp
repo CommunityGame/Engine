@@ -8,6 +8,7 @@ int		main( int argc, const char *argv[] )
 
 	Logger::setPrintLogs( true );
 
+	Logger::i( "\t-- Start session --" );
 	if ( argc == 2 && std::string(argv[1]) == "--dev" )
 	{
 		coreEngine->setDebugMode( true );
@@ -26,5 +27,6 @@ int		main( int argc, const char *argv[] )
 	coreEngine->start();
 
 	delete coreEngine;
+	Logger::i( "\t-- End session --\n" );
 	return ( 0 );
 }

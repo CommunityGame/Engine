@@ -20,7 +20,14 @@ void	Mesh::putVertex( Vec3f const & vertex )
 {
 	static GLuint i = 0;
 	this->_vertices.push_back( vertex );
-	this->_indices.push_back( i++ );
+	if (i >= 3)
+	{
+		this->_indices.push_back( i - 1 );
+		this->_indices.push_back( i - 2 );
+		this->_indices.push_back( i++ );
+	}
+	else
+		this->_indices.push_back( i++ );
 	return ;
 }
 

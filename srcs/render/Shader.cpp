@@ -96,7 +96,7 @@ const std::string		Shader::loadShader( const std::string & file )
 	std::string					result;
 	std::vector<std::string>	tokenLine;
 
-	Logger::i( "Load shader: " + file );
+	Logger::d( "Load shader: " + file );
 	if ( fileStream.is_open() )
 	{
 		while ( getline( fileStream, line ) )
@@ -109,7 +109,7 @@ const std::string		Shader::loadShader( const std::string & file )
 			{
 				std::string type = tokenLine[1];
 				std::string name = tokenLine[2].substr( 0, tokenLine[2].find_last_not_of( ';' ) + 1 );
-				Logger::i( "Add uniform '" + name + "' to shader: " + file );
+				Logger::d( "Add uniform '" + name + "' to shader: " + file );
 				this->_uniforms.push_back( new Uniform( this->_program, Uniform::stringToTypeEnum( type ), name ) );
 			}
 			result.append( line + "\n" );

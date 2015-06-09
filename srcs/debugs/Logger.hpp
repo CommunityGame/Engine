@@ -59,12 +59,12 @@ public:
 			return ;
 		}
 
-		log << Timer::currentDateTime( "%C/%m/%d %H:%M:%S" ) << "\t[" << mode << "] : " << msg << std::endl;
+		log << Timer::currentDateTime( "%H:%M:%S" ) << " [" << mode << "]->\t" << msg << std::endl;
 
 		if ( Logger::_printLogs )
 			std::cout << log.str();
 
-		std::ofstream outFile( Logger::_logsPath + Logger::_logsName + "." + Logger::_extension, std::ios::app );
+		std::ofstream outFile( Logger::_logsPath + Logger::_logsName + Timer::currentDateTime( "_%C-%m-%d" ) + "." + Logger::_extension, std::ios::app );
 		if ( outFile.is_open() )
 		{
 			outFile << log.str();

@@ -25,21 +25,12 @@ void Test::init( CoreEngine const & coreEngine )
 
 	GameObject *	meshO = new GameObject();
 	Mesh *			mesh = new Mesh();
-	mesh->putVertex( Vec3f( -1, 0, -1 ) );
 	mesh->putVertex( Vec3f( -1, 0, 1 ) );
+	mesh->putVertex( Vec3f( -1, 0, -1 ) );
 	mesh->putVertex( Vec3f( 1, 0, 1 ) );
 	mesh->putVertex( Vec3f( 1, 0, -1 ) );
 	mesh->bufferData();
 	meshO->addComponent( mesh );
 	addObject( cameraO );
 	addObject( meshO );
-
-//	Mat<float, 4, 4> matTest;
-//	Quatf quatf( Vec3f( 0, 0, 1 ), TO_RADIANS( 90.0f ) );
-//	matTest = quatf.toMatrix();
-
-//	matTest.initTranslation( Vec3f( 1, 2, 3 ) );
-
-//	std::cout << matTest << std::endl;
-
 }

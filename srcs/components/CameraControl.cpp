@@ -31,6 +31,7 @@ void CameraControl::input( Input & input )
 	if ( input.isKeyPressed( GLFW_KEY_LEFT_SHIFT ) )
 		_motion += getTransform().getRotation().getDown();
 	this->_motion.normalize();
+
 	if ( input.isKeyPressed( GLFW_KEY_ESCAPE ) )
 	{
 		input.setCursor( true );
@@ -70,7 +71,6 @@ void CameraControl::update( double delta )
 	transform = &getTransform();
 	if ( this->_motion != Vec3f( 0, 0, 0 ) )
 		transform->translate( this->_motion * this->_speed );
-	std::cout << transform->getPosition() << std::endl;
 	if ( this->_rotation != Quatf() )
 		transform->rotate( this->_rotation );
 	return ;
