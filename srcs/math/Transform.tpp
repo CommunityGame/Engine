@@ -77,19 +77,19 @@ public:
 	}
 
 	//	SETTER
-	inline void			setPosition( Vec<T, 3> position )
+	inline void			setPosition( Vec<T, 3> const & position )
 	{
 		this->_position = position;
 		return ;
 	}
 
-	inline void			setScale( Vec<T, 3> scale )
+	inline void			setScale( Vec<T, 3> const & scale )
 	{
 		this->_scale = scale;
 		return ;
 	}
 
-	inline void			setRotation( Quat<T> rotation )
+	inline void			setRotation( Quat<T> const & rotation )
 	{
 		this->_rotation = rotation;
 		return ;

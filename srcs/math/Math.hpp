@@ -2,6 +2,7 @@
 # define _MATH_H_
 
 # include "Transform.tpp"
+# include "Vertex.tpp"
 # include <cmath>
 # include <ostream>
 # define MATH_PI 3.1415926535897932384626433832795
@@ -35,6 +36,14 @@
 #define Transformi Transform<int>
 #define Transformf Transform<float>
 #define Transformd Transform<double>
+
+#define Colori Color<int>
+#define Colorf Color<float>
+#define Colord Color<double>
+
+#define Vertexi Vertex<int>
+#define Vertexf Vertex<float>
+#define Vertexd Vertex<double>
 
 class Math
 {

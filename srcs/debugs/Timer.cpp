@@ -1,8 +1,5 @@
 #include "Timer.hpp"
 
-time_point		Timer::_epoch = high_resolution_clock::now();
-// std::map< std::string, time_point >	Timer::_timePoints = std::map< std::string, time_point >();
-
 // GETTER
 double			Timer::getMicrotime( void )
 {

@@ -55,6 +55,9 @@ public:
 	// SETTER
 	void					setTitle( std::string const & title );
 	void					setSize( int width, int height );
+	void					setVsync( bool vSync );
+	void					setWidth( int width );
+	void					setHeight( int height );
 
 	void					setWindowPos( int x, int y );
 	void					destroyWindow( void );

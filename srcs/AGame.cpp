@@ -7,10 +7,10 @@ AGame::~AGame( void )
 	return ;
 }
 
-void	AGame::input( Input & input )
+void	AGame::input( Input & input, double delta )
 {
 	if ( this->_rootObject != nullptr )
-		this->_rootObject->inputAll( input );
+		this->_rootObject->inputAll( input, delta );
 	return ;
 }
 
@@ -30,18 +30,29 @@ void	AGame::render( RenderEngine const & renderEngine ) const
 
 void	AGame::addObject( GameObject * object )
 {
+	object->setCoreEngine( this->_coreEngine );
 	if ( this->_rootObject == nullptr )
 		this->_rootObject = new GameObject();
 	this->_rootObject->addChild( object );
 	return ;
 }
 
-void AGame::setCamera( Camera * camera )
+void	AGame::setCamera( Camera * camera )
 {
 	this->_camera = camera;
 }
 
-Camera * AGame::getCamera( void ) const
+void AGame::setCoreEngine( CoreEngine * coreEngine )
+{
+	this->_coreEngine = coreEngine;
+}
+
+Camera *		AGame::getCamera( void ) const
 {
 	return ( this->_camera );
+}
+
+GameObject *	AGame::getRootObject( void ) const
+{
+	return ( this->_rootObject );
 }

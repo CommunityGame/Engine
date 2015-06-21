@@ -3,6 +3,7 @@
 
 #include <string>
 #include "Window.hpp"
+#include "../math/Math.hpp"
 
 class Uniform
 {
@@ -17,15 +18,24 @@ public:
 		MAT4,
 		_SIZE
 	};
+
 	static const char *	typeEnum[];
 
+	Uniform( void );
 	Uniform( GLuint const program, Type const & type, std::string const & name );
 
 	// GETTER
-	std::string			getName( void ) const;
+	const std::string &	getName( void ) const;
+	Type				getType( void ) const;
 	GLint				getLocation( void ) const;
 
-//	void				update( T );
+	void				update( int value );
+	void				update( float value );
+	void				update( double value );
+	void				update( Vec2f value );
+	void				update( Vec3f value );
+	void				update( Colorf value );
+	void				update( Mat<float, 4, 4> value );
 
 	static Type			stringToTypeEnum( std::string const & s );
 	static std::string	typeEnumToString( Type const & t );

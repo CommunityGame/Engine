@@ -2,35 +2,55 @@
 #include "../srcs/components/Mesh.hpp"
 #include "../srcs/components/Camera.hpp"
 #include "../srcs/components/CameraControl.hpp"
+#include "../srcs/components/LightComponent.hpp"
 
 Test::Test( void ) : AGame()
 {
 	return ;
 }
 
-void Test::init( CoreEngine const & coreEngine )
+void Test::init( void )
 {
-//	Shader( "basic" );
-//	std::cout << "ok" << std::endl;
-	float aspectRatio = coreEngine.getWindow().getWidth() / coreEngine.getWindow().getHeight();
+	float aspectRatio = this->_coreEngine->getWindow().getWidth() / this->_coreEngine->getWindow().getHeight();
 	GameObject *	cameraO = new GameObject();
-	Camera *		camera = new Camera( Mat4f().initPerspective( 70.0f, aspectRatio, 0.1f, 1000.0f ) );
+	Camera *		camera = new Camera( 70.0f, aspectRatio, 0.1f, 1000.0f );
 	CameraControl *	control = new CameraControl();
-	control->setSpeed( 0.1f );
-	cameraO->getTransform()->setPosition( Vec3f( 0, 0, 10 ) );
+	control->setSpeed( 10.0f );
+	cameraO->getTransform()->setPosition( * new Vec3f( 0, 0, 10 ) );
 	cameraO->addComponent( camera )->addComponent( control );
+	cameraO->getTransform()->setPosition( Vec3f( 0, 1, 10 ) );
 	setCamera( camera );
-
-	coreEngine.getRenderEngine().setCamera( camera );
+	addObject( cameraO );
 
 	GameObject *	meshO = new GameObject();
 	Mesh *			mesh = new Mesh();
-	mesh->putVertex( Vec3f( -1, 0, 1 ) );
-	mesh->putVertex( Vec3f( -1, 0, -1 ) );
-	mesh->putVertex( Vec3f( 1, 0, 1 ) );
-	mesh->putVertex( Vec3f( 1, 0, -1 ) );
+	mesh->putVertex( Vertexf( Vec3f( -1, 0, 1 ) ) );
+	mesh->putVertex( Vertexf( Vec3f( -1, 0, -1 ) ) );
+	mesh->putVertex( Vertexf( Vec3f( 1, 0, 1 ) ) );
+	mesh->putVertex( Vertexf( Vec3f( 1, 0, -1 ) ) );
+	mesh->calcNormal();
 	mesh->bufferData();
 	meshO->addComponent( mesh );
-	addObject( cameraO );
+	meshO->getTransform()->setScale( Vec3f( 10, 10, 10 ) );
+	meshO->getTransform()->setPosition( Vec3f( 0, -1, 0 ) );
 	addObject( meshO );
+
+	GameObject *		lightO = new GameObject();
+	LightComponent *	light = new LightComponent();
+	light->setAmbient( Colorf( 0.2f, 0.2f, 0.2f, 1 ) );
+	light->setDiffuse( Colorf( 0.5f, 0.5f, 0.5f, 1 ) );
+	light->setSpecular( Colorf( 0.9f, 0.9f, 0.9f, 1 ) );
+	light->setShininess( 20 );
+	lightO->addComponent( light );
+	lightO->getTransform()->setPosition( Vec3f( -10, 15, 0 ) );
+	addObject( lightO );
+	GameObject *		light1 = new GameObject();
+	light = new LightComponent();
+	light->setAmbient( Colorf( 0.0f, 0.2f, 0.2f, 1 ) );
+	light->setDiffuse( Colorf( 0.0f, 0.5f, 0.5f, 1 ) );
+	light->setSpecular( Colorf( 0.0f, 0.9f, 0.9f, 1 ) );
+	light->setShininess( 20 );
+	light1->addComponent( light );
+	light1->getTransform()->setPosition( Vec3f( 15, 20, 0 ) );
+	addObject( light1 );
 }

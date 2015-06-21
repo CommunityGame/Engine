@@ -6,7 +6,7 @@ class Test : public AGame
 {
 public:
 	Test( void );
-	virtual void	init( CoreEngine const & coreEngine );
+	virtual void	init( void );
 };
 
 #endif // ! _TEST_HPP

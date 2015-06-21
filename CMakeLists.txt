@@ -6,7 +6,7 @@ project( CommunityGame_Engine )
 
 set( CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -std=c++11" )
 
-file( GLOB_RECURSE SOURCE_FILES "./srcs/**.cpp" )
+file( GLOB_RECURSE SOURCE_FILES "./srcs/**" )
 
 link_libraries(glfw "${OPENGL_glu_LIBRARY}")
 

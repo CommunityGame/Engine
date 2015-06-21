@@ -11,22 +11,24 @@ public:
 	Mesh( void );
 	virtual ~Mesh( void );
 
-	virtual void		input( Input & input );
-	virtual void		update( double delta );
-	virtual void		render( RenderEngine const & renderEngine, Shader const & shader, Camera const & camera ) const;
-	void				putVertex( Vec3f const & vertex );
-	void				bufferData( void ) const;
+	virtual void			input( Input & input, double delta );
+	virtual void			update( double delta );
+	virtual void			render( RenderEngine const & renderEngine, Shader const & shader, Camera const & camera ) const;
+	virtual void			init( CoreEngine & coreEngine ) {};
+	void					putVertex( Vertexf const & vertex );
+	void					bufferData( void ) const;
+	void					calcNormal( void );
 
 	//	GETTER
 
 private:
-	void				draw( void ) const;
+	void					draw( void ) const;
 
-	GLuint				_vertexBufferObject;
-	GLuint				_indexBufferObject;
+	GLuint					_vertexBufferObject;
+	GLuint					_indexBufferObject;
 
-	std::vector<Vec3f>	_vertices;
-	std::vector<GLuint>	_indices;
+	std::vector<Vertexf>	_vertices;
+	std::vector<GLuint>		_indices;
 };
 
 #endif // ! _MESH_H_

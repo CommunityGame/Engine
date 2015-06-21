@@ -10,13 +10,17 @@ const char *	Uniform::typeEnum[] =
 		"mat4"
 };
 
+Uniform::Uniform( void )
+{
+
+}
+
 Uniform::Uniform( GLuint const program, Type const & type, std::string const & name ) :
 	_type( type ),
 	_name( name ),
 	_location( -1 ),
 	_program( program )
 {
-	this->_location = -1;
 	return ;
 }
 
@@ -44,27 +48,55 @@ std::string			Uniform::typeEnumToString( Uniform::Type const & t )
 	return ( Uniform::typeEnum[t] );
 }
 
-//void				Uniform::update( void )
-//{
-//	switch ( this->_type )
-//	{
-//		case Type::INT:
-//			glUniform1i( this->_location,  );
-//	}
-//}
-
-std::string Uniform::getName( void ) const
+const std::string &	Uniform::getName( void ) const
 {
 	return ( this->_name );
 }
 
-GLint Uniform::getLocation( void ) const
+Uniform::Type	Uniform::getType( void ) const
+{
+	return ( this->_type );
+}
+
+GLint			Uniform::getLocation( void ) const
 {
 	if ( this->_location == -1 )
-	{
-		this->_location = glGetUniformLocation( this->_program, this->_name.c_str() );
-//		if ( this->_location == -1 )
-//			Logger::e( "Can't find uniform" );
-	}
+		this->_location = glGetUniformLocation( this->_program, this->_name.c_str());
 	return ( this->_location );
 }
+
+void			Uniform::update( int value )
+{
+	glUniform1i( this->getLocation(), value );
+}
+
+void			Uniform::update( float value )
+{
+	glUniform1f( this->getLocation(), value );
+}
+
+void			Uniform::update( double value )
+{
+	glUniform1f( this->getLocation(), (float)value );
+}
+
+void			Uniform::update( Vec2f value )
+{
+	glUniform2f( this->getLocation(), value[0], value[1] );
+}
+
+void			Uniform::update( Vec3f value )
+{
+	glUniform3f( this->getLocation(), value[0], value[1], value[2] );
+}
+
+void			Uniform::update( Colorf value )
+{
+	glUniform3f( this->getLocation(), value.getR(), value.getG(), value.getB() );
+}
+
+void			Uniform::update( Mat<float, 4, 4> value )
+{
+	glUniformMatrix4fv( this->getLocation(), 1, GL_FALSE, value.getValues() );
+}
+

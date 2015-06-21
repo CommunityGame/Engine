@@ -15,7 +15,7 @@ CameraControl::~CameraControl( void )
 	return ;
 }
 
-void CameraControl::input( Input & input )
+void CameraControl::input( Input & input, double delta )
 {
 	_motion = Vec3f( 0, 0, 0 );
 	if ( input.isKeyPressed( GLFW_KEY_W ) )
@@ -49,9 +49,9 @@ void CameraControl::input( Input & input )
 
 		this->_rotation = Quatf();
 		if ( rotY )
-			this->_rotation *= Quatf( Vec3f( 0, 1, 0 ), TO_RADIANS( (float)deltaPos.getX() * -this->_speed ) );
+			this->_rotation *= Quatf( Vec3f( 0, 1, 0 ), TO_RADIANS( (float)deltaPos.getX() * -this->_speed * delta ) );
 		if ( rotX )
-			this->_rotation *= Quatf( getTransform().getRotation().getRight(), TO_RADIANS( (float)deltaPos.getY() * -this->_speed ) );
+			this->_rotation *= Quatf( getTransform().getRotation().getRight(), TO_RADIANS( (float)deltaPos.getY() * -this->_speed * delta ) );
 		this->_rotation.normalize();
 	}
 
@@ -70,7 +70,7 @@ void CameraControl::update( double delta )
 
 	transform = &getTransform();
 	if ( this->_motion != Vec3f( 0, 0, 0 ) )
-		transform->translate( this->_motion * this->_speed );
+		transform->translate( this->_motion * this->_speed * delta );
 	if ( this->_rotation != Quatf() )
 		transform->rotate( this->_rotation );
 	return ;

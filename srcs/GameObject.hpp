@@ -3,8 +3,13 @@
 
 # include <vector>
 # include "Input.hpp"
-# include "AObjectComponent.hpp"
 # include "math/Math.hpp"
+# include "render/RenderEngine.hpp"
+# include "render/Shader.hpp"
+# include "CoreEngine.hpp"
+# include "AObjectComponent.hpp"
+
+class Camera;
 
 class GameObject
 {
@@ -18,7 +23,7 @@ public:
 	 *
 	 * @return void
 	 */
-	virtual void		input( Input & input );
+	virtual void		input( Input & input, double delta );
 
 	/*!
 	 * @function update
@@ -39,13 +44,22 @@ public:
 	virtual void		render( RenderEngine const & renderEngine, Shader const & shader, Camera const & camera ) const;
 
 	/*!
+	 * @function init
+	 * @param coreEngine: is a reference to the instance of CoreEngine
+	 * init this GameObject
+	 *
+	 * @return void
+	*/
+	virtual void		init( CoreEngine & coreEngine );
+
+	/*!
 	 * @function inputAll
 	 * @param input: is a reference to the instance of Input
 	 * call input and inputAll for all children of this GameObject
 	 *
 	 * @return void
 	 */
-	void				inputAll( Input & input );
+	void				inputAll( Input & input, double delta );
 
 	/*!
 	 * @function updateAll
@@ -66,6 +80,15 @@ public:
 	void				renderAll( RenderEngine const & renderEngine, Shader const & shader, Camera const & camera ) const;
 
 	/*!
+	 * @function initAll
+	 * @param coreEngine: is a reference to the instance of CoreEngine
+	 * call init and initAll for all children of this GameObject
+	 *
+	 * @return void
+	*/
+	virtual void		initAll( CoreEngine & coreEngine );
+
+	/*!
 	 * @function addChild
 	 * @param object: object to add to the child list
 	 * add GameObject to the childrens list
@@ -81,21 +104,24 @@ public:
 	 *
 	 * @return void
 	 */
-	GameObject			*addComponent( AObjectComponent * component );
+	GameObject *		addComponent( AObjectComponent * component );
 
 	//	GETTER
 	Transformf *		getTransform( void );
 	Transformf const &	getTransform( void ) const;
 	GameObject *		getParent( void ) const;
+	CoreEngine *		getCoreEngine( void ) const;
 
 	//	SETTER
 	void				setTransform( Transformf const & transform );
 	void				setParent( GameObject * parent );
+	void				setCoreEngine( CoreEngine * coreEngine );
 
 private:
 	std::vector<GameObject *>			_childrens;
 	std::vector<AObjectComponent *>		_components;
 	GameObject *						_parent;
+	CoreEngine *						_coreEngine;
 	Transformf							_transform;
 };
 

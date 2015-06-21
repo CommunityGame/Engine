@@ -17,7 +17,7 @@ public:
 	 *
 	 * @return void
 	 */
-	virtual void	init( CoreEngine const & coreEngine ) = 0;
+	virtual void	init( void ) = 0;
 
 	/*!
 	 * @function input
@@ -26,7 +26,7 @@ public:
 	 *
 	 * @return void
 	 */
-	void			input( Input & input );
+	void			input( Input & input, double delta );
 
 	/*!
 	 * @function update
@@ -64,15 +64,33 @@ public:
 	void			setCamera( Camera * camera );
 
 	/*!
+	 * @function setCoreEngine
+	 * @param camera: set the core engine
+	 *
+	 * @return void
+	 */
+	void			setCoreEngine( CoreEngine * coreEngine );
+
+	/*!
 	 * @function getCamera
 	 *
 	 * @return the main camera
 	 */
 	Camera *		getCamera( void ) const;
 
+	/*!
+	 * @function getRootObject
+	 *
+	 * @return th root object
+	 */
+	GameObject *	getRootObject( void ) const;
+
 private:
 	GameObject *		_rootObject;
 	Camera *			_camera;
+
+protected:
+	CoreEngine *		_coreEngine;
 };
 
 #endif // ! _A_GAME_H_

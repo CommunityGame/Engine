@@ -63,8 +63,6 @@ Window::Window( int width, int height, std::string const & title ) :
 	}
 
 	glfwSetWindowPos( this->_GLFWwindow, mode->width / 2 - this->_width / 2, mode->height / 2 - this->_height / 2 );
-
-	glfwSwapInterval( Window::_nbWindow++ );
 	return ;
 }
 
@@ -154,6 +152,22 @@ void				Window::setSize( int width, int height )
 	this->_height = height;
 	glfwSetWindowSize( this->_GLFWwindow, width, height );
 }
+
+void Window::setVsync( bool vSync )
+{
+	glfwSwapInterval( (bool)vSync );
+}
+
+void	Window::setWidth( int width )
+{
+	this->_width = width;
+}
+
+void	Window::setHeight( int height )
+{
+	this->_height = height;
+}
+
 
 void Window::setWindowPos( int x, int y )
 {

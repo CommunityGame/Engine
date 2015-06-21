@@ -123,6 +123,14 @@ template <typename T>
 class Vec2 : public Vec<T, 2>
 {
 public:
+	static const Vec2<T> ZERO;
+
+	Vec2( void )
+	{
+		(*this)[0] = 0;
+		(*this)[1] = 0;
+	}
+
 	Vec2( T x, T y )
 	{
 		(*this)[0] = x;
@@ -133,6 +141,19 @@ public:
 	{
 		(*this)[0] = point[0];
 		(*this)[1] = point[1];
+	}
+
+	inline Vec2( Vec2<T> const & cpy )
+	{
+		*this = cpy;
+		return ;
+	}
+
+	inline Vec2<T> &	operator=( Vec2<T> const & rhs )
+	{
+		for ( int i = 0; i < 2; ++i )
+			this->_values[i] = rhs[i];
+		return ( *this );
 	}
 
 	T				cross( const Vec2<T>& r ) const
@@ -172,9 +193,21 @@ public:
 };
 
 template <typename T>
+Vec2<T> const Vec2<T>::ZERO = Vec2( T( 0 ), T( 0 ) );
+
+template <typename T>
 class Vec3 : public Vec<T, 3>
 {
 public:
+	static const Vec3<T> ZERO;
+
+	Vec3( void )
+	{
+		(*this)[0] = 0;
+		(*this)[1] = 0;
+		(*this)[2] = 0;
+	}
+
 	Vec3( T x, T y, T z )
 	{
 		(*this)[0] = x;
@@ -187,6 +220,19 @@ public:
 		(*this)[0] = point[0];
 		(*this)[1] = point[1];
 		(*this)[2] = point[2];
+	}
+
+	inline Vec3( Vec3<T> const & cpy )
+	{
+		*this = cpy;
+		return ;
+	}
+
+	inline Vec3<T> &	operator=( Vec3<T> const & rhs )
+	{
+		for ( int i = 0; i < 3; ++i )
+			this->_values[i] = rhs[i];
+		return ( *this );
 	}
 
 	inline Vec3<T>	cross( const Vec3<T> & r ) const
@@ -243,6 +289,8 @@ public:
 		(*this)[2] = z;
 	}
 };
+template <typename T>
+Vec3<T> const Vec3<T>::ZERO = Vec3( T( 0 ), T( 0 ), T( 0 ) );
 
 template <typename T>
 Vec3<T>	Vec3<T>::rotate( const Quat<T> & rot )

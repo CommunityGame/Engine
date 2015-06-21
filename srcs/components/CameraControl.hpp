@@ -9,10 +9,10 @@ public:
 	CameraControl( void );
 	~CameraControl( void );
 
-	virtual void		input( Input & input );
+	virtual void		input( Input & input, double delta );
 	virtual void		update( double delta );
 	virtual void		render( RenderEngine const & renderEngine, Shader const & shader, Camera const & camera ) const {};
-
+	virtual void		init( CoreEngine & coreEngine ) {};
 	// SETTER
 	void				setSpeed( float speed );
 

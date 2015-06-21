@@ -1,8 +1,15 @@
 #ifndef _RENDER_ENGINE_H_
 # define _RENDER_ENGINE_H_
 
+#include <vector>
 #include "Window.hpp"
-#include "../GameObject.hpp"
+#include "Uniform.hpp"
+#include "LightUniform.hpp"
+
+class GameObject;
+class LightComponent;
+class Camera;
+class Shader;
 
 class RenderEngine
 {
@@ -11,6 +18,8 @@ public:
 	~RenderEngine( void );
 
 	void				render( GameObject const & object ) const;
+
+	void				addLight( LightComponent * light );
 
 	//	GETTER
 	Camera *			getCamera( void ) const;
@@ -22,6 +31,8 @@ private:
 	const Window &		_window;
 	mutable Camera *	_camera;
 	Shader *			_defaultShader;
+	std::vector<LightComponent *>	_lights;
+	mutable std::vector<LightUniform>	_lightsUniform;
 };
 
 #endif // ! _RENDER_ENGINE_H_

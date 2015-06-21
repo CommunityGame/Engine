@@ -5,6 +5,7 @@
 #include <vector>
 #include "Uniform.hpp"
 #include "RenderEngine.hpp"
+#include "../utils/MappedValues.hpp"
 
 class Shader
 {
@@ -14,6 +15,9 @@ public:
 
 	void				bind( void ) const;
 	void				updateUniforms( RenderEngine const & renderEngine, Transformf const & transform, Camera const & camera ) const;
+
+	MappedValues &		getUniformValues( void );
+	GLuint				getProgram( void ) const ;
 
 private:
 	/*!
@@ -41,6 +45,7 @@ private:
 	GLuint					_vertexShader;
 	GLuint					_fragmentShader;
 	std::vector<Uniform *>	_uniforms;
+	MappedValues			_uniformValues;
 };
 
 #endif // ! _SHADER_H_

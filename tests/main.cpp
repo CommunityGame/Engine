@@ -24,6 +24,7 @@ int		main( int argc, const char *argv[] )
 	}
 
 	coreEngine->createWindow( 850, 550, "Test" );
+	coreEngine->getWindow().setVsync( true );
 	coreEngine->start();
 
 	delete coreEngine;

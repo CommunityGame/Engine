@@ -133,6 +133,8 @@ template <typename T>
 class Mat4 : public Mat<T, 4, 4>
 {
 public:
+	static const Mat4<T> ZERO;
+
 	inline Mat4 &	initPerspective( T fov, T aspectRatio, T zNear, T zFar )
 	{
 		const T zRange     = zNear - zFar;
@@ -160,6 +162,9 @@ public:
 		return ( *this );
 	}
 };
+
+template <typename T>
+Mat4<T> const Mat4<T>::ZERO = Mat4<T>();
 
 template <typename T, u_int8_t X, u_int8_t Y>
 std::ostream &		operator<<( std::ostream & o, Mat<T, X, Y> const & m )

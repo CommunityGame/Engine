@@ -3,11 +3,7 @@
 
 #include "Input.hpp"
 #include "math/Math.hpp"
-
-class GameObject;
-class RenderEngine;
-class Shader;
-class Camera;
+#include "CoreEngine.hpp"
 
 class AObjectComponent
 {
@@ -19,7 +15,7 @@ public:
 	 *
 	 * @return void
 	 */
-	virtual void		input( Input & input ) = 0;
+	virtual void		input( Input & input, double delta ) = 0;
 
 	/*!
 	 * @function update
@@ -39,12 +35,21 @@ public:
 	*/
 	virtual void		render( RenderEngine const & renderEngine, Shader const & shader, Camera const & camera ) const = 0;
 
+	/*!
+	 * @function init
+	 * @param coreEngine: is a reference to the instance of CoreEngine
+	 * init this AObjectComponent
+	 *
+	 * @return void
+	*/
+	virtual void		init( CoreEngine & coreEngine ) = 0;
+
 	//	GETTER
 	GameObject const &	getParent( void ) const;
 	Transformf &		getTransform( void ) const;
 
 	//	SETTER
-	void				setParent( GameObject * parent );
+	virtual void		setParent( GameObject * parent );
 
 protected:
 	GameObject *		_parent;

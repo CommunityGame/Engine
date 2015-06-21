@@ -22,9 +22,9 @@ public:
 	void					startDebugWindow( void );
 
 	// GETTER
-	Window const &			getWindow( void ) const;
-	RenderEngine const &	getRenderEngine( void ) const;
-	Input const &			getInput( void ) const;
+	Window &				getWindow( void ) const;
+	RenderEngine &			getRenderEngine( void ) const;
+	Input &					getInput( void ) const;
 
 	// SETTER
 	void					setDebugMode( bool mode );

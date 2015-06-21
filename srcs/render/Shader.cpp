@@ -12,10 +12,10 @@ Shader::Shader( const std::string & file ) :
 		return ;
 	}
 
-	const std::string vertexFile = this->loadShader( "./resources/shaders/" + file + ".vert" );
+	const std::string vertexFile = this->loadShader( "./resources/shaders/" + file + "_vert.glsl" );
 	if ( vertexFile.empty() )
 		Logger::e( "Unable to load vertex shader" );
-	const std::string fragmentFile = this->loadShader( "./resources/shaders/" + file + ".frag" );
+	const std::string fragmentFile = this->loadShader( "./resources/shaders/" + file + "_frag.glsl" );
 	if ( fragmentFile.empty() )
 		Logger::e( "Unable to load fragment shader" );
 
@@ -39,7 +39,7 @@ Shader::~Shader( void )
 
 GLuint		Shader::makeShader( GLenum type, const std::string & text )
 {
-	GLuint			shader = 0u;
+	GLuint			shader;
 	GLint			shader_ok;
 	const GLchar *	c_text;
 	GLsizei			log_length;
@@ -92,13 +92,13 @@ void		Shader::linkShaders( void )
 const std::string		Shader::loadShader( const std::string & file )
 {
 	std::string					line;
-	std::ifstream				fileStream( file );
+	std::ifstream				fileStream( file, std::ios::in );
 	std::string					result;
 	std::vector<std::string>	tokenLine;
 
-	Logger::d( "Load shader: " + file );
 	if ( fileStream.is_open() )
 	{
+		Logger::d( "Load shader: " + file );
 		while ( getline( fileStream, line ) )
 		{
 			line = line.substr( 0, line.find( "//" ) );
@@ -111,6 +111,13 @@ const std::string		Shader::loadShader( const std::string & file )
 				std::string name = tokenLine[2].substr( 0, tokenLine[2].find_last_not_of( ';' ) + 1 );
 				Logger::d( "Add uniform '" + name + "' to shader: " + file );
 				this->_uniforms.push_back( new Uniform( this->_program, Uniform::stringToTypeEnum( type ), name ) );
+			}
+			else if ( tokenLine[0] == "#include" )
+			{
+				std::string includeFile = file.substr( 0, file.find_last_of( '/' ) + 1 ) + tokenLine[1];
+				Logger::d( "Include shader: " + includeFile );
+				result.append( loadShader( includeFile ) );
+				line = "//" + line;
 			}
 			result.append( line + "\n" );
 		}
@@ -137,10 +144,35 @@ void Shader::updateUniforms( RenderEngine const & renderEngine, Transformf const
 	{
 		Uniform *uniform = *it;
 		if ( uniform->getName() == "model" )
-			glUniformMatrix4fv( uniform->getLocation(), 1, GL_FALSE, transform.getTransformedMatrix().getValues() );
+			uniform->update( transform.getTransformedMatrix() );
 		else if ( uniform->getName() == "view" )
-			glUniformMatrix4fv( uniform->getLocation(), 1, GL_FALSE, camera.getTransformedViewMatrix().getValues() );
+			uniform->update( camera.getTransformedViewMatrix() );
 		else if ( uniform->getName() == "projection" )
-			glUniformMatrix4fv( uniform->getLocation(), 1, GL_FALSE, camera.getPerspectiveMatrix().getValues() );
+			uniform->update( camera.getPerspectiveMatrix() );
+
+		else if ( uniform->getType() == Uniform::Type::INT )
+			uniform->update( this->_uniformValues.getInt( uniform->getName() ) );
+		else if ( uniform->getType() == Uniform::Type::FLOAT )
+			uniform->update( this->_uniformValues.getFloat( uniform->getName() ) );
+		else if ( uniform->getType() == Uniform::Type::DOUBLE )
+			uniform->update( this->_uniformValues.getDouble( uniform->getName() ) );
+		else if ( uniform->getType() == Uniform::Type::VEC2 )
+			uniform->update( this->_uniformValues.getVec2f( uniform->getName() ) );
+		else if ( uniform->getType() == Uniform::Type::VEC3 )
+			uniform->update( this->_uniformValues.getVec3f( uniform->getName() ) );
+		else if ( uniform->getType() == Uniform::Type::MAT4 )
+			uniform->update( this->_uniformValues.getMat4f( uniform->getName() ) );
 	}
+}
+
+// GETTER
+
+MappedValues &		Shader::getUniformValues( void )
+{
+	return ( this->_uniformValues );
+}
+
+GLuint				Shader::getProgram( void ) const
+{
+	return ( this->_program );
 }
