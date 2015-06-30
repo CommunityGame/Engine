@@ -9,6 +9,7 @@ class Mesh : public AObjectComponent
 {
 public:
 	Mesh( void );
+	Mesh( std::vector<Vertexf> const & vertex, std::vector<GLuint> const & indices );
 	virtual ~Mesh( void );
 
 	virtual void			input( Input & input, double delta );

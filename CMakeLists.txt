@@ -33,7 +33,7 @@ set(TINYCTHREAD "${GLFW_SOURCE_DIR}/deps/tinycthread.h"
 
 add_executable( CommunityGame_Engine ${SOURCE_FILES} ${GLAD}
 tests/main.cpp
-tests/Test.cpp)
+tests/Test.cpp tests/components/Cube.cpp tests/components/Cube.hpp)
 
 # GLFW
 set( GLFW_VERSION 3.1 )

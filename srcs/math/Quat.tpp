@@ -194,12 +194,12 @@ public:
 
 	inline Vec3<T>	getForward( void )
 	{
-		return ( Vec3<T>( 0, 0, -1 ).rotate( * this ) );
+		return ( Vec3<T>( 0, 0, 1 ).rotate( * this ) );
 	}
 
 	inline Vec3<T>	getBack( void )
 	{
-		return ( Vec3<T>( 0, 0, 1 ).rotate( * this ) );
+		return ( Vec3<T>( 0, 0, -1 ).rotate( * this ) );
 	}
 
 	inline Vec3<T>	getRight( void )

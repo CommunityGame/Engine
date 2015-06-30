@@ -153,7 +153,7 @@ public:
 		this->_values[8] = T( 0 );
 		this->_values[9] = T( 0 );
 		this->_values[10] = ( -zNear - zFar ) / zRange;
-		this->_values[11] = T( -1 );
+		this->_values[11] = T( 1 );
 
 		this->_values[12] = T( 0 );
 		this->_values[13] = T( 0 );

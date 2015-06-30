@@ -49,9 +49,9 @@ void CameraControl::input( Input & input, double delta )
 
 		this->_rotation = Quatf();
 		if ( rotY )
-			this->_rotation *= Quatf( Vec3f( 0, 1, 0 ), TO_RADIANS( (float)deltaPos.getX() * -this->_speed * delta ) );
+			this->_rotation *= Quatf( Vec3f( 0, 1, 0 ), TO_RADIANS( (float)deltaPos.getX() * this->_speed * delta ) );
 		if ( rotX )
-			this->_rotation *= Quatf( getTransform().getRotation().getRight(), TO_RADIANS( (float)deltaPos.getY() * -this->_speed * delta ) );
+			this->_rotation *= Quatf( getTransform().getRotation().getRight(), TO_RADIANS( (float)deltaPos.getY() * this->_speed * delta ) );
 		this->_rotation.normalize();
 	}
 

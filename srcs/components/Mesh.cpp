@@ -9,6 +9,14 @@ Mesh::Mesh( void )
 	return ;
 }
 
+Mesh::Mesh( std::vector<Vertexf> const & vertex, std::vector<GLuint> const & indices )
+{
+	glGenBuffers( 1, & this->_vertexBufferObject );
+	glGenBuffers( 1, & this->_indexBufferObject );
+	this->_vertices = vertex;
+	this->_indices = indices;
+}
+
 Mesh::~Mesh( void )
 {
 	glDeleteBuffers( 1, & this->_vertexBufferObject );
@@ -90,7 +98,7 @@ void	Mesh::calcNormal( void )
 		Vertexf * v3 = &this->_vertices[it[2]];
 		Vec3f vec1 = v2->getPosition() - v1->getPosition();
 		Vec3f vec2 = v3->getPosition() - v1->getPosition();
-		Vec3f normal = vec2.cross( vec1 ).normalized();
+		Vec3f normal = vec1.cross( vec2 ).normalized();
 		v1->setNormal( v1->getNormal() + normal );
 		v2->setNormal( v2->getNormal() + normal );
 		v3->setNormal( v3->getNormal() + normal );
