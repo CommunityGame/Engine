@@ -81,7 +81,7 @@ void			CoreEngine::run( void )
 			this->_window->setWidth( width );
 			this->_window->setHeight( height );
 			if ( this->_game.getCamera() != nullptr )
-				this->_game.getCamera()->setAspect( width / height );
+				this->_game.getCamera()->setAspect( (float)width / (float)height );
 			glViewport( 0, 0, width, height );
 		}
 

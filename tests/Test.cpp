@@ -4,6 +4,7 @@
 #include "../srcs/components/CameraControl.hpp"
 #include "../srcs/components/LightComponent.hpp"
 #include "components/Cube.hpp"
+#include "../srcs/modules/ModulesFactory.hpp"
 
 Test::Test( void ) : AGame()
 {
@@ -12,7 +13,7 @@ Test::Test( void ) : AGame()
 
 void Test::init( void )
 {
-	float aspectRatio = this->_coreEngine->getWindow().getWidth() / this->_coreEngine->getWindow().getHeight();
+	float aspectRatio = (float)this->_coreEngine->getWindow().getWidth() / (float)this->_coreEngine->getWindow().getHeight();
 	GameObject *	cameraO = new GameObject();
 	Camera *		camera = new Camera( 70.0f, aspectRatio, 0.1f, 1000.0f );
 	CameraControl *	control = new CameraControl();
@@ -42,7 +43,7 @@ void Test::init( void )
 	light->setAmbient( Colorf( 0.2f, 0.2f, 0.2f, 1 ) );
 	light->setDiffuse( Colorf( 0.5f, 0.5f, 0.5f, 1 ) );
 	light->setSpecular( Colorf( 0.9f, 0.9f, 0.9f, 1 ) );
-	light->setShininess( 20 );
+	light->setShininess( 40 );
 	lightO->addComponent( light );
 	lightO->getTransform()->setPosition( Vec3f( -10, 15, 0 ) );
 	addObject( lightO );
@@ -51,8 +52,11 @@ void Test::init( void )
 	light->setAmbient( Colorf( 0.0f, 0.2f, 0.2f, 1 ) );
 	light->setDiffuse( Colorf( 0.0f, 0.5f, 0.5f, 1 ) );
 	light->setSpecular( Colorf( 0.0f, 0.9f, 0.9f, 1 ) );
-	light->setShininess( 20 );
+	light->setShininess( 40 );
 	light1->addComponent( light );
 	light1->getTransform()->setPosition( Vec3f( 15, 20, 0 ) );
 	addObject( light1 );
+
+	ModulesFactory	modulesFactory;
+	modulesFactory.loadModules( "./resources/modules" );
 }
