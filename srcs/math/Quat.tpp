@@ -3,6 +3,7 @@
 
 #include "Point.tpp"
 #include "Mat.tpp"
+#include "Math.hpp"
 
 template <typename T>
 class Quat : public Point<T, 4>
@@ -120,6 +121,15 @@ public:
 		result[15] = T(1);
 		return ( result );
 	}
+
+//	inline Mat<T, 4, 4> toMatrix( void ) const
+//	{
+//		Vec3<T> forward( 2.0f * (getI() * getK() - getR() * getJ()), 2.0f * (getJ() * getK() + getR() * getI()), 1.0f - 2.0f * (getI() * getI() + getJ() * getJ()));
+//		Vec3<T> up( 2.0f * (getI()*getJ() + getR()*getK()), 1.0f - 2.0f * (getI()*getI() + getK()*getK()), 2.0f * (getJ()*getK() - getR()*getI()));
+//		Vec3<T> right( 1.0f - 2.0f * (getJ()*getJ() + getK()*getK()), 2.0f * (getI()*getJ() - getR()*getK()), 2.0f * (getI()*getK() + getR()*getJ()));
+//
+//		return Mat4<T>().initRotationFromVectors( forward, up, right );
+//	}
 
 	inline Quat		operator*( Quat const & rhs ) const
 	{

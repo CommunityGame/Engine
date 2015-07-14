@@ -1,5 +1,6 @@
 #include "AObjectComponent.hpp"
 #include "GameObject.hpp"
+#include "utils/Utils.hpp"
 
 GameObject::GameObject( void ) :
 	_transform( Transformf() ),
@@ -32,6 +33,15 @@ void	GameObject::render( RenderEngine const & renderEngine, Shader const & shade
 
 	for ( it = this->_components.begin(); it != this->_components.end(); it++ )
 		(*it)->render( renderEngine, shader, camera );
+	return ;
+}
+
+void	GameObject::physics( double delta )
+{
+	std::vector<PhysicsComponent *>::iterator it;
+
+	for ( it = this->_physicsComponents.begin(); it != this->_physicsComponents.end(); it++ )
+		(*it)->physics( delta );
 	return ;
 }
 
@@ -89,6 +99,11 @@ void	GameObject::addChild( GameObject * object )
 GameObject	*GameObject::addComponent( AObjectComponent * component )
 {
 	component->setParent( this );
+	if ( Utils::instanceOf<PhysicsComponent>( * component ) )
+	{
+		PhysicsEngine::refreshPhysicsObjectList( true );
+		this->_physicsComponents.push_back( dynamic_cast<PhysicsComponent *>( component ) );
+	}
 	this->_components.push_back( component );
 	return ( this );
 }
@@ -112,6 +127,32 @@ GameObject *		GameObject::getParent( void ) const
 CoreEngine *		GameObject::getCoreEngine( void ) const
 {
 	return ( this->_coreEngine );
+}
+
+
+std::vector<GameObject *> const &		GameObject::getChildrens( void ) const
+{
+	return ( this->_childrens );
+}
+
+std::vector<AObjectComponent *> const &	GameObject::getComponents( void ) const
+{
+	return ( this->_components );
+}
+
+std::vector< PhysicsComponent * > const & GameObject::getPhysicsComponents( void ) const
+{
+	return ( this->_physicsComponents );
+}
+
+void GameObject::getPhysicsObjects( std::vector< GameObject * > & havePhysicComponent )
+{
+	std::vector<GameObject *>::const_iterator it;
+
+	if ( this->_physicsComponents.size() > 0 )
+		havePhysicComponent.push_back( this );
+	for ( it = this->_childrens.begin(); it != this->_childrens.end(); it++ )
+		(*it)->getPhysicsObjects( havePhysicComponent );
 }
 
 //	SETTER

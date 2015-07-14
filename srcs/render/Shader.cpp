@@ -3,21 +3,23 @@
 #include "../components/Camera.hpp"
 #include "../utils/Utils.hpp"
 
+const std::string	Shader::TAG = "Shader";
+
 Shader::Shader( const std::string & file ) :
 	_program( glCreateProgram() )
 {
 	if ( this->_program == 0u )
 	{
-		Logger::e( "Failed to create program shader" );
+		Logger::e( TAG, "Failed to create program shader" );
 		return ;
 	}
 
 	const std::string vertexFile = this->loadShader( "./resources/shaders/" + file + "_vert.glsl" );
 	if ( vertexFile.empty() )
-		Logger::e( "Unable to load vertex shader" );
+		Logger::e( TAG, "Unable to load vertex shader" );
 	const std::string fragmentFile = this->loadShader( "./resources/shaders/" + file + "_frag.glsl" );
 	if ( fragmentFile.empty() )
-		Logger::e( "Unable to load fragment shader" );
+		Logger::e( TAG, "Unable to load fragment shader" );
 
 	this->_vertexShader = this->makeShader( GL_VERTEX_SHADER, vertexFile );
 	this->_fragmentShader = this->makeShader( GL_FRAGMENT_SHADER, fragmentFile );
@@ -58,13 +60,13 @@ GLuint		Shader::makeShader( GLenum type, const std::string & text )
 			ss << "Failed to compile " << ( ( type == GL_FRAGMENT_SHADER ) ? "fragment" : "vertex" ) << " shader. Logs: " << std::endl;
 			glGetShaderInfoLog( shader, 8192, &log_length,info_log );
 			ss << info_log;
-			Logger::e( ss.str() );
+			Logger::e( TAG, ss.str() );
 			glDeleteShader( shader );
 			shader = 0;
 		}
 	}
 	else
-		Logger::e( "Failed to create shader" );
+		Logger::e( TAG, "Failed to create shader" );
 	return ( shader );
 }
 
@@ -85,7 +87,7 @@ void		Shader::linkShaders( void )
 		ss << "Failed to link shader program" << std::endl;
 		glGetProgramInfoLog( this->_program, 8192, &log_length, info_log );
 		ss << info_log;
-		Logger::e( ss.str() );
+		Logger::e( TAG, ss.str() );
 	}
 }
 
@@ -98,7 +100,7 @@ const std::string		Shader::loadShader( const std::string & file )
 
 	if ( fileStream.is_open() )
 	{
-		Logger::d( "Load shader: " + file );
+		Logger::d( TAG, "Load shader: " + file );
 		while ( getline( fileStream, line ) )
 		{
 			line = line.substr( 0, line.find( "//" ) );
@@ -109,13 +111,13 @@ const std::string		Shader::loadShader( const std::string & file )
 			{
 				std::string type = tokenLine[1];
 				std::string name = tokenLine[2].substr( 0, tokenLine[2].find_last_not_of( ';' ) + 1 );
-				Logger::d( "Add uniform '" + name + "' to shader: " + file );
+				Logger::d( TAG, "Add uniform '" + name + "' to shader: " + file );
 				this->_uniforms.push_back( new Uniform( this->_program, Uniform::stringToTypeEnum( type ), name ) );
 			}
 			else if ( tokenLine[0] == "#include" )
 			{
 				std::string includeFile = file.substr( 0, file.find_last_of( '/' ) + 1 ) + tokenLine[1];
-				Logger::d( "Include shader: " + includeFile );
+				Logger::d( TAG, "Include shader: " + includeFile );
 				result.append( loadShader( includeFile ) );
 				line = "//" + line;
 			}
@@ -124,7 +126,7 @@ const std::string		Shader::loadShader( const std::string & file )
 		fileStream.close();
 	}
 	else
-		Logger::e( "Unable to open file: " + file );
+		Logger::e( TAG, "Unable to open file: " + file );
 	return ( result );
 }
 
@@ -133,7 +135,7 @@ void Shader::bind( void ) const
 	if ( this->_program != 0u )
 		glUseProgram( this->_program );
 	else
-		Logger::e( "Unable to bind program shader" );
+		Logger::e( TAG, "Unable to bind program shader" );
 }
 
 void Shader::updateUniforms( RenderEngine const & renderEngine, Transformf const & transform, Camera const & camera ) const

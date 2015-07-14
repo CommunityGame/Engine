@@ -28,6 +28,13 @@ void	AGame::render( RenderEngine const & renderEngine ) const
 	return ;
 }
 
+void	AGame::physics( PhysicsEngine const & physicsEngine, double delta ) const
+{
+	if ( this->_rootObject != nullptr )
+		physicsEngine.physics( * this->_rootObject, delta );
+	return ;
+}
+
 void	AGame::addObject( GameObject * object )
 {
 	object->setCoreEngine( this->_coreEngine );

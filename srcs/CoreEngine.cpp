@@ -2,6 +2,9 @@
 #include "CoreEngine.hpp"
 #include "AGame.hpp"
 #include "components/Camera.hpp"
+#include "modules/ModulesFactory.hpp"
+
+const std::string	CoreEngine::TAG = "CoreEngine";
 
 CoreEngine::CoreEngine( AGame & game, int fpsExpected ) :
 	_game( game ),
@@ -26,12 +29,12 @@ bool			CoreEngine::start( void )
 {
 	if ( this->_isRunning )
 	{
-		Logger::e( "Can't start, The CoreEngine alrady running" );
+		Logger::e( TAG, "Can't start, The CoreEngine alrady running" );
 		return ( false );
 	}
 	if ( this->_window == nullptr )
 	{
-		Logger::e( "Unable to start CoreEngine: no window set" );
+		Logger::e( TAG, "Unable to start CoreEngine: no window set" );
 		return ( false );
 	}
 	this->run();
@@ -42,7 +45,7 @@ bool			CoreEngine::stop( void )
 {
 	if ( ! this->_isRunning )
 	{
-		Logger::e( "Can't stop, The CoreEngine is not running" );
+		Logger::e( TAG, "Can't stop, The CoreEngine is not running" );
 		return ( false );
 	}
 	this->_isRunning = false;
@@ -54,6 +57,7 @@ void			CoreEngine::createWindow( int width, int height, std::string const & titl
 	this->_window = Window::create( width, height, title );
 	this->_input = new Input( this->_window );
 	this->_renderEngine = new RenderEngine( * this->_window );
+	this->_physicsEngine = new PhysicsEngine(  );
 	return ;
 }
 
@@ -63,13 +67,20 @@ void			CoreEngine::run( void )
 	double	end_ticks;
 	double	dt;
 
-	dt = (1.0 / this->_fpsExpected) * SECOND;
+	dt = 0;
 	this->_isRunning = true;
 
 	begin_ticks = glfwGetTime();
 
 	this->_game.setCoreEngine( this );
 	this->_game.init();
+
+	ModulesFactory	modulesFactory;
+	modulesFactory.loadModules( "./resources/modules" );
+
+	modulesFactory.initModules( this->_game.getRootObject() );
+//	this->_game.addObject( new LuaGameObject( "./resources/modules/main_module/GameObject.lua", modulesFactory.getLuaState() ) );
+
 	this->_game.getRootObject()->initAll( * this );
 
 	while ( this->_isRunning )
@@ -95,6 +106,8 @@ void			CoreEngine::run( void )
 		this->_game.input( * this->_input, dt );
 
 		// UPDATE
+		this->_game.physics( * this->_physicsEngine, dt );
+		modulesFactory.updateModules( dt );
 		this->_game.update( dt );
 
 		if ( this->_game.getCamera() != this->_renderEngine->getCamera() )
@@ -143,6 +156,11 @@ Window &		CoreEngine::getWindow( void ) const
 RenderEngine &	CoreEngine::getRenderEngine( void ) const
 {
 	return ( * this->_renderEngine );
+}
+
+PhysicsEngine &	CoreEngine::getPhysicsEngine( void ) const
+{
+	return ( * this->_physicsEngine );
 }
 
 Input &			CoreEngine::getInput( void ) const

@@ -36,6 +36,7 @@ public:
 			for ( u_int8_t j = 0; j < X; ++j )
 				this->_values[j + i * X] = ( i == j ) ? T( vec[i] ) : T( 0 );
 		}
+		this->_values[15] = T(1);
 		return ( *this );
 	}
 
@@ -46,6 +47,17 @@ public:
 			for ( u_int8_t j = 0; j < X; ++j )
 				this->_values[j + i * X] = ( i == Y - 1 && j != Y - 1 ) ? vec[j] : T( i == j );
 		}
+		this->_values[15] = T(1);
+		return ( *this );
+	}
+
+	inline Mat &	initRotationFromVectors( const Vec<T, X - 1>& n, const Vec<T, X - 1>& v, const Vec<T, X - 1>& u)
+	{
+		this->_values[0] = u[0];   this->_values[4] = v[0];   this->_values[8] = n[0];   this->_values[12] = T(0);
+		this->_values[1] = u[1];   this->_values[5] = v[1];   this->_values[9] = n[1];   this->_values[13] = T(0);
+		this->_values[2] = u[2];   this->_values[6] = v[2];   this->_values[10] = n[2];  this->_values[14] = T(0);
+		this->_values[3] = T(0);   this->_values[7] = T(0);   this->_values[11] = T(0);  this->_values[15] = T(1);
+
 		return ( *this );
 	}
 
@@ -134,6 +146,21 @@ class Mat4 : public Mat<T, 4, 4>
 {
 public:
 	static const Mat4<T> ZERO;
+
+	inline Mat4() {}
+
+	inline Mat4( Mat<T, 4, 4> const & cpy )
+	{
+		*this = cpy;
+		return ;
+	}
+
+	inline Mat4 &	operator=( Mat<T, 4, 4> const & rhs )
+	{
+		for ( int i = 0; i < 16; ++i )
+			this->_values[i] = rhs[i];
+		return ( *this );
+	}
 
 	inline Mat4 &	initPerspective( T fov, T aspectRatio, T zNear, T zFar )
 	{

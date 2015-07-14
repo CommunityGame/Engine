@@ -45,6 +45,8 @@ private:
 	GLuint				_program;
 	Type				_type;
 	std::string			_name;
+
+	static const std::string	TAG;
 };
 
 #endif // ! _UNIFORM_H_

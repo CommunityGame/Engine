@@ -1,6 +1,7 @@
 #include <sstream>
 #include "Window.hpp"
 
+const std::string	Window::TAG = "Window";
 bool	Window::_glfwIsInit = false;
 int		Window::_nbWindow = 0;
 
@@ -23,7 +24,7 @@ Window::~Window( void )
 
 	std::stringstream ss;
 	ss << "Destroy window: " << this->_title << " [" << this->_width << " x " << this->_height << "]";
-	Logger::i( ss.str() );
+	Logger::i( TAG, ss.str() );
 	return ;
 }
 
@@ -82,16 +83,16 @@ Window *			Window::create( int width, int height, std::string const & title )
 
 	std::stringstream ss;
 	ss << "Create window: " << title << " [" << width << " x " << height << "]";
-	Logger::i( ss.str() );
+	Logger::i( TAG, ss.str() );
 	ss.str( "" );
 	ss << "Renderer: " << renderer;
-	Logger::i( ss.str() );
+	Logger::i( TAG, ss.str() );
 	ss.str( "" );
 	ss << "OpenGL version supported " << version;
-	Logger::i( ss.str() );
+	Logger::i( TAG, ss.str() );
 	ss.str( "" );
 	ss << "OpenGL shader language version supported " << glslVersion;
-	Logger::i( ss.str() );
+	Logger::i( TAG, ss.str() );
 
 	glEnable( GL_DEPTH_TEST );
 	glDepthFunc( GL_LESS );
@@ -112,7 +113,7 @@ void				Window::initGLFW( void )
 
 	std::stringstream ss;
 	ss << "Init GLFW " << major << "." << minor << "." << rev;
-	Logger::i( ss.str() );
+	Logger::i( TAG, ss.str() );
 
 	return ;
 }

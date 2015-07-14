@@ -58,16 +58,51 @@ public:
 		return ( result );
 	}
 
-	inline Vec		operator*( Vec const & rhs )
+	inline Vec		reflect( const Vec & normal ) const
+	{
+		return ( *this - ( normal * ( this->dot( normal ) * 2 ) ) );
+	}
+
+	inline Vec		operator+( const Vec & rhs ) const
 	{
 		Vec		result;
 
-		for ( int i = 0; i < D; ++i )
+		for ( int i = 0; i < D; i++ )
+			result[i] = (*this)[i] + rhs[i];
+		return ( result );
+	}
+
+	inline Vec		operator-( const Vec & rhs ) const
+	{
+		Vec		result;
+
+		for ( int i = 0; i < D; i++ )
+			result[i] = (*this)[i] - rhs[i];
+		return ( result );
+	}
+
+	inline Vec &	operator+=( Vec const & rhs )
+	{
+		*this = *this + rhs;
+		return ( *this );
+	}
+
+	inline Vec &	operator-=( Vec const & rhs )
+	{
+		*this = *this - rhs;
+		return ( *this );
+	}
+
+	inline Vec		operator*( Vec const & rhs ) const
+	{
+		Vec		result;
+
+		for ( int i = 0; i < D; i++ )
 			result[i] = (*this)[i] * rhs[i];
 		return ( result );
 	}
 
-	inline Vec		operator*( T const & value )
+	inline Vec		operator*( T const & value ) const
 	{
 		Vec		result;
 
@@ -88,7 +123,7 @@ public:
 		return ( *this );
 	}
 
-	inline Vec		operator/( Vec const & rhs )
+	inline Vec		operator/( Vec const & rhs ) const
 	{
 		Vec		result;
 
@@ -97,7 +132,7 @@ public:
 		return ( result );
 	}
 
-	inline Vec		operator/( T const & value )
+	inline Vec		operator/( T const & value ) const
 	{
 		Vec		result;
 

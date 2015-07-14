@@ -31,7 +31,7 @@ add_executable( CommunityGame_Engine ${SOURCE_FILES} ${GLAD}
 tests/main.cpp
 tests/Test.cpp
 tests/components/Cube.cpp
-tests/components/Cube.hpp )
+tests/components/Cube.hpp srcs/modules/lua/LuaScript.cpp srcs/modules/lua/LuaScript.hpp)
 
 # GLFW
 set( GLFW_VERSION 3.1 )

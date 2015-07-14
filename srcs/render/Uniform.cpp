@@ -1,5 +1,7 @@
 #include "Uniform.hpp"
 
+const std::string	Uniform::TAG = "Uniform";
+
 const char *	Uniform::typeEnum[] =
 {
 		"int",
@@ -34,7 +36,7 @@ Uniform::Type		Uniform::stringToTypeEnum( std::string const & s )
 			return ( (Uniform::Type)i );
 		i++;
 	}
-	Logger::e( "Unable to find Type enum: " + s );
+	Logger::e( TAG, "Unable to find Type enum: " + s );
 	return ( (Uniform::Type)-1 );
 }
 
@@ -42,7 +44,7 @@ std::string			Uniform::typeEnumToString( Uniform::Type const & t )
 {
 	if ( t == (Uniform::Type)-1 )
 	{
-		Logger::e( "Invalid enum !" );
+		Logger::e( TAG, "Invalid enum !" );
 		return "";
 	}
 	return ( Uniform::typeEnum[t] );

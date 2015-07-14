@@ -3,6 +3,7 @@
 # include <exception>
 # include <string>
 # include "debugs/Logger.hpp"
+# include <typeinfo>
 
 class EngineException : public std::exception
 {
@@ -11,7 +12,7 @@ public:
 	EngineException( std::string const & msg ) :
 			_msg( msg )
 	{
-		Logger::e( msg );
+		Logger::e( typeid( EngineException ).name(), msg );
 		return;
 	}
 	virtual ~EngineException( void ) {};
@@ -22,7 +23,7 @@ public:
 	}
 
 private:
-	std::string 			_msg;
+	std::string 				_msg;
 };
 
 #endif // ! _ENGINE_EXCEPTION_H_

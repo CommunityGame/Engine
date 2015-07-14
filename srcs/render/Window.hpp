@@ -74,6 +74,8 @@ private:
 
 	static bool				_glfwIsInit;
 	static int				_nbWindow;
+
+	static const std::string	TAG;
 };
 
 #endif // ! _WINDOW_H_

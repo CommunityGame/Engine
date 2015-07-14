@@ -6,6 +6,7 @@
 #include "Input.hpp"
 #include "render/RenderEngine.hpp"
 #include "debugs/Debugger.hpp"
+#include "physics/PhysicsEngine.hpp"
 
 class AGame;
 
@@ -24,6 +25,7 @@ public:
 	// GETTER
 	Window &				getWindow( void ) const;
 	RenderEngine &			getRenderEngine( void ) const;
+	PhysicsEngine &			getPhysicsEngine( void ) const;
 	Input &					getInput( void ) const;
 
 	// SETTER
@@ -36,10 +38,13 @@ private:
 	Window *				_window;
 	Input *					_input;
 	RenderEngine *			_renderEngine;
+	PhysicsEngine *			_physicsEngine;
 	Debugger *				_debugger;
 	bool					_isRunning;
 	double					_fpsExpected;
 	bool					_debugMode;
+
+	static const std::string	TAG;
 };
 
 #endif // ! _CORE_ENGINE_H_

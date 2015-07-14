@@ -3,6 +3,7 @@
 
 # include "Vec.tpp"
 # include "Quat.tpp"
+# include <iostream>
 
 template <typename T>
 class Transform

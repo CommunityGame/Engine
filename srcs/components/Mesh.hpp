@@ -30,6 +30,7 @@ private:
 
 	std::vector<Vertexf>	_vertices;
 	std::vector<GLuint>		_indices;
+	GLuint					_index;
 };
 
 #endif // ! _MESH_H_

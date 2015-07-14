@@ -35,7 +35,7 @@ public:
 	 *
 	 * @return void
 	 */
-	void			update( double delta );
+	virtual void	update( double delta );
 
 	/*!
 	 * @function render
@@ -45,6 +45,15 @@ public:
 	 * @return void
 	 */
 	void			render( RenderEngine const & renderEngine ) const;
+
+	/*!
+	 * @function physics
+	 * @param physicsEngine: is a reference to the instance of PhysicsEngine
+	 * physics all GameObject attached to rootObject
+	 *
+	 * @return void
+	 */
+	void			physics( PhysicsEngine const & physicsEngine, double delta ) const;
 
 	/*!
 	 * @function addObject

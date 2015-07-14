@@ -46,6 +46,8 @@ private:
 	GLuint					_fragmentShader;
 	std::vector<Uniform *>	_uniforms;
 	MappedValues			_uniformValues;
+
+	static const std::string	TAG;
 };
 
 #endif // ! _SHADER_H_

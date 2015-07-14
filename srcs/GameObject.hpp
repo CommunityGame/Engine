@@ -8,6 +8,7 @@
 # include "render/Shader.hpp"
 # include "CoreEngine.hpp"
 # include "AObjectComponent.hpp"
+#include "components/PhysicsComponent.hpp"
 
 class Camera;
 
@@ -42,6 +43,15 @@ public:
 	 * @return void
 	*/
 	virtual void		render( RenderEngine const & renderEngine, Shader const & shader, Camera const & camera ) const;
+
+	/*!
+	 * @function physics
+	 * @param delta: time passed to run the previous loop
+	 * update this GameObject
+	 *
+	 * @return void
+	 */
+	void				physics( double delta );
 
 	/*!
 	 * @function init
@@ -111,6 +121,10 @@ public:
 	Transformf const &	getTransform( void ) const;
 	GameObject *		getParent( void ) const;
 	CoreEngine *		getCoreEngine( void ) const;
+	std::vector<GameObject *> const &		getChildrens( void ) const;
+	std::vector<AObjectComponent *> const &	getComponents( void ) const;
+	std::vector<PhysicsComponent *> const &	getPhysicsComponents( void ) const;
+	void				getPhysicsObjects( std::vector< GameObject * > & havePhysicComponent );
 
 	//	SETTER
 	void				setTransform( Transformf const & transform );
@@ -120,6 +134,7 @@ public:
 private:
 	std::vector<GameObject *>			_childrens;
 	std::vector<AObjectComponent *>		_components;
+	std::vector<PhysicsComponent *>		_physicsComponents;
 	GameObject *						_parent;
 	CoreEngine *						_coreEngine;
 	Transformf							_transform;

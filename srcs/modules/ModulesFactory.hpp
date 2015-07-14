@@ -4,22 +4,24 @@
 #include <string>
 #include <vector>
 #include "Module.hpp"
-
-extern "C"
-{
-	#include "lua.h"
-	#include "lauxlib.h"
-	#include "lualib.h"
-}
+#include "../GameObject.hpp"
+#include "lua/LuaScript.hpp"
 
 class ModulesFactory
 {
 public:
-	void loadModules( std::string const & path );
+	void					loadModules( std::string const & path );
+
+	void					initModules( GameObject * root );
+	void					updateModules( double delta );
+
+	std::vector<Module *>	getModules( void ) const;
+	lua_State *				getLuaState( void ) const;
 
 private:
-	std::vector<Module>		_modules;
-	lua_State *				_L;
+	std::vector<Module *>	_modules;
+
+	static const std::string	TAG;
 };
 
 #endif // ! _MODULES_FACTORY_H_

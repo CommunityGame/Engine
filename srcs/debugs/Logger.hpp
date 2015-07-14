@@ -21,35 +21,35 @@ public:
 	static void				setPrintLogs( bool state );
 
 	template < typename T >
-	static void				i( T const & msg )
+	static void				i( std::string const & tag, T const & msg )
 	{
 		if ( ( Logger::_VERBOSITY & INFO ) == INFO )
-			Logger::log( "INFO", msg );
+			Logger::log( "INFO", tag, msg );
 	}
 
 	template < typename T >
-	static void				d( T const & msg )
+	static void				d( std::string const & tag, T const & msg )
 	{
 		if ( ( Logger::_VERBOSITY & DEBUG ) == DEBUG )
-			Logger::log( "DEBUG", msg );
+			Logger::log( "DEBUG", tag, msg );
 	}
 
 	template < typename T >
-	static void				w( T const & msg )
+	static void				w( std::string const & tag, T const & msg )
 	{
 		if ( ( Logger::_VERBOSITY & WARNING ) == WARNING )
-			Logger::log( "WARNING", msg );
+			Logger::log( "WARNING", tag, msg );
 	}
 
 	template < typename T >
-	static void				e( T const & msg )
+	static void				e( std::string const & tag, T const & msg )
 	{
 		if ( ( Logger::_VERBOSITY & ERROR ) == ERROR )
-			Logger::log( "ERROR", msg );
+			Logger::log( "ERROR", tag, msg );
 	}
 
 	template < typename T >
-	static void				log( std::string const & mode, T const & msg )
+	static void				log( std::string const & mode, std::string const & tag, T const & msg )
 	{
 		std::stringstream log;
 
@@ -59,7 +59,7 @@ public:
 			return ;
 		}
 
-		log << Timer::currentDateTime( "%H:%M:%S" ) << " [" << mode << "]->\t" << msg << std::endl;
+		log << Timer::currentDateTime( "%H:%M:%S" ) << " [" << mode << "]>\t(" << tag << ") " << msg << std::endl;
 
 		if ( Logger::_printLogs )
 			std::cout << log.str();

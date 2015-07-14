@@ -1,3 +1,4 @@
+#include <glad/glad.h>
 #include "RenderEngine.hpp"
 #include "Shader.hpp"
 #include "../GameObject.hpp"
@@ -15,6 +16,10 @@ RenderEngine::RenderEngine( Window const & window ) :
 	glEnable( GL_DEPTH_TEST );
 	glEnable( GL_BLEND );
 	glBlendFunc( GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA );
+
+
+//	glShadeModel(GL_FLAT);
+//	glProvokingVertex( GL_FIRST_VERTEX_CONVENTION );
 
 	GLuint vertexArrayID;
 	glGenVertexArrays( 1, &vertexArrayID );

@@ -15,7 +15,7 @@ public:
 	 *
 	 * @return void
 	 */
-	virtual void		input( Input & input, double delta ) = 0;
+	virtual void		input( Input & input, double delta ) {};
 
 	/*!
 	 * @function update
@@ -24,7 +24,7 @@ public:
 	 *
 	 * @return void
 	 */
-	virtual void		update( double delta ) = 0;
+	virtual void		update( double delta ) {};
 
 	/*!
 	 * @function render
@@ -33,7 +33,7 @@ public:
 	 *
 	 * @return void
 	*/
-	virtual void		render( RenderEngine const & renderEngine, Shader const & shader, Camera const & camera ) const = 0;
+	virtual void		render( RenderEngine const & renderEngine, Shader const & shader, Camera const & camera ) const {};
 
 	/*!
 	 * @function init
@@ -42,7 +42,7 @@ public:
 	 *
 	 * @return void
 	*/
-	virtual void		init( CoreEngine & coreEngine ) = 0;
+	virtual void		init( CoreEngine & coreEngine ) {};
 
 	//	GETTER
 	GameObject const &	getParent( void ) const;

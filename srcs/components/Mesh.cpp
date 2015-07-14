@@ -6,6 +6,7 @@ Mesh::Mesh( void )
 {
 	glGenBuffers( 1, & this->_vertexBufferObject );
 	glGenBuffers( 1, & this->_indexBufferObject );
+	this->_index = 0;
 	return ;
 }
 
@@ -15,6 +16,7 @@ Mesh::Mesh( std::vector<Vertexf> const & vertex, std::vector<GLuint> const & ind
 	glGenBuffers( 1, & this->_indexBufferObject );
 	this->_vertices = vertex;
 	this->_indices = indices;
+	this->_index = (GLuint) indices.size();
 }
 
 Mesh::~Mesh( void )
@@ -26,16 +28,15 @@ Mesh::~Mesh( void )
 
 void	Mesh::putVertex( Vertexf const & vertex )
 {
-	static GLuint i = 0;
 	this->_vertices.push_back( vertex );
-	if (i >= 3)
+	if (this->_index >= 3)
 	{
-		this->_indices.push_back( i - 1 );
-		this->_indices.push_back( i - 2 );
-		this->_indices.push_back( i++ );
+		this->_indices.push_back( this->_index - 1 );
+		this->_indices.push_back( this->_index - 2 );
+		this->_indices.push_back( this->_index++ );
 	}
 	else
-		this->_indices.push_back( i++ );
+		this->_indices.push_back( this->_index++ );
 	return ;
 }
 
