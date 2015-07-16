@@ -8,42 +8,16 @@ SphereCollider::SphereCollider( Vec3f const & center, float radius  ) :
 	return ;
 }
 
-IntersectData SphereCollider::intersect( Collider & other )
+IntersectData SphereCollider::intersect( Collider & other, double delta )
 {
-	return ( other.intersect( (SphereCollider &) * this ) );
+	return ( other.intersect( (SphereCollider &) * this, delta ) );
 }
 
-IntersectData SphereCollider::intersect( SphereCollider & other )
+IntersectData SphereCollider::intersect( SphereCollider & other, double delta )
 {
-//	//The radius is the distance from any point on the sphere to the center.
-//	//
-//	//Therefore, by adding the radius of two spheres together, the result is
-//	//the distance between the centers of the spheres when they are touching.
-//	// TODO: transform center pos
-//	Vec3f center1 = this->_parentComponent->getTransform().getPosition() + this->getCenter();
-//	Vec3f center2 = other.getParentComponent()->getTransform().getPosition() + other.getCenter();
-//
-//	float radiusDistance = this->getRadius() + other.getRadius();
-//	Vec3f direction = center2 - center1;
-//	float centerDistance = direction.norm();
-//
-//	if ( centerDistance == 0 )
-//		return ( IntersectData( true, Vec3f( 0, 0, 0 ) ) );
-//	direction /= centerDistance;
-//
-//	//Since the radiusDistance is the distance bwteen the centers of the
-//	//spheres are when they're touching, you can subtract that from the
-//	//distance between the centers of the spheres to get the actual distance
-//	//between the two spheres.
-//	float distance = centerDistance - radiusDistance;
-//
-//	//Spheres can only be intersecting if the distance between them is less
-//	//than 0.
-//	return ( IntersectData( distance < 0, direction * distance ) );
-	//Initialize the return value
-
+	// TODO: transform center pos
 	// Relative velocity
-	Vec3f	dv	= other.getParentComponent()->getVelocity() - this->_parentComponent->getVelocity();
+	Vec3f	dv	= ( other.getParentComponent()->getVelocity() - this->_parentComponent->getVelocity() ) * delta;
 	// Relative position
 	Vec3f	dp	= other.getCenter() - this->getCenter();
 	//Minimal distance squared
@@ -68,7 +42,7 @@ IntersectData SphereCollider::intersect( SphereCollider & other )
 
 //	std::cout << "pok: " << pp << std::endl;
 //	std::cout << "pok1: " << (vv + 2 * pv + pp) << std::endl;
-	float coeff = pp / ( pp - (vv + 2 * pv + pp) );
+	float coeff = ( pp / ( pp - (vv + 2 * pv + pp) ) ) * (float)delta;
 //	std::cout << "coeff: " << coeff << std::endl;
 
 //	std::cout << "v1: " << this->_parentComponent->getVelocity() * coeff << std::endl;
@@ -93,9 +67,9 @@ IntersectData SphereCollider::intersect( SphereCollider & other )
 	return ( data );
 }
 
-IntersectData	SphereCollider::intersect( PlanCollider & other )
+IntersectData	SphereCollider::intersect( PlanCollider & other, double delta )
 {
-	return ( Collider::intersectSpherePlan( *this, other ) );
+	return ( Collider::intersectSpherePlan( *this, other, delta ) );
 }
 
 

@@ -6,19 +6,19 @@ PlanCollider::PlanCollider( Vec3f const & normal ) :
 	return ;
 }
 
-IntersectData	PlanCollider::intersect( Collider & other )
+IntersectData	PlanCollider::intersect( Collider & other, double delta )
 {
-	return ( other.intersect( (PlanCollider &) * this ) );
+	return ( other.intersect( (PlanCollider &) * this, delta ) );
 }
 
-IntersectData	PlanCollider::intersect( PlanCollider & other )
+IntersectData	PlanCollider::intersect( PlanCollider & other, double delta )
 {
-	return Collider::intersect( other );
+	return Collider::intersect( other, delta );
 }
 
-IntersectData	PlanCollider::intersect( SphereCollider & other )
+IntersectData	PlanCollider::intersect( SphereCollider & other, double delta )
 {
-	return ( Collider::intersectSpherePlan( other, *this ) );
+	return ( Collider::intersectSpherePlan( other, *this, delta ) );
 }
 
 // SETTER

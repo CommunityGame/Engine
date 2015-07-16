@@ -29,12 +29,12 @@ void	PhysicsEngine::physics( GameObject & object, double delta ) const
 			for ( int k = 0; k < this->_physicsObjects[j]->getPhysicsComponents().size(); k++ )
 				collidersObject2.push_back( this->_physicsObjects[j]->getPhysicsComponents()[k]->getCollider() );
 
-			checkCollisions( collidersObject1, collidersObject2 );
+			checkCollisions( collidersObject1, collidersObject2, delta );
 		}
 	}
 }
 
-void	PhysicsEngine::checkCollisions( std::vector<Collider *> collidersObject1, std::vector<Collider *> collidersObject2 ) const
+void	PhysicsEngine::checkCollisions( std::vector<Collider *> collidersObject1, std::vector<Collider *> collidersObject2, double delta ) const
 {
 	for ( int i = 0; i < collidersObject1.size(); i++ )
 	{
@@ -42,7 +42,7 @@ void	PhysicsEngine::checkCollisions( std::vector<Collider *> collidersObject1, s
 		{
 			Collider &	c1 = * collidersObject1[i];
 			Collider &	c2 = * collidersObject2[j];
-			IntersectData intersectData = c1.intersect( c2 );
+			IntersectData intersectData = c1.intersect( c2, delta );
 			if ( intersectData.haveIntersect() )
 			{
 //				std::cout << intersectData.getDistToCollision1() << std::endl;
@@ -61,9 +61,9 @@ void	PhysicsEngine::checkCollisions( std::vector<Collider *> collidersObject1, s
 //				c1.getParentComponent()->setVelocity( direction );
 //				c2.getParentComponent()->setVelocity( c1.getParentComponent()->getVelocity().reflect( otherDirection ) );
 
-//				std::cout << c1.getParentComponent()->getVelocity() << " " << c1.getParentComponent()->getVelocity().norm() << std::endl;
-//				std::cout << c2.getParentComponent()->getVelocity() << " " << c2.getParentComponent()->getVelocity().norm() << std::endl;
-//				std::cout << "-- POK --" << std::endl;
+				std::cout << c1.getParentComponent()->getVelocity() << " " << c1.getParentComponent()->getVelocity().norm() << std::endl;
+				std::cout << c2.getParentComponent()->getVelocity() << " " << c2.getParentComponent()->getVelocity().norm() << std::endl;
+				std::cout << "-- POK --" << std::endl;
 //				std::cout << n << " " << n.norm() << std::endl;
 //				std::cout << c2.getParentComponent()->getVelocity().normalized() << " " << c2.getParentComponent()->getVelocity().normalized().norm() << std::endl;
 
@@ -71,11 +71,10 @@ void	PhysicsEngine::checkCollisions( std::vector<Collider *> collidersObject1, s
 				float length = angle * c2.getParentComponent()->getVelocity().norm();
 				Vec3f vel2 = n * length;
 //				std::cout << c2.getParentComponent()->getVelocity() << std::endl;
-//				std::cout << TO_DEGREES( acosf( angle ) ) << std::endl;
+				std::cout << TO_DEGREES( acosf( angle ) ) << std::endl;
 //				std::cout << vel1 << std::endl;
 
 				n = n * -1;
-				angle = n.dot( c1.getParentComponent()->getVelocity().normalized() );
 				length = angle * c1.getParentComponent()->getVelocity().norm();
 				Vec3f vel1 = n * length;
 //				std::cout << c1.getParentComponent()->getVelocity() << std::endl;
@@ -108,8 +107,8 @@ void	PhysicsEngine::checkCollisions( std::vector<Collider *> collidersObject1, s
 				c1.getParentComponent()->setVelocity( c1.getParentComponent()->getVelocity() - vv1 + v1 );
 				c2.getParentComponent()->setVelocity( c2.getParentComponent()->getVelocity() - vv2 + v2 );
 
-//				std::cout << c1.getParentComponent()->getVelocity() << " " << c1.getParentComponent()->getVelocity().norm() << std::endl;
-//				std::cout << c2.getParentComponent()->getVelocity() << " " << c2.getParentComponent()->getVelocity().norm() << std::endl;
+				std::cout << c1.getParentComponent()->getVelocity() << " " << c1.getParentComponent()->getVelocity().norm() << std::endl;
+				std::cout << c2.getParentComponent()->getVelocity() << " " << c2.getParentComponent()->getVelocity().norm() << std::endl;
 
 //				Vec3f collision = intersectData.getDistance();
 //				float aci = c1.getParentComponent()->getVelocity().dot( collision );

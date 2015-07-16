@@ -10,7 +10,7 @@ class PhysicsEngine
 {
 public:
 	void				physics( GameObject & object, double delta ) const;
-	void				checkCollisions( std::vector<Collider *> collidersObject1, std::vector<Collider *> collidersObject2 ) const ;
+	void				checkCollisions( std::vector<Collider *> collidersObject1, std::vector<Collider *> collidersObject2, double delta ) const ;
 
 	static void			refreshPhysicsObjectList( bool needed );
 

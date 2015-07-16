@@ -16,15 +16,15 @@ public:
 
 	Collider();
 
-	virtual IntersectData intersect( Collider & other )
+	virtual IntersectData intersect( Collider & other, double delta )
 	{
 		return ( IntersectData( false, Vec3f( 0, 0, 0 ) ) );
 	}
 
-	virtual IntersectData intersect( SphereCollider & other ) {};
-	virtual IntersectData intersect( PlanCollider & other ) {};
+	virtual IntersectData intersect( SphereCollider & other, double delta ) {};
+	virtual IntersectData intersect( PlanCollider & other, double delta ) {};
 
-	static IntersectData	intersectSpherePlan( SphereCollider & sphere, PlanCollider & plan  );
+	static IntersectData	intersectSpherePlan( SphereCollider & sphere, PlanCollider & plan, double delta );
 
 	// GETTER
 	PhysicsComponent *	getParentComponent( void ) const;

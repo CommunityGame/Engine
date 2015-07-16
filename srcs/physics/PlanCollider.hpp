@@ -8,9 +8,9 @@ class PlanCollider : public Collider
 public:
 	PlanCollider( Vec3f const & normal );
 
-	virtual IntersectData intersect( Collider & other );
-	virtual IntersectData intersect( PlanCollider & other );
-	virtual IntersectData intersect( SphereCollider & other );
+	virtual IntersectData intersect( Collider & other, double delta );
+	virtual IntersectData intersect( PlanCollider & other, double delta );
+	virtual IntersectData intersect( SphereCollider & other, double delta );
 
 	// SETTER
 	void			setNormal( Vec3f const & normal );

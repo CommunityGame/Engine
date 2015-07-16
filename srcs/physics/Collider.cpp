@@ -19,7 +19,7 @@ void Collider::setParentComponent( PhysicsComponent * physicsComponent ) const
 	this->_parentComponent = physicsComponent;
 }
 
-IntersectData Collider::intersectSpherePlan( SphereCollider & sphere, PlanCollider & plan )
+IntersectData Collider::intersectSpherePlan( SphereCollider & sphere, PlanCollider & plan, double delta )
 {
 	float distanceFromSphereCenter = (float)fabs( plan.getNormal().dot( sphere.getCenter() - plan.getParentComponent()->getTransform().getPosition() ) );
 	float distanceFromSphere = distanceFromSphereCenter - sphere.getRadius();
@@ -34,7 +34,7 @@ IntersectData Collider::intersectSpherePlan( SphereCollider & sphere, PlanCollid
 //	if ( distanceFromSphere >= 0 )
 //		return ( IntersectData( false, Vec3f( 0, 0, 0 ) ) );
 
-	Vec3f dv = sphere.getParentComponent()->getVelocity() - plan.getParentComponent()->getVelocity();
+	Vec3f dv = ( sphere.getParentComponent()->getVelocity() - plan.getParentComponent()->getVelocity() ) * delta;
 	Vec3f dp = plan.getNormal() * distanceFromSphereCenter;
 
 	float pp = dp.norm() - sphere.getRadius();
@@ -52,7 +52,7 @@ IntersectData Collider::intersectSpherePlan( SphereCollider & sphere, PlanCollid
 	if ( (pv + vv) <= 0 && (vv + 2 * pv + pp) >= 0 )
 		return ( IntersectData( false, Vec3f( 0, 0, 0 ) ) );
 
-	float coeff = pp / ( pp - (vv + 2 * pv + pp) );
+	float coeff = ( pp / ( pp - (vv + 2 * pv + pp) ) ) * (float)delta;
 
 //	std::cout << coeff << std::endl;
 	float tmin = -pv / vv;
@@ -62,6 +62,7 @@ IntersectData Collider::intersectSpherePlan( SphereCollider & sphere, PlanCollid
 	IntersectData data = IntersectData( pp + pv * tmin < 0, plan.getNormal() * dp.normalized() );
 	data.setDistToCollision1( v2 );
 	data.setDistToCollision2( v1 );
+	data.setCommonNormal( plan.getNormal() );
 //	std::cout << "pok" << std::endl;
 	return ( data );
 }

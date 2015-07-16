@@ -9,9 +9,9 @@ class SphereCollider : public Collider
 public:
 	SphereCollider( Vec3f const & center, float radius );
 
-	virtual IntersectData intersect( Collider & other );
-	virtual IntersectData intersect( SphereCollider & other );
-	virtual IntersectData intersect( PlanCollider & other );
+	virtual IntersectData intersect( Collider & other, double delta );
+	virtual IntersectData intersect( SphereCollider & other, double delta );
+	virtual IntersectData intersect( PlanCollider & other, double delta );
 
 	Vec3f const					getCenter( void ) const;
 	float						getRadius( void ) const;

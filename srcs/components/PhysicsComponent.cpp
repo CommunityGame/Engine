@@ -9,12 +9,12 @@ PhysicsComponent::PhysicsComponent( void ) :
 
 void	PhysicsComponent::physics( double delta )
 {
-//	this->_velocity = Vec3f( 0, -0.005f, 0 );
+//	this->_velocity = Vec3f( 0, -0.005f, 0 ); // TODO: gravity
 }
 
 void	PhysicsComponent::update( double delta )
 {
-	this->_parent->getTransform()->translate( this->_velocity );
+	this->_parent->getTransform()->translate( this->_velocity * delta );
 }
 
 // SETTER
