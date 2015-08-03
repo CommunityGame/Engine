@@ -7,7 +7,7 @@ class Test : public AGame
 public:
 	Test( void );
 	virtual void	init( void );
-	virtual void	update( double delta );
+//	virtual void	update( double delta );
 };
 
 #endif // ! _TEST_HPP

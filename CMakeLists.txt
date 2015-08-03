@@ -8,36 +8,31 @@ set( CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -std=c++11" )
 
 file( GLOB_RECURSE SOURCE_FILES "./srcs/**" )
 
-link_libraries( glfw "${OPENGL_glu_LIBRARY}" )
+file( GLOB_RECURSE TESTS_FILES "./tests/**" )
 
-if ( BUILD_SHARED_LIBS )
-    add_definitions(-DGLFW_DLL)
-    link_libraries( "${OPENGL_gl_LIBRARY}" "${MATH_LIBRARY}" )
-else()
-    link_libraries( ${glfw_LIBRARIES} )
-endif()
+add_executable( CommunityGame_Engine ${SOURCE_FILES} ${TESTS_FILES} )
 
-include_directories( "${GLFW_SOURCE_DIR}/include"
-                    "${GLFW_SOURCE_DIR}/deps" )
+# PYTHON
+#set( Python_ADDITIONAL_VERSIONS 3.4 )
+#find_package( PythonInterp 3.4 REQUIRED )
+find_package( PythonLibs 3.4 REQUIRED )
+include_directories( ${PYTHON_INCLUDE_DIRS} )
+target_link_libraries( CommunityGame_Engine ${PYTHON_LIBRARIES} )
 
-if ( "${OPENGL_INCLUDE_DIR}" )
-    include_directories("${OPENGL_INCLUDE_DIR}" )
-endif()
-
-set( GLAD "${GLFW_SOURCE_DIR}/deps/glad/glad.h"
-         "${GLFW_SOURCE_DIR}/deps/glad.c" )
-
-add_executable( CommunityGame_Engine ${SOURCE_FILES} ${GLAD}
-tests/main.cpp
-tests/Test.cpp
-tests/components/Cube.cpp
-tests/components/Cube.hpp srcs/modules/lua/LuaScript.cpp srcs/modules/lua/LuaScript.hpp)
+# BOOST
+set( BOOST_LIBS
+python-py34
+filesystem)
+set( BOOST_VERSION 1.55.0 )
+find_package(Boost ${BOOST_VERSION} COMPONENTS ${BOOST_LIBS} REQUIRED )
+include_directories( ${Boost_INCLUDE_DIRS} )
+target_link_libraries( CommunityGame_Engine ${Boost_LIBRARIES} )
 
 # GLFW
-set( GLFW_VERSION 3.1 )
-add_subdirectory( ./libs/glfw-${GLFW_VERSION} )
-include_directories( ./libs/glfw-${GLFW_VERSION}/include )
-target_link_libraries( CommunityGame_Engine glfw ${GLFW_LIBRARIES} ${GLEW_LIBRARIES} )
+find_package( PkgConfig REQUIRED )
+pkg_search_module( GLFW REQUIRED glfw3 )
+include_directories( ${GLFW_INCLUDE_DIRS} )
+target_link_libraries( CommunityGame_Engine ${GLFW_STATIC_LIBRARIES} )
 
 # LUA
 find_package( Lua51 REQUIRED )
@@ -49,3 +44,7 @@ set( YAML_CPP_VERSION 0.5.2 )
 add_subdirectory( ./libs/yaml-cpp-${YAML_CPP_VERSION} )
 include_directories( ./libs/yaml-cpp-${YAML_CPP_VERSION}/include )
 target_link_libraries( CommunityGame_Engine yaml-cpp ${YAML_CPP_LIBRARIES} )
+
+# XML
+set( RAPIDXML_VERSION 1.13 )
+include_directories( ./libs/rapidxml-${RAPIDXML_VERSION} )

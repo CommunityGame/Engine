@@ -2,7 +2,6 @@
 # define _DEBUGGER_H_
 
 #include <thread>
-#include <tinycthread.h>
 #include "../render/Window.hpp"
 
 class Debugger

@@ -1,5 +1,6 @@
 #include <iostream>
 #include "MappedValues.hpp"
+#include "../render/LightUniform.hpp"
 
 void		MappedValues::addValue( std::string const & name, int value )
 {
@@ -29,6 +30,11 @@ void		MappedValues::addValue( std::string const & name, Vec3f const & value )
 void		MappedValues::addValue( std::string const & name, Mat4f const & value )
 {
 	this->_mat4fValues[name] = value;
+}
+
+void		MappedValues::addValue( std::string const & name, LightUniform const * value )
+{
+	this->_lightValues[name] = value;
 }
 
 
@@ -84,4 +90,13 @@ Mat4f const &	MappedValues::getMat4f( std::string const & name ) const
 	if( it != this->_mat4fValues.end() )
 		return ( it->second );
 	return ( Mat4f::ZERO );
+}
+
+LightUniform const *	MappedValues::getLight( std::string const & name ) const
+{
+	std::map<std::string, LightUniform const *>::const_iterator it = this->_lightValues.find( name );
+
+	if( it != this->_lightValues.end() )
+		return ( it->second );
+	return ( nullptr );
 }

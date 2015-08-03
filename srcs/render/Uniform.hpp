@@ -16,6 +16,7 @@ public:
 		VEC2,
 		VEC3,
 		MAT4,
+		LIGHT,
 		_SIZE
 	};
 
@@ -29,13 +30,13 @@ public:
 	Type				getType( void ) const;
 	GLint				getLocation( void ) const;
 
-	void				update( int value );
-	void				update( float value );
-	void				update( double value );
-	void				update( Vec2f value );
-	void				update( Vec3f value );
-	void				update( Colorf value );
-	void				update( Mat<float, 4, 4> value );
+	void				update( int value ) const;
+	void				update( float value ) const;
+	void				update( double value ) const;
+	void				update( Vec2f value ) const;
+	void				update( Vec3f value ) const;
+	void				update( Colorf value ) const;
+	void				update( Mat<float, 4, 4> value ) const;
 
 	static Type			stringToTypeEnum( std::string const & s );
 	static std::string	typeEnumToString( Type const & t );

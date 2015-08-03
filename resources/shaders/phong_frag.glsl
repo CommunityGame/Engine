@@ -21,10 +21,9 @@ in mat4			normalMatrix;
 
 out vec4		color;
 
-#define MAX_LIGHTS 64
 uniform	int		numLights;
 uniform	vec3	eyePos;
-uniform	light	lights[MAX_LIGHTS];
+uniform	light	lights[64];
 
 void main()
 {

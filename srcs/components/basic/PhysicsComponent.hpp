@@ -1,8 +1,8 @@
 #ifndef _PHYSICS_COMPONENT_H_
 # define _PHYSICS_COMPONENT_H_
 
-#include "../AObjectComponent.hpp"
-#include "../physics/Collider.hpp"
+#include "../../physics/Collider.hpp"
+#include "AObjectComponent.hpp"
 
 class PhysicsComponent : public AObjectComponent
 {
@@ -17,8 +17,8 @@ public:
 	 * @return void
 	 */
 	virtual void		physics( double delta );
-
 	virtual void		update( double delta );
+	virtual void		init( CoreEngine & coreEngine ) {};
 
 	// SETTER
 	void				setVelocity( Vec3f const & velocity );

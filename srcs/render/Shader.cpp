@@ -1,4 +1,3 @@
-#include <glad/glad.h>
 #include "Shader.hpp"
 #include "../components/Camera.hpp"
 #include "../utils/Utils.hpp"
@@ -112,7 +111,20 @@ const std::string		Shader::loadShader( const std::string & file )
 				std::string type = tokenLine[1];
 				std::string name = tokenLine[2].substr( 0, tokenLine[2].find_last_not_of( ';' ) + 1 );
 				Logger::d( TAG, "Add uniform '" + name + "' to shader: " + file );
-				this->_uniforms.push_back( new Uniform( this->_program, Uniform::stringToTypeEnum( type ), name ) );
+
+				// if array
+				if ( name.find( '[' ) != std::string::npos )
+				{
+					int	nb;
+					Uniform::Type t = Uniform::stringToTypeEnum( type );
+
+					nb = atoi( name.substr( name.find( '[' ) + 1, name.length() - name.find( '[' ) - 2 ).c_str() );
+					name = name.substr( 0, name.find( '[' ) );
+					for ( int i = 0; i < nb; ++i )
+						this->_uniforms.push_back( new Uniform( this->_program, t, name + "[" + std::to_string( i ) + "]" ) );
+				}
+				else
+					this->_uniforms.push_back( new Uniform( this->_program, Uniform::stringToTypeEnum( type ), name ) );
 			}
 			else if ( tokenLine[0] == "#include" )
 			{
@@ -130,15 +142,17 @@ const std::string		Shader::loadShader( const std::string & file )
 	return ( result );
 }
 
-void Shader::bind( void ) const
+void		Shader::bind( void ) const
 {
-	if ( this->_program != 0u )
-		glUseProgram( this->_program );
-	else
-		Logger::e( TAG, "Unable to bind program shader" );
+	glUseProgram( this->_program );
 }
 
-void Shader::updateUniforms( RenderEngine const & renderEngine, Transformf const & transform, Camera const & camera ) const
+void		Shader::unbind( void ) const
+{
+	glUseProgram( 0u );
+}
+
+void		Shader::updateUniforms( RenderEngine const & renderEngine, Transformf const & transform, Camera const & camera ) const
 {
 	std::vector<Uniform *>::const_iterator it;
 
@@ -164,6 +178,12 @@ void Shader::updateUniforms( RenderEngine const & renderEngine, Transformf const
 			uniform->update( this->_uniformValues.getVec3f( uniform->getName() ) );
 		else if ( uniform->getType() == Uniform::Type::MAT4 )
 			uniform->update( this->_uniformValues.getMat4f( uniform->getName() ) );
+		else if ( uniform->getType() == Uniform::Type::LIGHT )
+		{
+			LightUniform const * lightUniform = this->_uniformValues.getLight( uniform->getName() );
+			if ( lightUniform != nullptr )
+				lightUniform->update();
+		}
 	}
 }
 

@@ -202,32 +202,32 @@ public:
 		return ( (*this)[3] );
 	}
 
-	inline Vec3<T>	getForward( void )
+	inline Vec3<T>	getForward( void ) const
 	{
 		return ( Vec3<T>( 0, 0, 1 ).rotate( * this ) );
 	}
 
-	inline Vec3<T>	getBack( void )
+	inline Vec3<T>	getBack( void ) const
 	{
 		return ( Vec3<T>( 0, 0, -1 ).rotate( * this ) );
 	}
 
-	inline Vec3<T>	getRight( void )
+	inline Vec3<T>	getRight( void ) const
 	{
 		return ( Vec3<T>( 1, 0, 0 ).rotate( * this ) );
 	}
 
-	inline Vec3<T>	getLeft( void )
+	inline Vec3<T>	getLeft( void ) const
 	{
 		return ( Vec3<T>( -1, 0, 0 ).rotate( * this ) );
 	}
 
-	inline Vec3<T>	getUp( void )
+	inline Vec3<T>	getUp( void ) const
 	{
 		return ( Vec3<T>( 0, 1, 0 ).rotate( * this ) );
 	}
 
-	inline Vec3<T>	getDown( void )
+	inline Vec3<T>	getDown( void ) const
 	{
 		return ( Vec3<T>( 0, -1, 0 ).rotate( * this ) );
 	}

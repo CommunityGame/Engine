@@ -14,6 +14,7 @@ public:
 	~Shader( void );
 
 	void				bind( void ) const;
+	void				unbind( void ) const;
 	void				updateUniforms( RenderEngine const & renderEngine, Transformf const & transform, Camera const & camera ) const;
 
 	MappedValues &		getUniformValues( void );

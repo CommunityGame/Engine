@@ -65,6 +65,8 @@ void			CoreEngine::run( void )
 {
 	double	begin_ticks;
 	double	end_ticks;
+//	double	begin_debug;
+//	double	end_debug;
 	double	dt;
 
 	dt = 0;
@@ -97,27 +99,48 @@ void			CoreEngine::run( void )
 		}
 
 		// INPUT
+//		begin_debug = glfwGetTime();
 		this->_input->pollEvents();
 
 		if ( this->_input->isCloseRequested() )
 			this->stop();
 
-		// INPUT
 		this->_game.input( * this->_input, dt );
 
-		// UPDATE
+//		end_debug = glfwGetTime();
+//		std::cout << "Input: " << end_debug - begin_debug << std::endl;
+
+		// PHYSICS
+//		begin_debug = end_debug;
 		this->_game.physics( * this->_physicsEngine, dt );
+
+//		end_debug = glfwGetTime();
+//		std::cout << "Physics: " << end_debug - begin_debug << std::endl;
+
+		// UPDATE
+//		begin_debug = end_debug;
 		modulesFactory.updateModules( dt );
 		this->_game.update( dt );
 
 		if ( this->_game.getCamera() != this->_renderEngine->getCamera() )
 			this->_renderEngine->setCamera( this->_game.getCamera() );
 
+//		end_debug = glfwGetTime();
+//		std::cout << "Update: " << end_debug - begin_debug << std::endl;
+
 		// RENDER
+//		begin_debug = end_debug;
 		this->_game.render( * this->_renderEngine );
 
+//		end_debug = glfwGetTime();
+//		std::cout << "Render: " << end_debug - begin_debug << std::endl;
+
 		// REFRESH
+//		begin_debug = end_debug;
 		this->_window->refresh();
+
+//		end_debug = glfwGetTime();
+//		std::cout << "Refresh: " << end_debug - begin_debug << std::endl;
 
 		end_ticks = glfwGetTime();
 		dt = ( end_ticks - begin_ticks );
@@ -176,4 +199,9 @@ void			CoreEngine::startDebugWindow( void )
 void			CoreEngine::setDebugMode( bool mode )
 {
 	this->_debugMode = mode;
+}
+
+AGame &			CoreEngine::getGame( void ) const
+{
+	return ( this->_game );
 }

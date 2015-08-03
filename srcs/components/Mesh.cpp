@@ -1,4 +1,3 @@
-#include <glad/glad.h>
 #include "Mesh.hpp"
 #include "../render/Shader.hpp"
 
@@ -66,11 +65,8 @@ void	Mesh::draw( void ) const
 	glDisableVertexAttribArray( 1 );
 	glDisableVertexAttribArray( 2 );
 
-	return ;
-}
-
-void	Mesh::input( Input & input, double delta )
-{
+	glBindBuffer( GL_ARRAY_BUFFER, 0 );
+	glBindBuffer( GL_ELEMENT_ARRAY_BUFFER, 0 );
 	return ;
 }
 
@@ -82,8 +78,9 @@ void	Mesh::update( double delta )
 void	Mesh::render( RenderEngine const & renderEngine, Shader const & shader, Camera const & camera ) const
 {
 	shader.bind();
-	shader.updateUniforms( renderEngine, this->getTransform(), camera/*, material*/ );
+	shader.updateUniforms( renderEngine, this->getTransform(), camera/*, material*/ ); //TODO: material
 	this->draw();
+	shader.unbind();
 	return ;
 }
 

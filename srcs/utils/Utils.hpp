@@ -13,11 +13,16 @@ public:
 	static std::string &					rtrim( std::string &s );
 	static std::string &					trim( std::string &s );
 
+	static std::string						readFile( std::string const & file );
+
 	template<typename CheckType, typename InstanceType>
 	static bool instanceOf( InstanceType & instance )
 	{
 		return ( dynamic_cast<CheckType *>( & instance ) != NULL );
 	}
+
+private:
+	static const std::string	TAG;
 };
 
 #endif // ! _UTILS_H_

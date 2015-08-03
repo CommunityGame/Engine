@@ -50,17 +50,17 @@ public:
 	}
 
 	//	GETTER
-	inline Vec<T, 3>		getPosition( void ) const
+	inline Vec<T, 3> const &	getPosition( void ) const
 	{
 		return ( this->_position );
 	}
 
-	inline Vec<T, 3>		getScale( void ) const
+	inline Vec<T, 3> const &	getScale( void ) const
 	{
 		return ( this->_scale );
 	}
 
-	inline Quat<T>		getRotation( void ) const
+	inline Quat<T> const &		getRotation( void ) const
 	{
 		return ( this->_rotation );
 	}

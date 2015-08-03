@@ -1,7 +1,8 @@
 #include "LightUniform.hpp"
 #include "../components/LightComponent.hpp"
 
-LightUniform::LightUniform( GLuint const program, std::string const & name ) :
+LightUniform::LightUniform( LightComponent * light, GLuint const program, std::string const & name ) :
+	_light( light ),
 	_position( program, Uniform::Type::VEC3, name + ".position" ),
 	_ambient( program, Uniform::Type::VEC3, name + ".ambient" ),
 	_diffuse( program, Uniform::Type::VEC3, name + ".diffuse" ),
@@ -11,11 +12,11 @@ LightUniform::LightUniform( GLuint const program, std::string const & name ) :
 	return ;
 }
 
-void LightUniform::update( LightComponent & light )
+void LightUniform::update( void ) const
 {
-	this->_position.update( light.getTransform().getPosition() );
-	this->_ambient.update( light.getAmbient() );
-	this->_diffuse.update( light.getDiffuse() );
-	this->_specular.update( light.getSpecular() );
-	this->_shininess.update( light.getShininess() );
+	this->_position.update( this->_light->getTransform().getPosition() );
+	this->_ambient.update( this->_light->getAmbient() );
+	this->_diffuse.update( this->_light->getDiffuse() );
+	this->_specular.update( this->_light->getSpecular() );
+	this->_shininess.update( this->_light->getShininess() );
 }

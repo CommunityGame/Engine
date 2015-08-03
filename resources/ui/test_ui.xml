@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<Layout
+		color="#00FF00FF"
+		width="100px"
+		height="100%">
+	<Layout color="#0000FFFF">
+
+	</Layout>
+	<!--<Button color="#FF0000">X</Button>-->
+	<!--<Text>Test</Text>-->
+</Layout>

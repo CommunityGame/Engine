@@ -1,5 +1,9 @@
 #include "Utils.hpp"
+#include "../debugs/Logger.hpp"
 #include <algorithm>
+#include <string.h>
+
+const std::string	Utils::TAG = "Utils";
 
 std::vector<std::string> &		Utils::split( std::string const & s, std::vector<std::string> & list )
 {
@@ -33,4 +37,17 @@ std::string &					Utils::rtrim( std::string &s )
 std::string &					Utils::trim( std::string &s )
 {
 	return ltrim( rtrim( s ) );
+}
+
+std::string						Utils::readFile( std::string const & file )
+{
+	std::string			line;
+	std::stringstream	ss;
+	std::ifstream		fileStream( file, std::ios::in );
+
+	if ( fileStream.is_open() )
+		ss << fileStream.rdbuf();
+	else
+		Logger::e( TAG, "readFile(" + file + ") " + std::string( strerror( errno ) ) );
+	return ( ss.str() );
 }

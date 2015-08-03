@@ -1,17 +1,14 @@
 #ifndef _CAMERA_H_
 # define _CAMERA_H_
 
-#include "../AObjectComponent.hpp"
-#include "../math/Math.hpp"
+#include "../components/basic/AObjectComponent.hpp"
 
 class Camera : public AObjectComponent
 {
 public:
 	Camera( float fov, float aspect, float zNear, float zFar );
 
-	virtual void		input( Input & input, double delta );
 	virtual void		update( double delta );
-	virtual void		render( RenderEngine const & renderEngine, Shader const & shader, Camera const & camera ) const;
 	virtual void		init( CoreEngine & coreEngine ) {};
 
 	// GETTER

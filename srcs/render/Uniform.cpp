@@ -9,7 +9,8 @@ const char *	Uniform::typeEnum[] =
 		"double",
 		"vec2",
 		"vec3",
-		"mat4"
+		"mat4",
+		"light"
 };
 
 Uniform::Uniform( void )
@@ -67,37 +68,37 @@ GLint			Uniform::getLocation( void ) const
 	return ( this->_location );
 }
 
-void			Uniform::update( int value )
+void			Uniform::update( int value ) const
 {
 	glUniform1i( this->getLocation(), value );
 }
 
-void			Uniform::update( float value )
+void			Uniform::update( float value ) const
 {
 	glUniform1f( this->getLocation(), value );
 }
 
-void			Uniform::update( double value )
+void			Uniform::update( double value ) const
 {
 	glUniform1f( this->getLocation(), (float)value );
 }
 
-void			Uniform::update( Vec2f value )
+void			Uniform::update( Vec2f value ) const
 {
 	glUniform2f( this->getLocation(), value[0], value[1] );
 }
 
-void			Uniform::update( Vec3f value )
+void			Uniform::update( Vec3f value ) const
 {
 	glUniform3f( this->getLocation(), value[0], value[1], value[2] );
 }
 
-void			Uniform::update( Colorf value )
+void			Uniform::update( Colorf value ) const
 {
 	glUniform3f( this->getLocation(), value.getR(), value.getG(), value.getB() );
 }
 
-void			Uniform::update( Mat<float, 4, 4> value )
+void			Uniform::update( Mat<float, 4, 4> value ) const
 {
 	glUniformMatrix4fv( this->getLocation(), 1, GL_FALSE, value.getValues() );
 }

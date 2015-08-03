@@ -1,9 +1,13 @@
 #ifndef _WINDOW_H_
 # define _WINDOW_H_
-# include <glad/glad.h>
+
+# ifndef GLFW_INCLUDE_ES3
+#  define GLFW_INCLUDE_ES3
+# endif
+# include <GLFW/glfw3.h>
+
 # include <exception>
 # include <iostream>
-# include <GLFW/glfw3.h>
 
 # include "../EngineException.hpp"
 # include "../debugs/Logger.hpp"

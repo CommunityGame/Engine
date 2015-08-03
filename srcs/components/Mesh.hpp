@@ -2,19 +2,17 @@
 # define _MESH_H_
 
 #include <vector>
-#include "../AObjectComponent.hpp"
-#include "../math/Math.hpp"
+#include "basic/RenderComponent.hpp"
 
-class Mesh : public AObjectComponent
+class Mesh : public RenderComponent
 {
 public:
 	Mesh( void );
 	Mesh( std::vector<Vertexf> const & vertex, std::vector<GLuint> const & indices );
 	virtual ~Mesh( void );
 
-	virtual void			input( Input & input, double delta );
-	virtual void			update( double delta );
 	virtual void			render( RenderEngine const & renderEngine, Shader const & shader, Camera const & camera ) const;
+	virtual void			update( double delta );
 	virtual void			init( CoreEngine & coreEngine ) {};
 	void					putVertex( Vertexf const & vertex );
 	void					bufferData( void ) const;

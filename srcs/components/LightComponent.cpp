@@ -1,16 +1,11 @@
 #include "LightComponent.hpp"
-#include "../CoreEngine.hpp"
 
 LightComponent::LightComponent( void ) :
 	_ambient( 0, 0, 0, 1 ),
 	_diffuse( 0, 0, 0, 1 ),
 	_specular( 0, 0, 0, 1 ),
-	_shininess( 0 )
-{
-
-}
-
-void		LightComponent::input( Input & input, double delta )
+	_shininess( 0 ),
+	_uniform(  )
 {
 
 }
@@ -51,6 +46,11 @@ void		LightComponent::setShininess( float shininess )
 	this->_shininess = shininess;
 }
 
+void		LightComponent::setUniform( LightUniform * uniform )
+{
+	this->_uniform = uniform;
+}
+
 
 // GETTER
 Colorf const &	LightComponent::getAmbient( void ) const
@@ -71,4 +71,9 @@ Colorf const &	LightComponent::getSpecular( void ) const
 float		LightComponent::getShininess( void ) const
 {
 	return ( this->_shininess );
+}
+
+LightUniform const *	LightComponent::getUniform( void ) const
+{
+	return ( this->_uniform );
 }

@@ -3,13 +3,12 @@
 #include "../srcs/components/Camera.hpp"
 #include "../srcs/components/CameraControl.hpp"
 #include "../srcs/components/LightComponent.hpp"
-#include "components/Cube.hpp"
-#include "../srcs/modules/ModulesFactory.hpp"
 #include "../srcs/components/MeshBuilder.hpp"
-#include "../srcs/components/PhysicsComponent.hpp"
-#include "../srcs/math/geometry/Sphere.hpp"
 #include "../srcs/physics/SphereCollider.hpp"
 #include "../srcs/physics/PlanCollider.hpp"
+#include "../srcs/ui/UiComponent.hpp"
+#include "../srcs/utils/Factory.hpp"
+#include "../srcs/ui/tag/Layout.hpp"
 
 Test::Test( void ) : AGame()
 {
@@ -20,9 +19,11 @@ Test::Test( void ) : AGame()
 GameObject *		mesh1;
 GameObject *		cube;
 
-//TODO: use std::shared_ptr<>
 void Test::init( void )
 {
+	// TODO main factory
+	Factory::registerClass( "layout", &Layout::instantiate );
+
 	float aspectRatio = (float)this->_coreEngine->getWindow().getWidth() / (float)this->_coreEngine->getWindow().getHeight();
 	GameObject *	cameraO = new GameObject();
 	Camera *		camera = new Camera( 70.0f, aspectRatio, 0.1f, 1000.0f );
@@ -64,25 +65,25 @@ void Test::init( void )
 //	cube->addComponent( physicsComponent );
 //	addObject( cube );
 
-	GameObject *		sphere = new GameObject();
-	sphere->addComponent( MeshBuilder::loadFromObj( "./resources/objs/sphere.obj" ) );
-	PhysicsComponent * physicsComponent1 = new PhysicsComponent();
-	physicsComponent1->setCollider( new SphereCollider( Vec3f( 0, 0, 0 ), 1 ) );
-	physicsComponent1->setVelocity( Vec3f( 0, -1, 0 ) );
-	physicsComponent1->setMass( 1000 );
-	sphere->addComponent( physicsComponent1 );
-	sphere->getTransform()->setPosition( Vec3f( 0, 2, 0 ) );
-	addObject( sphere );
+//	GameObject *		sphere = new GameObject();
+//	sphere->addComponent( MeshBuilder::loadFromObj( "./resources/objs/sphere.obj" ) );
+//	PhysicsComponent * physicsComponent1 = new PhysicsComponent();
+//	physicsComponent1->setCollider( new SphereCollider( Vec3f( 0, 0, 0 ), 1 ) );
+//	physicsComponent1->setVelocity( Vec3f( 0, -1, 0 ) );
+//	physicsComponent1->setMass( 1000 );
+//	sphere->addComponent( physicsComponent1 );
+//	sphere->getTransform()->setPosition( Vec3f( 0, 2, 0 ) );
+//	addObject( sphere );
 
-	GameObject *		sphere2 = new GameObject();
-	sphere2->addComponent( MeshBuilder::loadFromObj( "./resources/objs/sphere.obj" ) );
-	PhysicsComponent * physicsComponent2 = new PhysicsComponent();
-	physicsComponent2->setCollider( new SphereCollider( Vec3f( 0, 0, 0 ), 1 ) );
-	physicsComponent2->setVelocity( Vec3f( -0.5f, -0.5f, 0 ) );
-	physicsComponent2->setMass( 1000 );
-	sphere2->addComponent( physicsComponent2 );
-	sphere2->getTransform()->setPosition( Vec3f( 3, 1, 0 ) );
-	addObject( sphere2 );
+//	GameObject *		sphere2 = new GameObject();
+//	sphere2->addComponent( MeshBuilder::loadFromObj( "./resources/objs/sphere.obj" ) );
+//	PhysicsComponent * physicsComponent2 = new PhysicsComponent();
+//	physicsComponent2->setCollider( new SphereCollider( Vec3f( 0, 0, 0 ), 1 ) );
+//	physicsComponent2->setVelocity( Vec3f( -0.5f, -0.5f, 0 ) );
+//	physicsComponent2->setMass( 1000 );
+//	sphere2->addComponent( physicsComponent2 );
+//	sphere2->getTransform()->setPosition( Vec3f( 3, 1, 0 ) );
+//	addObject( sphere2 );
 
 	GameObject *		lightO = new GameObject();
 	LightComponent *	light = new LightComponent();
@@ -93,6 +94,14 @@ void Test::init( void )
 	lightO->addComponent( light );
 	lightO->getTransform()->setPosition( Vec3f( 0, 10, 0 ) );
 	addObject( lightO );
+
+
+	// TODO: GUI
+//	GameObject *		guiObject = new GameObject();
+//	guiObject->addComponent( new UiComponent( "./resources/ui/test_ui.xml" ) );
+//	guiObject->getTransform()->setScale( Vec3f( 0.5f, 0.5f, 0.5f ) );
+//	addObject( guiObject );
+
 //	GameObject *		light1 = new GameObject();
 //	light = new LightComponent();
 //	light->setAmbient( Colorf( 0.0f, 0.2f, 0.2f, 1 ) );
@@ -104,8 +113,8 @@ void Test::init( void )
 //	addObject( light1 );
 }
 
-void Test::update( double delta )
-{
-//	mesh1->getTransform()->rotate( Quatf( Vec3f( 0, 1, 0 ), TO_RADIANS( 0.3 ) ) );
-	AGame::update( delta );
-}
+//void Test::update( double delta )
+//{
+////	mesh1->getTransform()->rotate( Quatf( Vec3f( 0, 1, 0 ), TO_RADIANS( 0.3 ) ) );
+//	AGame::update( delta );
+//}

@@ -4,16 +4,18 @@
 #include <string>
 #include "lua/LuaScript.hpp"
 #include "../GameObject.hpp"
+#include <boost/python.hpp>
 
-extern "C"
-{
-	#include <lua.h>
-};
+//extern "C"
+//{
+//	#include <lua.h>
+//};
 
 class Module
 {
 public:
-	Module(  std::string const & path );
+	Module( void );
+	Module( std::string const & path );
 
 	void			init( GameObject * luaRootObject );
 	void			update( double delta );
@@ -24,11 +26,12 @@ public:
 	std::string		getName( void ) const;
 	std::string		getVersion( void ) const;
 	std::string		getAuthor( void ) const;
-	LuaScript const *	getLuaScript( void ) const;
+//	LuaScript const *	getLuaScript( void ) const;
 
 private:
 	bool			_isValid;
-	LuaScript *		_luaScript;
+//	LuaScript *		_luaScript;
+	PyObject *		_self;
 	std::string		_path;
 
 	std::string		_name;

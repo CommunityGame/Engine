@@ -1,5 +1,5 @@
 #include "Collider.hpp"
-#include "../components/PhysicsComponent.hpp"
+#include "../components/basic/PhysicsComponent.hpp"
 
 #include "PlanCollider.hpp"
 #include "SphereCollider.hpp"

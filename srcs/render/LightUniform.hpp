@@ -8,9 +8,9 @@ class LightComponent;
 class LightUniform
 {
 public:
-	LightUniform( GLuint const program, std::string const & name );
+	LightUniform( LightComponent * light, GLuint const program, std::string const & name );
 
-	void			update( LightComponent & light );
+	void			update( void ) const;
 
 private:
 	Uniform			_position;
@@ -18,6 +18,8 @@ private:
 	Uniform			_diffuse;
 	Uniform			_specular;
 	Uniform			_shininess;
+
+	LightComponent *_light;
 };
 
 #endif // ! _LIGHT_UNIFORM_H_

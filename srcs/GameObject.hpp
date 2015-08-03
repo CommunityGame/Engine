@@ -7,8 +7,10 @@
 # include "render/RenderEngine.hpp"
 # include "render/Shader.hpp"
 # include "CoreEngine.hpp"
-# include "AObjectComponent.hpp"
-#include "components/PhysicsComponent.hpp"
+# include "components/basic/AObjectComponent.hpp"
+# include "components/basic/PhysicsComponent.hpp"
+#include "components/basic/RenderComponent.hpp"
+#include "components/basic/InputComponent.hpp"
 
 class Camera;
 
@@ -134,6 +136,8 @@ public:
 private:
 	std::vector<GameObject *>			_childrens;
 	std::vector<AObjectComponent *>		_components;
+	std::vector<RenderComponent *>		_renderComponents;
+	std::vector<InputComponent *>		_inputComponents;
 	std::vector<PhysicsComponent *>		_physicsComponents;
 	GameObject *						_parent;
 	CoreEngine *						_coreEngine;

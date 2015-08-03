@@ -1,9 +1,10 @@
 #ifndef _CAMERA_CONTROL_H_
 # define _CAMERA_CONTROL_H_
 
-#include "../AObjectComponent.hpp"
+#include "basic/InputComponent.hpp"
+#include "../Input.hpp"
 
-class CameraControl : public AObjectComponent
+class CameraControl : public InputComponent
 {
 public:
 	CameraControl( void );
@@ -11,7 +12,6 @@ public:
 
 	virtual void		input( Input & input, double delta );
 	virtual void		update( double delta );
-	virtual void		render( RenderEngine const & renderEngine, Shader const & shader, Camera const & camera ) const {};
 	virtual void		init( CoreEngine & coreEngine ) {};
 	// SETTER
 	void				setSpeed( float speed );

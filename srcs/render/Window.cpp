@@ -60,7 +60,7 @@ Window::Window( int width, int height, std::string const & title ) :
 	if ( Window::_nbWindow == 0 )
 	{
 		glfwMakeContextCurrent( this->_GLFWwindow );
-		gladLoadGLLoader( (GLADloadproc) glfwGetProcAddress );
+//		gladLoadGLLoader( (GLADloadproc) glfwGetProcAddress );
 	}
 
 	glfwSetWindowPos( this->_GLFWwindow, mode->width / 2 - this->_width / 2, mode->height / 2 - this->_height / 2 );

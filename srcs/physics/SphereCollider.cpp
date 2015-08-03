@@ -1,5 +1,5 @@
 #include "SphereCollider.hpp"
-#include "../components/PhysicsComponent.hpp"
+#include "../components/basic/PhysicsComponent.hpp"
 
 SphereCollider::SphereCollider( Vec3f const & center, float radius  ) :
 	_center( center ),

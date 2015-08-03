@@ -1,21 +1,13 @@
 #ifndef _OBJECT_COMPONENT_H_
 # define _OBJECT_COMPONENT_H_
 
-#include "Input.hpp"
-#include "math/Math.hpp"
-#include "CoreEngine.hpp"
+#include "../../math/Math.hpp"
+#include "../../Input.hpp"
+#include "../../CoreEngine.hpp"
 
 class AObjectComponent
 {
 public:
-	/*!
-	 * @function input
-	 * @param input: is a reference to the instance of Input
-	 * input this AObjectComponent
-	 *
-	 * @return void
-	 */
-	virtual void		input( Input & input, double delta ) {};
 
 	/*!
 	 * @function update
@@ -25,15 +17,6 @@ public:
 	 * @return void
 	 */
 	virtual void		update( double delta ) {};
-
-	/*!
-	 * @function render
-	 * @param renderEngine: is a reference to the instance of RenderEngine
-	 * render this AObjectComponent
-	 *
-	 * @return void
-	*/
-	virtual void		render( RenderEngine const & renderEngine, Shader const & shader, Camera const & camera ) const {};
 
 	/*!
 	 * @function init

@@ -18,6 +18,8 @@ void ModulesFactory::loadModules( std::string const & path )
 		return ;
 	}
 
+	// TODO: don't forget Py_Finalize()
+
 	while ( ( dirp = readdir( dp ) ) != NULL )
 	{
 		if ( dirp->d_name[0] == '.' )
@@ -38,8 +40,8 @@ void ModulesFactory::initModules( GameObject * root )
 
 	for ( it = this->_modules.begin(); it != this->_modules.end(); it++ )
 	{
-		Luna<LuaGameObject>::Register( (*it)->getLuaScript()->getLuaState() );
-		(*it)->init( root );
+//		Luna<LuaGameObject>::Register( (*it)->getLuaScript()->getLuaState() );
+//		(*it)->init( root );
 	}
 }
 
@@ -49,8 +51,8 @@ void ModulesFactory::updateModules( double delta )
 
 	for ( it = this->_modules.begin(); it != this->_modules.end(); it++ )
 	{
-		Luna<LuaGameObject>::Register( (*it)->getLuaScript()->getLuaState() );
-		(*it)->update( delta );
+//		Luna<LuaGameObject>::Register( (*it)->getLuaScript()->getLuaState() );
+//		(*it)->update( delta );
 	}
 }
 

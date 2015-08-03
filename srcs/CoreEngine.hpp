@@ -27,6 +27,7 @@ public:
 	RenderEngine &			getRenderEngine( void ) const;
 	PhysicsEngine &			getPhysicsEngine( void ) const;
 	Input &					getInput( void ) const;
+	AGame &					getGame( void ) const;
 
 	// SETTER
 	void					setDebugMode( bool mode );

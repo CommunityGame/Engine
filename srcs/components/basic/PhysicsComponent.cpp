@@ -1,5 +1,5 @@
 #include "PhysicsComponent.hpp"
-#include "../GameObject.hpp"
+#include "../../GameObject.hpp"
 
 PhysicsComponent::PhysicsComponent( void ) :
 	_velocity( 0, 0, 0 )

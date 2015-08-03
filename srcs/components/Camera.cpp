@@ -10,17 +10,7 @@ Camera::Camera( float fov, float aspect, float zNear, float zFar ) :
 	return ;
 }
 
-void Camera::input( Input & input, double delta )
-{
-	return ;
-}
-
 void Camera::update( double delta )
-{
-	return ;
-}
-
-void Camera::render( RenderEngine const & renderEngine, Shader const & shader, Camera const & camera ) const
 {
 	return ;
 }

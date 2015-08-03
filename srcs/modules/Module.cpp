@@ -5,67 +5,119 @@
 
 const std::string	Module::TAG = "Module";
 
-Module::Module( std::string const & path ) :
-	_isValid( false ),
-	_path( path )
+BOOST_PYTHON_MODULE(Module)
 {
-	DIR				*dp;
-	struct dirent	*dirp;
-	std::map<std::string, struct dirent *>	dirs;
+	using namespace boost::python;
 
-	if ( ( dp = opendir( path.c_str() ) ) == NULL )
+	class_<Module>( "Module", init<>() )
+		.def( "update", &Module::update )
+	;
+}
+
+Module::Module( void )
+{
+	std::cout << "ho yeah" << std::endl;
+}
+
+Module::Module( std::string const & path ) :
+	_isValid( false )
+{
+	using namespace boost::python;
+
+	try
 	{
-		std::stringstream ss;
-		ss << "Failed to open module path: " << path << ", errno: " << strerror( errno );
-		Logger::e( TAG, ss.str() );
-		return ;
+//		init_module_Module();
+//		PyImport_AppendInittab((char*)"Module", PyInit_Module);
+		//	PyImport_AppendInittab( "Module", &PyInit_Module );
+		// Retrieve the main module.
+//		object main = import( "__main__" );
+		// Retrieve the main module's namespace
+//		dict global( main.attr( "__dict__" ) );
+
+//		object lib = import( "Module" );
+//		dict local( lib.attr( "__dict__" ) );
+//
+//		std::string _path;
+//		_path += "import sys\nsys.path.append('";
+//		_path += path;
+//		_path += "')";
+//		exec( _path.c_str(), global, local );
+//		//	exec_file( path.c_str(), global, global );
+//
+//		object module = import( "Module" );
+//
+//		//	std::cout << module.is_none() << std::endl;
+//
+//		object Test = module.attr( "Test" );
+//
+//		object test = Test();
+//
+//		test.attr( "test" )();
 	}
-	// TODO: check file or dir
-	// TODO: load config.yml
-	// TODO: create luaLib instance
-	while ( ( dirp = readdir( dp ) ) != NULL )
+	catch( const error_already_set & e )
 	{
-		if ( dirp->d_name[0] == '.' )
-			continue ;
-		dirs[dirp->d_name] = dirp;
-	}
-	if ( ! dirs["config.yml"] )
-	{
-		Logger::e( TAG, "Failed to load module " + path + ", file not found 'config.yml' !" );
-		return ;
-	}
-	if ( ! dirs["main.lua"] )
-	{
-		Logger::e( TAG, "Failed to load module " + path + ", file not found 'main.lua' !" );
-		return ;
+		PyErr_Print();
 	}
 
-	this->_luaScript = new LuaScript( path + "/main.lua" );
-
-	YAML::Node config = YAML::LoadFile( path + "/config.yml" );
-	this->_name = config["name"] ? config["name"].as<std::string>() : "Unamed";
-	this->_version = config["version"] ? config["version"].as<std::string>() : "No version";
-	this->_author = config["author"] ? config["author"].as<std::string>() : "Anonymous";
-	closedir( dp );
-
-	Logger::i( TAG, "Module " + this->_name + "(" + this->_version + ") by " + this->_author + " have been loaded" );
-	this->_isValid = true;
+//	DIR				*dp;
+//	struct dirent	*dirp;
+//	std::map<std::string, struct dirent *>	dirs;
+//
+//	if ( ( dp = opendir( path.c_str() ) ) == NULL )
+//	{
+//		std::stringstream ss;
+//		ss << "Failed to open module path: " << path << ", errno: " << strerror( errno );
+//		Logger::e( TAG, ss.str() );
+//		return ;
+//	}
+//	// TODO: check file or dir
+//	// TODO: load config.yml
+//	// TODO: create luaLib instance
+//	while ( ( dirp = readdir( dp ) ) != NULL )
+//	{
+//		if ( dirp->d_name[0] == '.' )
+//			continue ;
+//		dirs[dirp->d_name] = dirp;
+//	}
+//	if ( ! dirs["config.yml"] )
+//	{
+//		Logger::e( TAG, "Failed to load module " + path + ", file not found 'config.yml' !" );
+//		return ;
+//	}
+//	if ( ! dirs["main.lua"] )
+//	{
+//		Logger::e( TAG, "Failed to load module " + path + ", file not found 'main.lua' !" );
+//		return ;
+//	}
+//
+////	this->_luaScript = new LuaScript( path + "/main.lua" );
+//
+//	YAML::Node config = YAML::LoadFile( path + "/config.yml" );
+//	this->_name = config["name"] ? config["name"].as<std::string>() : "Unamed";
+//	this->_version = config["version"] ? config["version"].as<std::string>() : "No version";
+//	this->_author = config["author"] ? config["author"].as<std::string>() : "Anonymous";
+//	closedir( dp );
+//
+//	Logger::i( TAG, "Module " + this->_name + "(" + this->_version + ") by " + this->_author + " have been loaded" );
+//	this->_isValid = true;
 }
 
 void Module::init( GameObject * luaRootObject )
 {
-	lua_pushlightuserdata( this->_luaScript->getLuaState(), (void*)luaRootObject );
-	lua_setglobal( this->_luaScript->getLuaState(),"rootGameObject" );
+//	lua_pushlightuserdata( this->_luaScript->getLuaState(), (void*)luaRootObject );
+//	lua_setglobal( this->_luaScript->getLuaState(),"rootGameObject" );
 //	lua_pop( this->_luaScript->getLuaState(), -1 );
-	lua_getglobal( this->_luaScript->getLuaState(), "init" );
-	lua_call( this->_luaScript->getLuaState(), 0, 0 );
+//	lua_getglobal( this->_luaScript->getLuaState(), "init" );
+//	lua_call( this->_luaScript->getLuaState(), 0, 0 );
 }
 
 void Module::update( double delta )
 {
-	lua_getglobal( this->_luaScript->getLuaState(), "update" );
-	lua_pushnumber( this->_luaScript->getLuaState(), delta );
-	lua_call( this->_luaScript->getLuaState(), 1, 0 );
+	using namespace boost::python;
+
+//	lua_getglobal( this->_luaScript->getLuaState(), "update" );
+//	lua_pushnumber( this->_luaScript->getLuaState(), delta );
+//	lua_call( this->_luaScript->getLuaState(), 1, 0 );
 }
 
 // GETTER
@@ -94,7 +146,7 @@ std::string		Module::getAuthor( void ) const
 	return ( this->_author );
 }
 
-LuaScript const *	Module::getLuaScript( void ) const
-{
-	return ( this->_luaScript );
-}
+//LuaScript const *	Module::getLuaScript( void ) const
+//{
+//	return ( this->_luaScript );
+//}

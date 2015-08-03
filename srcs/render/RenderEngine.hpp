@@ -32,7 +32,6 @@ private:
 	mutable Camera *	_camera;
 	Shader *			_defaultShader;
 	std::vector<LightComponent *>	_lights;
-	mutable std::vector<LightUniform>	_lightsUniform;
 };
 
 #endif // ! _RENDER_ENGINE_H_

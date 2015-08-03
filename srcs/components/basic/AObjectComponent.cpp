@@ -1,5 +1,5 @@
 #include "AObjectComponent.hpp"
-#include "GameObject.hpp"
+#include "../../GameObject.hpp"
 
 GameObject const &	AObjectComponent::getParent( void ) const
 {
