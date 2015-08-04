@@ -19,10 +19,11 @@ void ModulesFactory::loadModules( std::string const & path )
 	}
 
 	// TODO: don't forget Py_Finalize()
+	Py_Initialize();
 
 	while ( ( dirp = readdir( dp ) ) != NULL )
 	{
-		if ( dirp->d_name[0] == '.' )
+		if ( dirp->d_name[0] == '.' || std::string( dirp->d_name ) == "lib_module" )
 			continue ;
 		std::stringstream ss;
 		ss << "Load module: " << dirp->d_name;

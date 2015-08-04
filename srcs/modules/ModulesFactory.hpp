@@ -16,7 +16,7 @@ public:
 	void					updateModules( double delta );
 
 	std::vector<Module *>	getModules( void ) const;
-	lua_State *				getLuaState( void ) const;
+//	lua_State *				getLuaState( void ) const;
 
 private:
 	std::vector<Module *>	_modules;

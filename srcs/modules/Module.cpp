@@ -1,17 +1,17 @@
 #include <dirent.h>
 #include <string.h>
 #include "Module.hpp"
-#include <yaml-cpp/yaml.h>
+//#include <yaml-cpp/yaml.h>
 
 const std::string	Module::TAG = "Module";
 
-BOOST_PYTHON_MODULE(Module)
+BOOST_PYTHON_MODULE(LibModule)
 {
 	using namespace boost::python;
 
 	class_<Module>( "Module", init<>() )
-		.def( "update", &Module::update )
-	;
+			.def( "update", &Module::update )
+			;
 }
 
 Module::Module( void )
@@ -26,33 +26,30 @@ Module::Module( std::string const & path ) :
 
 	try
 	{
-//		init_module_Module();
-//		PyImport_AppendInittab((char*)"Module", PyInit_Module);
-		//	PyImport_AppendInittab( "Module", &PyInit_Module );
 		// Retrieve the main module.
-//		object main = import( "__main__" );
+		object main = import( "__main__" );
 		// Retrieve the main module's namespace
-//		dict global( main.attr( "__dict__" ) );
+		dict global( main.attr( "__dict__" ) );
 
-//		object lib = import( "Module" );
-//		dict local( lib.attr( "__dict__" ) );
-//
-//		std::string _path;
-//		_path += "import sys\nsys.path.append('";
-//		_path += path;
-//		_path += "')";
-//		exec( _path.c_str(), global, local );
-//		//	exec_file( path.c_str(), global, global );
-//
-//		object module = import( "Module" );
-//
-//		//	std::cout << module.is_none() << std::endl;
-//
+		std::string _path;
+		_path += "import sys\n";
+		_path += "sys.path.append('./resources/modules/lib_module')\n";
+		_path += "sys.path.append('";
+		_path += path;
+		_path += "')\n";
+		_path += "print(sys.path)";
+		exec( _path.c_str(), global, global );
+
+		object module = import( "main_module" );
+
+		//	std::cout << module.is_none() << std::endl;
+
 //		object Test = module.attr( "Test" );
 //
 //		object test = Test();
-//
-//		test.attr( "test" )();
+		object test = module.attr( "c1" );
+
+		test.attr( "update" )( 123.0 );
 	}
 	catch( const error_already_set & e )
 	{
@@ -102,7 +99,7 @@ Module::Module( std::string const & path ) :
 //	this->_isValid = true;
 }
 
-void Module::init( GameObject * luaRootObject )
+void		Module::init( GameObject * rootObject )
 {
 //	lua_pushlightuserdata( this->_luaScript->getLuaState(), (void*)luaRootObject );
 //	lua_setglobal( this->_luaScript->getLuaState(),"rootGameObject" );
@@ -111,10 +108,11 @@ void Module::init( GameObject * luaRootObject )
 //	lua_call( this->_luaScript->getLuaState(), 0, 0 );
 }
 
-void Module::update( double delta )
+void		Module::update( double delta )
 {
 	using namespace boost::python;
 
+	std::cout << "poky" << std::endl;
 //	lua_getglobal( this->_luaScript->getLuaState(), "update" );
 //	lua_pushnumber( this->_luaScript->getLuaState(), delta );
 //	lua_call( this->_luaScript->getLuaState(), 1, 0 );

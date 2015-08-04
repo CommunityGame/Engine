@@ -17,8 +17,8 @@ public:
 	Module( void );
 	Module( std::string const & path );
 
-	void			init( GameObject * luaRootObject );
-	void			update( double delta );
+	virtual void	init( GameObject * rootObject );
+	virtual void	update( double delta );
 
 	// GETTER
 	bool			isValid( void ) const;
