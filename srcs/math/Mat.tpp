@@ -9,8 +9,7 @@ class Mat : public Point<T, X * Y>
 public:
 	inline Mat( void )
 	{
-		for ( int i = 0; i < X * Y; ++i )
-			this->_values[i] = T( 0 );
+		*this = this->initIdentity();
 		return ;
 	}
 
@@ -19,12 +18,12 @@ public:
 		return ( this->initScale( T( 1 ) ) );
 	}
 
-	inline Mat &	initScale( T & scale )
+	inline Mat &	initScale( T scale )
 	{
 		for ( u_int8_t i = 0; i < Y; ++i )
 		{
 			for ( u_int8_t j = 0; j < X; ++j )
-				this->_values[j + i * X] = T( i == j );
+				this->_values[j + i * X] = ( i == j ) ? scale : T( 0 );
 		}
 		return ( *this );
 	}
@@ -187,6 +186,13 @@ public:
 		this->_values[14] = T( 2 ) * zFar * zNear / zRange;
 		this->_values[15] = T( 1 );
 		return ( *this );
+	}
+
+	std::string		toString( void ) const
+	{
+		std::stringstream ss;
+		ss << *this;
+		return ( ss.str() );
 	}
 };
 

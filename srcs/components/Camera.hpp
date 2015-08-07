@@ -9,7 +9,7 @@ public:
 	Camera( float fov, float aspect, float zNear, float zFar );
 
 	virtual void		update( double delta );
-	virtual void		init( CoreEngine & coreEngine ) {};
+//	virtual void		init( CoreEngine & coreEngine ) {};
 
 	// GETTER
 	float				getFov( void ) const;

@@ -1,9 +1,19 @@
 #include "MeshBuilder.hpp"
 
 const std::string	MeshBuilder::TAG = "MeshBuilder";
+std::map<std::string, shared_ptr<Mesh>>	MeshBuilder::_loadedMesh;
 
-Mesh *	MeshBuilder::loadFromObj( const std::string & file )
+shared_ptr<Mesh> MeshBuilder::loadFromObj( const std::string & file )
 {
+	std::map<std::string, shared_ptr<Mesh>>::const_iterator it;
+
+	it = MeshBuilder::_loadedMesh.find( file );
+	if ( it != MeshBuilder::_loadedMesh.end() )
+	{
+		Logger::w( TAG, "Reuse an already load mesh :" + file );
+		return ( (*it).second );
+	}
+
 	bool					flat = true;
 	GLuint					i = 0;
 
@@ -77,8 +87,10 @@ Mesh *	MeshBuilder::loadFromObj( const std::string & file )
 			}
 		}
 	}
-	Mesh *	res = new Mesh( vertex, indices );
+	shared_ptr<Mesh>	res( new Mesh( vertex, indices ) );
 	res->calcNormal();
 	res->bufferData();
+
+	MeshBuilder::_loadedMesh.insert( std::pair<std::string, shared_ptr<Mesh>>( file, res ) );
 	return ( res );
 }

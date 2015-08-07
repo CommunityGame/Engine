@@ -3,6 +3,9 @@
 
 # include <ostream>
 # include <cmath>
+# include <boost/shared_ptr.hpp>
+
+using namespace boost;
 
 template <typename T, u_int8_t D>
 class Point

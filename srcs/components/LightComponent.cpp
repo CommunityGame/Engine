@@ -15,7 +15,7 @@ void		LightComponent::update( double delta )
 
 }
 
-void		LightComponent::render( RenderEngine const & renderEngine, Shader const & shader, Camera const & camera ) const
+void		LightComponent::render( RenderEngine const & renderEngine, GameObject const & parent, Shader const & shader, Camera const & camera ) const
 {
 
 }

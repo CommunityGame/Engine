@@ -26,7 +26,6 @@ public:
 	Window &				getWindow( void ) const;
 	RenderEngine &			getRenderEngine( void ) const;
 	PhysicsEngine &			getPhysicsEngine( void ) const;
-	Input &					getInput( void ) const;
 	AGame &					getGame( void ) const;
 
 	// SETTER
@@ -36,8 +35,7 @@ private:
 	void					run( void );
 
 	AGame &					_game;
-	Window *				_window;
-	Input *					_input;
+	shared_ptr<Window>		_window;
 	RenderEngine *			_renderEngine;
 	PhysicsEngine *			_physicsEngine;
 	Debugger *				_debugger;

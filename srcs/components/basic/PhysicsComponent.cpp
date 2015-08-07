@@ -14,7 +14,7 @@ void	PhysicsComponent::physics( double delta )
 
 void	PhysicsComponent::update( double delta )
 {
-	this->_parent->getTransform()->translate( this->_velocity * delta );
+	this->_parent->getTransform().translate( this->_velocity * delta );
 }
 
 // SETTER

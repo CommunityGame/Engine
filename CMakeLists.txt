@@ -13,6 +13,7 @@ file( GLOB_RECURSE TESTS_FILES "./tests/**" )
 add_executable( CommunityGame_Engine ${SOURCE_FILES} ${TESTS_FILES} )
 
 # PYTHON
+set( Python_ADDITIONAL_VERSIONS 3.4 )
 find_package( PythonLibs 3.4 REQUIRED )
 include_directories( ${PYTHON_INCLUDE_DIRS} )
 target_link_libraries( CommunityGame_Engine ${PYTHON_LIBRARIES} )
@@ -30,24 +31,19 @@ if ( Boost_FOUND )
 	set( Boost_USE_MULTITHREADED ON )
 	set( Boost_USE_STATIC_RUNTIME OFF )
 
-	add_subdirectory( ./resources/modules/lib_module )
-
 	target_link_libraries( CommunityGame_Engine ${Boost_LIBRARIES} )
 elseif( NOT Boost_FOUND )
 	message(FATAL_ERROR "Unable to find correct Boost version. Did you set BOOST_ROOT?")
 endif()
 
+# PYTHON MODULE
+add_subdirectory( ./resources/modules/lib_module )
 
 # GLFW
 find_package( PkgConfig REQUIRED )
 pkg_search_module( GLFW REQUIRED glfw3 )
 include_directories( ${GLFW_INCLUDE_DIRS} )
 target_link_libraries( CommunityGame_Engine ${GLFW_STATIC_LIBRARIES} )
-
-# LUA
-find_package( Lua51 REQUIRED )
-include_directories( ${LUA_INCLUDE_DIR} )
-target_link_libraries( CommunityGame_Engine ${LUA_LIBRARIES} )
 
 # YAML
 set( YAML_CPP_VERSION 0.5.2 )

@@ -2,37 +2,36 @@
 # define _MODULE_H_
 
 #include <string>
-#include "lua/LuaScript.hpp"
 #include "../GameObject.hpp"
 #include <boost/python.hpp>
-
-//extern "C"
-//{
-//	#include <lua.h>
-//};
 
 class Module
 {
 public:
 	Module( void );
-	Module( std::string const & path );
 
-	virtual void	init( GameObject * rootObject );
-	virtual void	update( double delta );
+	static Module *	load( std::string const & path, std::string const & name );
+
+	void			addObject( GameObject * object );
+
+	virtual void	init( shared_ptr<GameObject> const & rootObject ) {};
+	virtual void	update( double delta ) {};
+	virtual void	input( Input const & input ) {};
+
+	// SETTER
+	void			setPyModule( boost::python::object PyModule );
+	void			setInstance( boost::python::object instance );
 
 	// GETTER
-	bool			isValid( void ) const;
 	std::string		getPath( void ) const;
 	std::string		getName( void ) const;
 	std::string		getVersion( void ) const;
 	std::string		getAuthor( void ) const;
-//	LuaScript const *	getLuaScript( void ) const;
 
 private:
-	bool			_isValid;
-//	LuaScript *		_luaScript;
-	PyObject *		_self;
 	std::string		_path;
+	boost::python::object	_PyModule;
+	boost::python::object	_instance;
 
 	std::string		_name;
 	std::string		_version;

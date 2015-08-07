@@ -11,7 +11,7 @@ public:
 //	~LightComponent( void );
 
 	virtual void		update( double delta );
-	virtual void		render( RenderEngine const & renderEngine, Shader const & shader, Camera const & camera ) const;
+	virtual void		render( RenderEngine const & renderEngine, GameObject const & parent, Shader const & shader, Camera const & camera ) const;
 	virtual void		init( CoreEngine & coreEngine );
 
 	// SETTER

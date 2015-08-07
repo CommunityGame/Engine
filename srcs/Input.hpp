@@ -4,29 +4,50 @@
 # include "render/Window.hpp"
 # include "math/Math.hpp"
 
+#define LEFT_STICKER	0
+#define RIGHT_STICKER	1
+#define TRIGGER			2
+
+#define LEFT			0
+#define RIGHT			1
+#define UP				2
+#define DOWN			3
+
 class Input
 {
 public:
-	Input( Window * window );
 
 	// FUNCTIONS
-	void			pollEvents( void );
-	bool			isCloseRequested( void ) const;
+	static void		init( shared_ptr<Window> const & window );
+	static void		pollEvents( shared_ptr<Window> const & window );
+	static bool		isCloseRequested( void );
 
 	// GETTER
-	bool			isKeyPressed( int key ) const;
-	bool			isMouseButtonPressed( int button ) const;
-	Vec2d			getMousePosition( void ) const;
-	Vec2d			getWindowCenter( void ) const;
+	static bool		isKeyPressed( int key );
+	static bool		isMouseButtonPressed( int button );
+	static Vec2f	getMousePosition( void );
+	static Vec2f	getWindowCenter( void );
+	static Vec2f	getScrollOffset( void );
+	static bool		isJoystickPresent( int joystick );
+	static std::string	getJoystickName( int joystick );
+	static bool		isJoystickButtonPressed( int joystick, int button );
+	static float	getJoystickPressure( int joystick, int button, int direction );
+	static Vec2f	getJoystickDirection( int joystick, int button );
 
 	// SETTER
-	void			setCursor( bool visible );
-	void			setMousePosition( Vec2d pos );
+	static void		setCursor( bool visible );
+	static void		setMousePosition( Vec2f pos );
+	static void		setScrollOffset( Vec2f pos );
 
 private:
-	Window *		_window;
-	bool			_keyPressed[GLFW_KEY_LAST];
-	bool			_mouseButtonPressed[GLFW_MOUSE_BUTTON_LAST];
+	Input( void ) {};
+
+	static shared_ptr<Window>	_window;
+	static bool		_keyPressed[GLFW_KEY_LAST];
+	static bool		_mouseButtonPressed[GLFW_MOUSE_BUTTON_LAST];
+	static Vec2f	_scrollOffset;
+
+	static const std::string	TAG;
 };
 
 #endif // ! _INPUT_H_

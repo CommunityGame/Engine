@@ -10,7 +10,7 @@ public:
 	Cube( float size );
 
 private:
-	static Mesh *	_cube;
+	static shared_ptr<Mesh>	_cube;
 };
 
 #endif // ! _CUBE_H_

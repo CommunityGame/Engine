@@ -1,12 +1,12 @@
 #include "Cube.hpp"
 
-Mesh *	Cube::_cube = nullptr;
+shared_ptr<Mesh>	Cube::_cube = nullptr;
 
 Cube::Cube( float size )
 {
 	if ( Cube::_cube == nullptr )
 	{
-		Cube::_cube = new Mesh(
+		Cube::_cube = shared_ptr<Mesh>( new Mesh(
 				std::vector<Vertexf>( {
 						Vertexf( Vec3f( -1, -1, -1 ) ),
 						Vertexf( Vec3f( -1, +1, -1 ) ),
@@ -25,11 +25,11 @@ Cube::Cube( float size )
 						1, 7, 3,  3, 7, 5,
 						6, 0, 4,  4, 0, 2
 				} )
-		);
+		) );
 		Cube::_cube->calcNormal();
 		Cube::_cube->bufferData();
 	}
 
-	this->getTransform()->setScale( Vec3f( size, size, size ) );
+	this->getTransform().setScale( Vec3f( size, size, size ) );
 	this->addComponent( Cube::_cube );
 }

@@ -22,14 +22,14 @@ public:
 	void				addLight( LightComponent * light );
 
 	//	GETTER
-	Camera *			getCamera( void ) const;
+	shared_ptr<Camera>	getCamera( void ) const;
 
 	//	SETTER
-	void				setCamera( Camera * camera ) const;
+	void				setCamera( shared_ptr<Camera> camera ) const;
 
 private:
 	const Window &		_window;
-	mutable Camera *	_camera;
+	mutable shared_ptr<Camera>	_camera;
 	Shader *			_defaultShader;
 	std::vector<LightComponent *>	_lights;
 };

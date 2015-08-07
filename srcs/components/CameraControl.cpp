@@ -15,34 +15,35 @@ CameraControl::~CameraControl( void )
 	return ;
 }
 
-void CameraControl::input( Input & input, double delta )
+void CameraControl::update( double delta )
 {
+	// TODO: rewrite this function
 	_motion = Vec3f( 0, 0, 0 );
-	if ( input.isKeyPressed( GLFW_KEY_W ) )
+	if ( Input::isKeyPressed( GLFW_KEY_W ) )
 		_motion += getTransform().getRotation().getForward();
-	if ( input.isKeyPressed( GLFW_KEY_S ) )
+	if ( Input::isKeyPressed( GLFW_KEY_S ) )
 		_motion += getTransform().getRotation().getBack();
-	if ( input.isKeyPressed( GLFW_KEY_A ) )
+	if ( Input::isKeyPressed( GLFW_KEY_A ) )
 		_motion += getTransform().getRotation().getLeft();
-	if ( input.isKeyPressed( GLFW_KEY_D ) )
+	if ( Input::isKeyPressed( GLFW_KEY_D ) )
 		_motion += getTransform().getRotation().getRight();
-	if ( input.isKeyPressed( GLFW_KEY_SPACE ) )
+	if ( Input::isKeyPressed( GLFW_KEY_SPACE ) )
 		_motion += getTransform().getRotation().getUp();
-	if ( input.isKeyPressed( GLFW_KEY_LEFT_SHIFT ) )
+	if ( Input::isKeyPressed( GLFW_KEY_LEFT_SHIFT ) )
 		_motion += getTransform().getRotation().getDown();
 	this->_motion.normalize();
 
-	if ( input.isKeyPressed( GLFW_KEY_ESCAPE ) )
+	if ( Input::isKeyPressed( GLFW_KEY_ESCAPE ) )
 	{
-		input.setCursor( true );
+		Input::setCursor( true );
 		this->_rotation = Quatf();
 		this->_mouseLocked = false;
 	}
 
 	if ( this->_mouseLocked )
 	{
-		Vec2d deltaPos = input.getMousePosition() - this->_oldMousePos;
-		this->_oldMousePos = input.getMousePosition();
+		Vec2f deltaPos = Input::getMousePosition() - this->_oldMousePos;
+		this->_oldMousePos = Input::getMousePosition();
 
 		bool rotY = deltaPos.getX() != 0;
 		bool rotX = deltaPos.getY() != 0;
@@ -55,17 +56,13 @@ void CameraControl::input( Input & input, double delta )
 		this->_rotation.normalize();
 	}
 
-	if ( input.isMouseButtonPressed( GLFW_MOUSE_BUTTON_LEFT ) )
+	if ( Input::isMouseButtonPressed( GLFW_MOUSE_BUTTON_LEFT ) )
 	{
-		this->_oldMousePos = input.getMousePosition();
-		input.setCursor( false );
+		this->_oldMousePos = Input::getMousePosition();
+		Input::setCursor( false );
 		this->_mouseLocked = true;
 	}
-	return ;
-}
 
-void CameraControl::update( double delta )
-{
 	Transformf	*transform;
 
 	transform = &getTransform();

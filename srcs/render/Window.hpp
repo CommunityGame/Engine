@@ -8,9 +8,12 @@
 
 # include <exception>
 # include <iostream>
+# include <boost/smart_ptr/shared_ptr.hpp>
 
 # include "../EngineException.hpp"
 # include "../debugs/Logger.hpp"
+
+using namespace boost;
 
 /*!
  * @class Window
@@ -38,9 +41,9 @@ public:
 	 * @param width			The width of window
 	 * @param height		The height of window
 	 * @param title			The title of window
-	 * @return Window pointer
+	 * @return shared_ptr<Window>
 	 */
-	static Window *			create( int width, int height, std::string const & title );
+	static shared_ptr<Window>	create( int width, int height, std::string const & title );
 
 	/*!
 	 * @function initGLFW

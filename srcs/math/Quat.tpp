@@ -161,10 +161,10 @@ public:
 	inline Quat		operator/( Quat const & rhs ) const
 	{
 		Quat result;
-		T div = T( rhs.getR() * rhs.getR());
-		div += T( rhs.getI() * rhs.getI());
-		div += T( rhs.getJ() * rhs.getJ());
-		div += T( rhs.getK() * rhs.getK());
+		T div = T( rhs.getR() * rhs.getR() );
+		div += T( rhs.getI() * rhs.getI() );
+		div += T( rhs.getJ() * rhs.getJ() );
+		div += T( rhs.getK() * rhs.getK() );
 
 		result[0] = ( rhs.getR() * this->getR() + rhs.getI() * this->getI() + rhs.getJ() * this->getJ() + rhs.getK() * this->getK() ) / div;
 		result[1] = ( rhs.getR() * this->getI() - rhs.getI() * this->getR() - rhs.getJ() * this->getK() + rhs.getK() * this->getJ() ) / div;
@@ -261,6 +261,17 @@ public:
 		(*this)[1] = i;
 		(*this)[2] = j;
 		(*this)[3] = k;
+	}
+
+	std::string		toString( void ) const
+	{
+		std::stringstream ss;
+		ss << "Quat( ";
+		ss << (*this)[0] << ", ";
+		ss << (*this)[1] << ", ";
+		ss << (*this)[2] << ", ";
+		ss << (*this)[3] << " )";
+		return ( ss.str() );
 	}
 };
 

@@ -5,18 +5,17 @@
 #include <vector>
 #include "Module.hpp"
 #include "../GameObject.hpp"
-#include "lua/LuaScript.hpp"
 
 class ModulesFactory
 {
 public:
 	void					loadModules( std::string const & path );
 
-	void					initModules( GameObject * root );
+	void					initModules( shared_ptr<GameObject> root );
 	void					updateModules( double delta );
+	void					inputModules( Input const & input );
 
 	std::vector<Module *>	getModules( void ) const;
-//	lua_State *				getLuaState( void ) const;
 
 private:
 	std::vector<Module *>	_modules;

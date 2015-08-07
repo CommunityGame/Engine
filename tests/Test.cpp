@@ -15,9 +15,8 @@ Test::Test( void ) : AGame()
 	return ;
 }
 
-
-GameObject *		mesh1;
-GameObject *		cube;
+shared_ptr<GameObject> parent( new GameObject() );
+shared_ptr<GameObject> mesh1( new GameObject() );
 
 void Test::init( void )
 {
@@ -25,17 +24,18 @@ void Test::init( void )
 	Factory::registerClass( "layout", &Layout::instantiate );
 
 	float aspectRatio = (float)this->_coreEngine->getWindow().getWidth() / (float)this->_coreEngine->getWindow().getHeight();
-	GameObject *	cameraO = new GameObject();
-	Camera *		camera = new Camera( 70.0f, aspectRatio, 0.1f, 1000.0f );
-	CameraControl *	control = new CameraControl();
+	shared_ptr<GameObject>	cameraO( new GameObject() );
+	shared_ptr<Camera>		camera( new Camera( 70.0f, aspectRatio, 0.1f, 1000.0f ) );
+	shared_ptr<CameraControl>	control( new CameraControl() );
 	control->setSpeed( 10.0f );
-	cameraO->addComponent( camera )->addComponent( control );
-	cameraO->getTransform()->setPosition( Vec3f( 0, 0.001f, -10 ) );
+	cameraO->addComponent( camera );
+	cameraO->addComponent( control );
+	cameraO->getTransform().setPosition( Vec3f( 0, 0.001f, -10 ) );
 	setCamera( camera );
 	addObject( cameraO );
 
-	GameObject *	meshO = new GameObject();
-	Mesh *			mesh = new Mesh();
+	shared_ptr<GameObject>	meshO( new GameObject() );
+	shared_ptr<Mesh>		mesh( new Mesh() );
 	mesh->putVertex( Vertexf( Vec3f( -1, 0, -1 ) ) );
 	mesh->putVertex( Vertexf( Vec3f( -1, 0, 1 ) ) );
 	mesh->putVertex( Vertexf( Vec3f( 1, 0, -1 ) ) );
@@ -43,20 +43,20 @@ void Test::init( void )
 	mesh->calcNormal();
 	mesh->bufferData();
 	meshO->addComponent( mesh );
-	meshO->getTransform()->setScale( Vec3f( 10, 10, 10 ) );
-	meshO->getTransform()->setPosition( Vec3f( 0, 0, 0 ) );
+	meshO->getTransform().setScale( Vec3f( 10, 10, 10 ) );
+	meshO->getTransform().setPosition( Vec3f( 0, 0, 0 ) );
 
-	PhysicsComponent * physicsComponent = new PhysicsComponent();
+	shared_ptr<PhysicsComponent> physicsComponent( new PhysicsComponent() );
 	physicsComponent->setCollider( new PlanCollider( Vec3f( 0, 1, 0 ) ) );
 	physicsComponent->setMass( 10000000000000 );
 	meshO->addComponent( physicsComponent );
-
 	addObject( meshO );
 
-//	GameObject * mesh1 = new GameObject();
 //	mesh1->addComponent( MeshBuilder::loadFromObj( "./resources/modules/main_module/objs/Feisar_Ship.obj" ) );
 //	mesh1->getTransform()->setScale( Vec3f( 0.02, 0.02, 0.02 ) );
-//	addObject( mesh1 );
+//	mesh1->getTransform()->setPosition( Vec3f( 2, 0, 0 ) );
+//	parent->addChild( mesh1 );
+//	addObject( parent );
 
 //	cube = new Cube( 2 );
 //	cube->getTransform()->setScale( Vec3f( 0.5, 0.5, 0.5 ) );
@@ -65,7 +65,7 @@ void Test::init( void )
 //	cube->addComponent( physicsComponent );
 //	addObject( cube );
 
-//	GameObject *		sphere = new GameObject();
+//	shared_ptr<GameObject>		sphere( new GameObject() );
 //	sphere->addComponent( MeshBuilder::loadFromObj( "./resources/objs/sphere.obj" ) );
 //	PhysicsComponent * physicsComponent1 = new PhysicsComponent();
 //	physicsComponent1->setCollider( new SphereCollider( Vec3f( 0, 0, 0 ), 1 ) );
@@ -75,7 +75,7 @@ void Test::init( void )
 //	sphere->getTransform()->setPosition( Vec3f( 0, 2, 0 ) );
 //	addObject( sphere );
 
-//	GameObject *		sphere2 = new GameObject();
+//	shared_ptr<GameObject>		sphere2( new GameObject() );
 //	sphere2->addComponent( MeshBuilder::loadFromObj( "./resources/objs/sphere.obj" ) );
 //	PhysicsComponent * physicsComponent2 = new PhysicsComponent();
 //	physicsComponent2->setCollider( new SphereCollider( Vec3f( 0, 0, 0 ), 1 ) );
@@ -85,24 +85,24 @@ void Test::init( void )
 //	sphere2->getTransform()->setPosition( Vec3f( 3, 1, 0 ) );
 //	addObject( sphere2 );
 
-	GameObject *		lightO = new GameObject();
-	LightComponent *	light = new LightComponent();
+	shared_ptr<GameObject>		lightO( new GameObject() );
+	shared_ptr<LightComponent>	light( new LightComponent() );
 	light->setAmbient( Colorf( 0.2f, 0.2f, 0.2f, 1 ) );
 	light->setDiffuse( Colorf( 0.5f, 0.5f, 0.5f, 1 ) );
 	light->setSpecular( Colorf( 0.9f, 0.9f, 0.9f, 1 ) );
 	light->setShininess( 40 );
 	lightO->addComponent( light );
-	lightO->getTransform()->setPosition( Vec3f( 0, 10, 0 ) );
+	lightO->getTransform().setPosition( Vec3f( 0, 10, 0 ) );
 	addObject( lightO );
 
 
 	// TODO: GUI
-//	GameObject *		guiObject = new GameObject();
+//	shared_ptr<GameObject>		guiObject = new GameObject();
 //	guiObject->addComponent( new UiComponent( "./resources/ui/test_ui.xml" ) );
 //	guiObject->getTransform()->setScale( Vec3f( 0.5f, 0.5f, 0.5f ) );
 //	addObject( guiObject );
 
-//	GameObject *		light1 = new GameObject();
+//	shared_ptr<GameObject>		light1 = new GameObject();
 //	light = new LightComponent();
 //	light->setAmbient( Colorf( 0.0f, 0.2f, 0.2f, 1 ) );
 //	light->setDiffuse( Colorf( 0.0f, 0.5f, 0.5f, 1 ) );
@@ -113,8 +113,8 @@ void Test::init( void )
 //	addObject( light1 );
 }
 
-//void Test::update( double delta )
-//{
-////	mesh1->getTransform()->rotate( Quatf( Vec3f( 0, 1, 0 ), TO_RADIANS( 0.3 ) ) );
-//	AGame::update( delta );
-//}
+void Test::update( double delta )
+{
+//	parent->getTransform()->rotate( Quatf( Vec3f( 0, 1, 0 ), TO_RADIANS( 0.3 ) ) );
+	AGame::update( delta );
+}

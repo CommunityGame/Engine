@@ -20,15 +20,6 @@ public:
 	virtual void	init( void ) = 0;
 
 	/*!
-	 * @function input
-	 * @param input: is a reference to the instance of Input
-	 * input all GameObject attached to rootObject
-	 *
-	 * @return void
-	 */
-	void			input( Input & input, double delta );
-
-	/*!
 	 * @function update
 	 * @param delta: time passed to run the previous loop
 	 * update all GameObject attached to rootObject
@@ -62,7 +53,7 @@ public:
 	 *
 	 * @return void
 	 */
-	void			addObject( GameObject * object );
+	void			addObject( shared_ptr<GameObject> object );
 
 	/*!
 	 * @function setCamera
@@ -70,7 +61,7 @@ public:
 	 *
 	 * @return void
 	 */
-	void			setCamera( Camera * camera );
+	void			setCamera( shared_ptr<Camera> camera );
 
 	/*!
 	 * @function setCoreEngine
@@ -85,18 +76,18 @@ public:
 	 *
 	 * @return the main camera
 	 */
-	Camera *		getCamera( void ) const;
+	shared_ptr<Camera>		getCamera( void ) const;
 
 	/*!
 	 * @function getRootObject
 	 *
 	 * @return th root object
 	 */
-	GameObject *	getRootObject( void ) const;
+	shared_ptr<GameObject>	getRootObject( void ) const;
 
 private:
-	GameObject *		_rootObject;
-	Camera *			_camera;
+	shared_ptr<GameObject>	_rootObject;
+	shared_ptr<Camera>		_camera;
 
 protected:
 	CoreEngine *		_coreEngine;

@@ -1,15 +1,14 @@
 #include <sstream>
 #include "CoreEngine.hpp"
 #include "AGame.hpp"
-#include "components/Camera.hpp"
 #include "modules/ModulesFactory.hpp"
+#include "components/Camera.hpp"
 
 const std::string	CoreEngine::TAG = "CoreEngine";
 
 CoreEngine::CoreEngine( AGame & game, int fpsExpected ) :
 	_game( game ),
 	_window( nullptr ),
-	_input( nullptr ),
 	_isRunning( false ),
 	_fpsExpected( fpsExpected ),
 	_debugMode( false )
@@ -19,8 +18,6 @@ CoreEngine::CoreEngine( AGame & game, int fpsExpected ) :
 
 CoreEngine::~CoreEngine( void )
 {
-	delete this->_window;
-	delete this->_input;
 	delete this->_renderEngine;
 	return ;
 }
@@ -55,7 +52,6 @@ bool			CoreEngine::stop( void )
 void			CoreEngine::createWindow( int width, int height, std::string const & title )
 {
 	this->_window = Window::create( width, height, title );
-	this->_input = new Input( this->_window );
 	this->_renderEngine = new RenderEngine( * this->_window );
 	this->_physicsEngine = new PhysicsEngine(  );
 	return ;
@@ -76,6 +72,7 @@ void			CoreEngine::run( void )
 
 	this->_game.setCoreEngine( this );
 	this->_game.init();
+	Input::init( this->_window );
 
 	ModulesFactory	modulesFactory;
 	modulesFactory.loadModules( "./resources/modules" );
@@ -100,15 +97,10 @@ void			CoreEngine::run( void )
 
 		// INPUT
 //		begin_debug = glfwGetTime();
-		this->_input->pollEvents();
+		Input::pollEvents( this->_window );
 
-		if ( this->_input->isCloseRequested() )
+		if ( Input::isCloseRequested() )
 			this->stop();
-
-		this->_game.input( * this->_input, dt );
-
-//		end_debug = glfwGetTime();
-//		std::cout << "Input: " << end_debug - begin_debug << std::endl;
 
 		// PHYSICS
 //		begin_debug = end_debug;
@@ -184,11 +176,6 @@ RenderEngine &	CoreEngine::getRenderEngine( void ) const
 PhysicsEngine &	CoreEngine::getPhysicsEngine( void ) const
 {
 	return ( * this->_physicsEngine );
-}
-
-Input &			CoreEngine::getInput( void ) const
-{
-	return ( * this->_input );
 }
 
 void			CoreEngine::startDebugWindow( void )

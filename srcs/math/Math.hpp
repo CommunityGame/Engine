@@ -11,39 +11,39 @@
 # define MIN(a,b) ( ( (a) < (b) ) ? (a) : (b) )
 # define MAX(a,b) ( ( (a) > (b) ) ? (a) : (b) )
 
-#define Point2i Point<int, 2>
-#define Point2f Point<float, 2>
-#define Point2d Point<double, 2>
-#define Point3i Point<int, 3>
-#define Point3f Point<float, 3>
-#define Point3d Point<double, 3>
+typedef Point<int, 2> Point2i;
+typedef Point<float, 2> Point2f;
+typedef Point<double, 2> Point2d;
+typedef Point<int, 3> Point3i;
+typedef Point<float, 3> Point3f;
+typedef Point<double, 3> Point3d;
 
-#define Vec2i Vec2<int>
-#define Vec2f Vec2<float>
-#define Vec2d Vec2<double>
-#define Vec3i Vec3<int>
-#define Vec3f Vec3<float>
-#define Vec3d Vec3<double>
+typedef Vec2<int> Vec2i;
+typedef Vec2<float> Vec2f;
+typedef Vec2<double> Vec2d;
+typedef Vec3<int> Vec3i;
+typedef Vec3<float> Vec3f;
+typedef Vec3<double> Vec3d;
 
-#define Mat4i Mat4<int>
-#define Mat4f Mat4<float>
-#define Mat4d Mat4<double>
+typedef Mat4<int> Mat4i;
+typedef Mat4<float> Mat4f;
+typedef Mat4<double> Mat4d;
 
-#define Quati Quat<int>
-#define Quatf Quat<float>
-#define Quatd Quat<double>
+typedef Quat<int> Quati;
+typedef Quat<float> Quatf;
+typedef Quat<double> Quatd;
 
-#define Transformi Transform<int>
-#define Transformf Transform<float>
-#define Transformd Transform<double>
+typedef Transform<int> Transformi;
+typedef Transform<float> Transformf;
+typedef Transform<double> Transformd;
 
-#define Colori Color<int>
-#define Colorf Color<float>
-#define Colord Color<double>
+typedef Color<int> Colori;
+typedef Color<float> Colorf;
+typedef Color<double> Colord;
 
-#define Vertexi Vertex<int>
-#define Vertexf Vertex<float>
-#define Vertexd Vertex<double>
+typedef Vertex<int> Vertexi;
+typedef Vertex<float> Vertexf;
+typedef Vertex<double> Vertexd;
 
 class Math
 {

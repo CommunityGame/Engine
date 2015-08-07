@@ -20,7 +20,7 @@ private:
 	void			loop( void );
 
 	std::thread *	_thread;
-	Window *		_window;
+	shared_ptr<Window>	_window;
 	bool			_isRunning;
 };
 

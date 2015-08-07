@@ -74,9 +74,9 @@ void				Window::refresh( void ) const
 }
 
 // STATIC FUNCTIONS
-Window *			Window::create( int width, int height, std::string const & title )
+shared_ptr<Window>		Window::create( int width, int height, std::string const & title )
 {
-	Window *		window = new Window( width, height, title );
+	shared_ptr<Window> window( new Window( width, height, title ) );
 	const GLubyte*	renderer = glGetString( GL_RENDERER );
 	const GLubyte*	version = glGetString( GL_VERSION );
 	const GLubyte*	glslVersion = glGetString( GL_SHADING_LANGUAGE_VERSION );

@@ -18,11 +18,29 @@ Mesh::Mesh( std::vector<Vertexf> const & vertex, std::vector<GLuint> const & ind
 	this->_index = (GLuint) indices.size();
 }
 
+Mesh::Mesh( Mesh const & cpy )
+{
+	*this = cpy;
+}
+
 Mesh::~Mesh( void )
 {
 	glDeleteBuffers( 1, & this->_vertexBufferObject );
 	glDeleteBuffers( 1, & this->_indexBufferObject );
 	return ;
+}
+
+Mesh & Mesh::operator=( Mesh const & rhs )
+{
+	if ( this != &rhs )
+	{
+		this->_vertexBufferObject = rhs.getVertexBufferObject();
+		this->_indexBufferObject = rhs.getIndexBufferObject();
+		this->_vertices = rhs.getVertices();
+		this->_indices = rhs.getIndices();
+		this->_index = rhs.getIndex();
+	}
+	return ( *this );
 }
 
 void	Mesh::putVertex( Vertexf const & vertex )
@@ -75,10 +93,10 @@ void	Mesh::update( double delta )
 	return ;
 }
 
-void	Mesh::render( RenderEngine const & renderEngine, Shader const & shader, Camera const & camera ) const
+void	Mesh::render( RenderEngine const & renderEngine, GameObject const & parent, Shader const & shader, Camera const & camera ) const
 {
 	shader.bind();
-	shader.updateUniforms( renderEngine, this->getTransform(), camera/*, material*/ ); //TODO: material
+	shader.updateUniforms( renderEngine, parent.getTransform(), camera/*, material*/ ); //TODO: material
 	this->draw();
 	shader.unbind();
 	return ;
@@ -103,4 +121,30 @@ void	Mesh::calcNormal( void )
 	}
 	for ( it2 = this->_vertices.begin(); it2 != this->_vertices.end(); it2++ )
 		(*it2).setNormal( (*it2).getNormal().normalized() );
+}
+
+// GETTER
+GLuint const &			Mesh::getVertexBufferObject( void ) const
+{
+	return ( this->_vertexBufferObject );
+}
+
+GLuint const &			Mesh::getIndexBufferObject( void ) const
+{
+	return ( this->_indexBufferObject );
+}
+
+std::vector<Vertexf> const & Mesh::getVertices( void ) const
+{
+	return ( this->_vertices );
+}
+
+std::vector<GLuint> const &	Mesh::getIndices( void ) const
+{
+	return ( this->_indices );
+}
+
+GLuint const &			Mesh::getIndex( void ) const
+{
+	return ( this->_index );
 }

@@ -64,13 +64,13 @@ void			RenderEngine::render( GameObject const & object ) const
 }
 
 //	GETTER
-Camera *		RenderEngine::getCamera( void ) const
+shared_ptr<Camera>	RenderEngine::getCamera( void ) const
 {
 	return ( this->_camera );
 }
 
 //	SETTER
-void			RenderEngine::setCamera( Camera * camera ) const
+void				RenderEngine::setCamera( shared_ptr<Camera> camera ) const
 {
 	this->_camera = camera;
 	return ;

@@ -1,60 +1,58 @@
 #include <dirent.h>
-#include <string.h>
 #include "Module.hpp"
-//#include <yaml-cpp/yaml.h>
+#include "../components/MeshBuilder.hpp"
 
 const std::string	Module::TAG = "Module";
 
-BOOST_PYTHON_MODULE(LibModule)
-{
-	using namespace boost::python;
-
-	class_<Module>( "Module", init<>() )
-			.def( "update", &Module::update )
-			;
-}
-
 Module::Module( void )
 {
-	std::cout << "ho yeah" << std::endl;
+	return ;
 }
 
-Module::Module( std::string const & path ) :
-	_isValid( false )
+Module *	Module::load( std::string const & path, std::string const & name )
 {
 	using namespace boost::python;
+	Module * res = nullptr;
+
+	Logger::i( TAG, "Load module: " + name );
 
 	try
 	{
-		// Retrieve the main module.
 		object main = import( "__main__" );
-		// Retrieve the main module's namespace
 		dict global( main.attr( "__dict__" ) );
 
 		std::string _path;
 		_path += "import sys\n";
-		_path += "sys.path.append('./resources/modules/lib_module')\n";
 		_path += "sys.path.append('";
-		_path += path;
+		_path += path + "/" + name;
 		_path += "')\n";
-		_path += "print(sys.path)";
 		exec( _path.c_str(), global, global );
 
-		object module = import( "main_module" );
+		object module = import( name.c_str() );
 
-		//	std::cout << module.is_none() << std::endl;
+		if ( module.is_none() )
+			throw new EngineException( "Unable to load module: " + name );
 
-//		object Test = module.attr( "Test" );
-//
-//		object test = Test();
-		object test = module.attr( "c1" );
+		object PyModule = module.attr( name.c_str() );
+		object instance = PyModule();
 
-		test.attr( "update" )( 123.0 );
+		res = extract<Module *>( instance );
+		res->setPyModule( PyModule );
+		res->setInstance( instance );
 	}
 	catch( const error_already_set & e )
 	{
 		PyErr_Print();
 	}
+	return ( res );
+}
+
+void	Module::addObject( GameObject * object )
+{
+//	std::cout << "pok: " << rootObject << std::endl;
+//	rootObject->addChild( object );
+
+}
 
 //	DIR				*dp;
 //	struct dirent	*dirp;
@@ -97,33 +95,20 @@ Module::Module( std::string const & path ) :
 //
 //	Logger::i( TAG, "Module " + this->_name + "(" + this->_version + ") by " + this->_author + " have been loaded" );
 //	this->_isValid = true;
+
+// SETTER
+
+void			Module::setPyModule( boost::python::object PyModule )
+{
+	this->_PyModule = PyModule;
 }
 
-void		Module::init( GameObject * rootObject )
+void			Module::setInstance( boost::python::object instance )
 {
-//	lua_pushlightuserdata( this->_luaScript->getLuaState(), (void*)luaRootObject );
-//	lua_setglobal( this->_luaScript->getLuaState(),"rootGameObject" );
-//	lua_pop( this->_luaScript->getLuaState(), -1 );
-//	lua_getglobal( this->_luaScript->getLuaState(), "init" );
-//	lua_call( this->_luaScript->getLuaState(), 0, 0 );
-}
-
-void		Module::update( double delta )
-{
-	using namespace boost::python;
-
-	std::cout << "poky" << std::endl;
-//	lua_getglobal( this->_luaScript->getLuaState(), "update" );
-//	lua_pushnumber( this->_luaScript->getLuaState(), delta );
-//	lua_call( this->_luaScript->getLuaState(), 1, 0 );
+	this->_instance = instance;
 }
 
 // GETTER
-bool			Module::isValid( void ) const
-{
-	return ( this->_isValid );
-}
-
 std::string		Module::getPath( void ) const
 {
 	return ( this->_path );
@@ -143,8 +128,3 @@ std::string		Module::getAuthor( void ) const
 {
 	return ( this->_author );
 }
-
-//LuaScript const *	Module::getLuaScript( void ) const
-//{
-//	return ( this->_luaScript );
-//}

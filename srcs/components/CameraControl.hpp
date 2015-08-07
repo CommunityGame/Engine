@@ -10,7 +10,6 @@ public:
 	CameraControl( void );
 	~CameraControl( void );
 
-	virtual void		input( Input & input, double delta );
 	virtual void		update( double delta );
 	virtual void		init( CoreEngine & coreEngine ) {};
 	// SETTER
@@ -21,7 +20,7 @@ private:
 	Vec3f				_motion;
 	Quatf				_rotation;
 	bool				_mouseLocked;
-	Vec2d				_oldMousePos;
+	Vec2f				_oldMousePos;
 };
 
 #endif // ! _CAMERA_CONTROL_H_

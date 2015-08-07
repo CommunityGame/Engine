@@ -2,15 +2,6 @@
 
 AGame::~AGame( void )
 {
-	if ( this->_rootObject != nullptr )
-		delete this->_rootObject;
-	return ;
-}
-
-void	AGame::input( Input & input, double delta )
-{
-	if ( this->_rootObject != nullptr )
-		this->_rootObject->inputAll( input, delta );
 	return ;
 }
 
@@ -35,16 +26,16 @@ void	AGame::physics( PhysicsEngine const & physicsEngine, double delta ) const
 	return ;
 }
 
-void	AGame::addObject( GameObject * object )
+void	AGame::addObject( shared_ptr<GameObject> object )
 {
 	object->setCoreEngine( this->_coreEngine );
 	if ( this->_rootObject == nullptr )
-		this->_rootObject = new GameObject();
+		this->_rootObject = shared_ptr<GameObject>( new GameObject() );
 	this->_rootObject->addChild( object );
 	return ;
 }
 
-void	AGame::setCamera( Camera * camera )
+void	AGame::setCamera( shared_ptr<Camera> camera )
 {
 	this->_camera = camera;
 }
@@ -54,12 +45,12 @@ void AGame::setCoreEngine( CoreEngine * coreEngine )
 	this->_coreEngine = coreEngine;
 }
 
-Camera *		AGame::getCamera( void ) const
+shared_ptr<Camera>		AGame::getCamera( void ) const
 {
 	return ( this->_camera );
 }
 
-GameObject *	AGame::getRootObject( void ) const
+shared_ptr<GameObject>	AGame::getRootObject( void ) const
 {
 	return ( this->_rootObject );
 }
