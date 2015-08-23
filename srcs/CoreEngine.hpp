@@ -2,7 +2,7 @@
 # define _CORE_ENGINE_H_
 
 #include <sys/types.h>
-#include "render/Window.hpp"
+#include "render/GLWindow.hpp"
 #include "Input.hpp"
 #include "render/RenderEngine.hpp"
 #include "debugs/Debugger.hpp"
@@ -23,7 +23,7 @@ public:
 	void					startDebugWindow( void );
 
 	// GETTER
-	Window &				getWindow( void ) const;
+	GLWindow &				getWindow( void ) const;
 	RenderEngine &			getRenderEngine( void ) const;
 	PhysicsEngine &			getPhysicsEngine( void ) const;
 	AGame &					getGame( void ) const;
@@ -35,7 +35,7 @@ private:
 	void					run( void );
 
 	AGame &					_game;
-	shared_ptr<Window>		_window;
+	shared_ptr<GLWindow>	_window;
 	RenderEngine *			_renderEngine;
 	PhysicsEngine *			_physicsEngine;
 	Debugger *				_debugger;

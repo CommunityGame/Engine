@@ -173,11 +173,11 @@ void		Shader::updateUniforms( RenderEngine const & renderEngine, Transformf cons
 		else if ( uniform->getType() == Uniform::Type::DOUBLE )
 			uniform->update( this->_uniformValues.getDouble( uniform->getName() ) );
 		else if ( uniform->getType() == Uniform::Type::VEC2 )
-			uniform->update( this->_uniformValues.getVec2f( uniform->getName() ) );
+			uniform->update( this->_uniformValues.getVec2f( uniform->getName()) );
 		else if ( uniform->getType() == Uniform::Type::VEC3 )
-			uniform->update( this->_uniformValues.getVec3f( uniform->getName() ) );
+			uniform->update( this->_uniformValues.getVec3f( uniform->getName()) );
 		else if ( uniform->getType() == Uniform::Type::MAT4 )
-			uniform->update( this->_uniformValues.getMat4f( uniform->getName() ) );
+			uniform->update( this->_uniformValues.getMat4f( uniform->getName()) );
 		else if ( uniform->getType() == Uniform::Type::LIGHT )
 		{
 			LightUniform const * lightUniform = this->_uniformValues.getLight( uniform->getName() );

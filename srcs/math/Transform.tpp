@@ -65,12 +65,12 @@ public:
 	}
 
 	//	GETTER
-	inline Vec<T, 3> const &	getPosition( void ) const
+	inline Vec3<T> const &	getPosition( void ) const
 	{
 		return ( this->_position );
 	}
 
-	inline Vec<T, 3> const &	getScale( void ) const
+	inline Vec3<T> const &	getScale( void ) const
 	{
 		return ( this->_scale );
 	}
@@ -80,14 +80,14 @@ public:
 		return ( this->_rotation );
 	}
 
-	inline Mat<T, 4, 4>			getTransformedMatrix( void ) const
+	inline Mat4<T>			getTransformedMatrix( void ) const
 	{
 		if ( ! this->hasChanged() )
 			return ( this->_transformedMatrix );
 
-		Mat<T, 4, 4>	translationMatrix;
-		Mat<T, 4, 4>	scaleMatrix;
-		Mat<T, 4, 4>	rotationMatrix;
+		Mat4<T>	translationMatrix;
+		Mat4<T>	scaleMatrix;
+		Mat4<T>	rotationMatrix;
 
 		translationMatrix.initTranslation( this->_position );
 		scaleMatrix.initScale( this->_scale );
@@ -104,13 +104,13 @@ public:
 	}
 
 	//	SETTER
-	inline void			setPosition( Vec<T, 3> const & position )
+	inline void			setPosition( Vec3<T> const & position )
 	{
 		this->_position = position;
 		return ;
 	}
 
-	inline void			setScale( Vec<T, 3> const & scale )
+	inline void			setScale( Vec3<T> const & scale )
 	{
 		this->_scale = scale;
 		return ;
@@ -128,16 +128,16 @@ public:
 	}
 
 private:
-	Vec<T, 3>	_position;
-	Vec<T, 3>	_scale;
-	Quat<T>		_rotation;
+	Vec3<T>	_position;
+	Vec3<T>	_scale;
+	Quat<T>	_rotation;
 
-	mutable Vec<T, 3>	_oldPosition;
-	mutable Vec<T, 3>	_oldScale;
+	mutable Vec3<T>		_oldPosition;
+	mutable Vec3<T>		_oldScale;
 	mutable Quat<T>		_oldRotation;
 
-	Transform<T> *	_parent;
-	mutable Mat<T, 4, 4>		_transformedMatrix;
+	Transform<T> *		_parent;
+	mutable Mat4<T>		_transformedMatrix;
 };
 
 #endif // ! _TRANSFORM_H_

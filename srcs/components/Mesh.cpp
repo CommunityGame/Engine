@@ -114,7 +114,7 @@ void	Mesh::calcNormal( void )
 		Vertexf * v3 = &this->_vertices[it[2]];
 		Vec3f vec1 = v2->getPosition() - v1->getPosition();
 		Vec3f vec2 = v3->getPosition() - v1->getPosition();
-		Vec3f normal = vec1.cross( vec2 ).normalized();
+		Vec3f normal = vec1.cross( vec2 ).normalize();
 		v1->setNormal( v1->getNormal() + normal );
 		v2->setNormal( v2->getNormal() + normal );
 		v3->setNormal( v3->getNormal() + normal );

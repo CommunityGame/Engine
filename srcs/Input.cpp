@@ -1,6 +1,6 @@
 #include "Input.hpp"
 
-shared_ptr<Window>	Input::_window( nullptr );
+shared_ptr<GLWindow>	Input::_window( nullptr );
 bool		Input::_keyPressed[GLFW_KEY_LAST];
 bool		Input::_mouseButtonPressed[GLFW_MOUSE_BUTTON_LAST];
 Vec2f		Input::_scrollOffset;
@@ -12,12 +12,12 @@ void			scrollCallback( GLFWwindow * win, double xOffset, double yOffset )
 	Input::setScrollOffset( Vec2f( (float)xOffset, (float)yOffset ) );
 }
 
-void			Input::init( shared_ptr<Window> const & window )
+void			Input::init( shared_ptr<GLWindow> const & window )
 {
 	glfwSetScrollCallback( window->getGLFWwindow(), scrollCallback );
 }
 
-void			Input::pollEvents( shared_ptr<Window> const & window )
+void			Input::pollEvents( shared_ptr<GLWindow> const & window )
 {
 	Input::_window = window;
 	glfwPollEvents();

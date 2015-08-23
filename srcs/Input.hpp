@@ -1,7 +1,7 @@
 #ifndef _INPUT_H_
 # define _INPUT_H_
 
-# include "render/Window.hpp"
+# include "render/GLWindow.hpp"
 # include "math/Math.hpp"
 
 #define LEFT_STICKER	0
@@ -18,8 +18,8 @@ class Input
 public:
 
 	// FUNCTIONS
-	static void		init( shared_ptr<Window> const & window );
-	static void		pollEvents( shared_ptr<Window> const & window );
+	static void		init( shared_ptr<GLWindow> const & window );
+	static void		pollEvents( shared_ptr<GLWindow> const & window );
 	static bool		isCloseRequested( void );
 
 	// GETTER
@@ -42,7 +42,7 @@ public:
 private:
 	Input( void ) {};
 
-	static shared_ptr<Window>	_window;
+	static shared_ptr<GLWindow>	_window;
 	static bool		_keyPressed[GLFW_KEY_LAST];
 	static bool		_mouseButtonPressed[GLFW_MOUSE_BUTTON_LAST];
 	static Vec2f	_scrollOffset;

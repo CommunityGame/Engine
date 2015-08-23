@@ -2,6 +2,7 @@
 # define _MATH_H_
 
 # include "Transform.tpp"
+# include "Color.tpp"
 # include "Vertex.tpp"
 # include <cmath>
 # include <ostream>
@@ -21,9 +22,10 @@ typedef Point<double, 3> Point3d;
 typedef Vec2<int> Vec2i;
 typedef Vec2<float> Vec2f;
 typedef Vec2<double> Vec2d;
+
 typedef Vec3<int> Vec3i;
 typedef Vec3<float> Vec3f;
-typedef Vec3<double> Vec3d;
+typedef Vec3<double> vec3d;
 
 typedef Mat4<int> Mat4i;
 typedef Mat4<float> Mat4f;

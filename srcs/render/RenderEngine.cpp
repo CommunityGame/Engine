@@ -4,7 +4,7 @@
 #include "../components/Camera.hpp"
 #include "../components/LightComponent.hpp"
 
-RenderEngine::RenderEngine( Window const & window ) :
+RenderEngine::RenderEngine( GLWindow const & window ) :
 	_window( window )
 {
 	glClearColor( 0.0f, 0.0f, 0.0f, 0.0f );
@@ -20,9 +20,9 @@ RenderEngine::RenderEngine( Window const & window ) :
 //	glShadeModel(GL_FLAT);
 //	glProvokingVertex( GL_FIRST_VERTEX_CONVENTION );
 
-	GLuint vertexArrayID;
-	glGenVertexArrays( 1, &vertexArrayID );
-	glBindVertexArray( vertexArrayID );
+//	GLuint vertexArrayID;
+//	glGenVertexArrays( 1, &vertexArrayID );
+//	glBindVertexArray( vertexArrayID );
 
 //	this->_defaultShader = new Shader( "ambiant" );
 	this->_defaultShader = new Shader( "phong" );

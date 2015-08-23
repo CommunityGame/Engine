@@ -51,7 +51,7 @@ bool			CoreEngine::stop( void )
 
 void			CoreEngine::createWindow( int width, int height, std::string const & title )
 {
-	this->_window = Window::create( width, height, title );
+	this->_window = GLWindow::create( width, height, title );
 	this->_renderEngine = new RenderEngine( * this->_window );
 	this->_physicsEngine = new PhysicsEngine(  );
 	return ;
@@ -163,7 +163,7 @@ void			CoreEngine::run( void )
 	}
 }
 
-Window &		CoreEngine::getWindow( void ) const
+GLWindow &		CoreEngine::getWindow( void ) const
 {
 	return ( * this->_window );
 }

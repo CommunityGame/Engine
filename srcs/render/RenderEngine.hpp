@@ -2,7 +2,7 @@
 # define _RENDER_ENGINE_H_
 
 #include <vector>
-#include "Window.hpp"
+#include "GLWindow.hpp"
 #include "Uniform.hpp"
 #include "LightUniform.hpp"
 
@@ -14,7 +14,7 @@ class Shader;
 class RenderEngine
 {
 public:
-	RenderEngine( Window const & window );
+	RenderEngine( GLWindow const & window );
 	~RenderEngine( void );
 
 	void				render( GameObject const & object ) const;
@@ -28,7 +28,7 @@ public:
 	void				setCamera( shared_ptr<Camera> camera ) const;
 
 private:
-	const Window &		_window;
+	const GLWindow &		_window;
 	mutable shared_ptr<Camera>	_camera;
 	Shader *			_defaultShader;
 	std::vector<LightComponent *>	_lights;

@@ -1,6 +1,8 @@
 #ifndef _MAT_HPP_
 # define _MAT_HPP_
 
+#include <iostream>
+#include <sstream>
 # include "Vec.tpp"
 
 template <typename T, u_int8_t X, u_int8_t Y>

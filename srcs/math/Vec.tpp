@@ -154,18 +154,19 @@ public:
 		return ( *this );
 	}
 
-	std::string		toString( void ) const
+	inline std::string	toString( void )
 	{
-		std::stringstream ss;
-		ss << "Vec" << std::to_string( D ) << "( ";
-		for ( int i = 0; i < D; i++ )
+		std::stringstream o;
+
+		o << "(";
+		for ( int i = 0; i < D; ++i )
 		{
-			ss << this->_values[i];
-			if ( i != D - 1 )
-				ss << ", ";
+			o << "[" << i << "]: " << (*this)[i];
+			if ( i + 1 != D )
+				o << ", ";
 		}
-		ss << " )";
-		return ( ss.str() );
+		o << ")";
+		return ( o.str() );
 	}
 };
 
@@ -218,7 +219,6 @@ public:
 	{
 		return ( (*this)[0] );
 	}
-
 	inline T		getY( void ) const
 	{
 		return ( (*this)[1] );
@@ -231,7 +231,6 @@ public:
 	{
 		(*this)[0] = x;
 	}
-
 	inline void		setY( const T & y )
 	{
 		(*this)[1] = y;

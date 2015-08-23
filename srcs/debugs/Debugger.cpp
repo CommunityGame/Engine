@@ -19,7 +19,7 @@ void Debugger::run( void )
 
 void Debugger::loop( void )
 {
-	this->_window = Window::create( 250, 150, "Debug" );
+	this->_window = GLWindow::create( 250, 150, "Debug" );
 	this->_window->setWindowPos( 0, 0 );
 
 	const useconds_t sleep = (const useconds_t) ((1.0 / 60.0) * SECOND);

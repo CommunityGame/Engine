@@ -9,6 +9,7 @@
 #include "../srcs/ui/UiComponent.hpp"
 #include "../srcs/utils/Factory.hpp"
 #include "../srcs/ui/tag/Layout.hpp"
+#include "../srcs/ui/svg/ScalableVectorGraphics.hpp"
 
 Test::Test( void ) : AGame()
 {
@@ -52,11 +53,11 @@ void Test::init( void )
 	meshO->addComponent( physicsComponent );
 	addObject( meshO );
 
-//	mesh1->addComponent( MeshBuilder::loadFromObj( "./resources/modules/main_module/objs/Feisar_Ship.obj" ) );
-//	mesh1->getTransform()->setScale( Vec3f( 0.02, 0.02, 0.02 ) );
-//	mesh1->getTransform()->setPosition( Vec3f( 2, 0, 0 ) );
-//	parent->addChild( mesh1 );
-//	addObject( parent );
+	mesh1->addComponent( MeshBuilder::loadFromObj( "./resources/modules/main_module/objs/Feisar_Ship.obj" ) );
+	mesh1->getTransform().setScale( Vec3f( 0.02, 0.02, 0.02 ) );
+	mesh1->getTransform().setPosition( Vec3f( 2, 0, 0 ) );
+	parent->addChild( mesh1 );
+	addObject( parent );
 
 //	cube = new Cube( 2 );
 //	cube->getTransform()->setScale( Vec3f( 0.5, 0.5, 0.5 ) );
@@ -96,10 +97,18 @@ void Test::init( void )
 	addObject( lightO );
 
 
+	shared_ptr<GameObject>		svgObject( new GameObject() );
+//	svgObject->addComponent( shared_ptr<ScalableVectorGraphics>( new ScalableVectorGraphics( "./resources/svg/test.svg" ) ) );
+//	svgObject->addComponent( shared_ptr<ScalableVectorGraphics>( new ScalableVectorGraphics( "./resources/svg/test2.svg" ) ) );
+//	svgObject->addComponent( shared_ptr<ScalableVectorGraphics>( new ScalableVectorGraphics( "./resources/svg/tiger.svg" ) ) );
+	svgObject->addComponent( shared_ptr<ScalableVectorGraphics>( new ScalableVectorGraphics( "./resources/svg/gs_snowflak.svg" ) ) );
+	addObject( svgObject );
+
+
 	// TODO: GUI
-//	shared_ptr<GameObject>		guiObject = new GameObject();
-//	guiObject->addComponent( new UiComponent( "./resources/ui/test_ui.xml" ) );
-//	guiObject->getTransform()->setScale( Vec3f( 0.5f, 0.5f, 0.5f ) );
+//	shared_ptr<GameObject>		guiObject( new GameObject() );
+//	guiObject->addComponent( shared_ptr<UiComponent>( new UiComponent( "./resources/ui/test_ui.xml" ) ) );
+//	guiObject->getTransform().setScale( Vec3f( 0.5f, 0.5f, 0.5f ) );
 //	addObject( guiObject );
 
 //	shared_ptr<GameObject>		light1 = new GameObject();

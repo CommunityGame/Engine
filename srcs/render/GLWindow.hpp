@@ -16,12 +16,12 @@
 using namespace boost;
 
 /*!
- * @class Window
+ * @class GLWindow
  */
-class Window
+class GLWindow
 {
 public:
-	~Window( void );
+	~GLWindow( void );
 
 	// FUNCTIONS
 	/*!
@@ -41,9 +41,9 @@ public:
 	 * @param width			The width of window
 	 * @param height		The height of window
 	 * @param title			The title of window
-	 * @return shared_ptr<Window>
+	 * @return shared_ptr<GLWindow>
 	 */
-	static shared_ptr<Window>	create( int width, int height, std::string const & title );
+	static shared_ptr<GLWindow>	create( int width, int height, std::string const & title );
 
 	/*!
 	 * @function initGLFW
@@ -70,8 +70,8 @@ public:
 	void					destroyWindow( void );
 
 private:
-	Window( void );
-	Window( int width, int height, std::string const & title );
+	GLWindow( void );
+	GLWindow( int width, int height, std::string const & title );
 
 	int						_width;
 	int						_height;

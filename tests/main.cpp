@@ -1,5 +1,6 @@
 #include "../srcs/CoreEngine.hpp"
 #include "../tests/Test.hpp"
+#include "../srcs/utils/Utils.hpp"
 
 int		main( int argc, const char *argv[] )
 {
@@ -24,7 +25,7 @@ int		main( int argc, const char *argv[] )
 		Logger::i( TAG, "NORMAL MODE" );
 	}
 
-	coreEngine->createWindow( 850, 550, "Test" );
+	coreEngine->createWindow( 900, 900, "Test" );
 	coreEngine->getWindow().setVsync( true );
 	coreEngine->start();
 

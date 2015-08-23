@@ -12,7 +12,7 @@ class UiComponent : public RenderComponent
 {
 public:
 	UiComponent( std::string const & xml );
-	virtual void			render( RenderEngine const & renderEngine, Shader const & shader, Camera const & camera ) const;
+	virtual void			render( RenderEngine const & renderEngine, GameObject const & parent, Shader const & shader, Camera const & camera ) const;
 
 	virtual void			init( CoreEngine & coreEngine );
 

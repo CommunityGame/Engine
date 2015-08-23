@@ -2,7 +2,7 @@
 # define _UNIFORM_H_
 
 #include <string>
-#include "Window.hpp"
+#include "GLWindow.hpp"
 #include "../math/Math.hpp"
 
 class Uniform

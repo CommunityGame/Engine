@@ -22,7 +22,7 @@ void			Layout::init( CoreEngine & coreEngine )
 	float widthWin = coreEngine.getWindow().getWidth();
 	float heightWin = coreEngine.getWindow().getHeight();
 	ATag::init( coreEngine );
-	std::cout << (float)this->_level / 1000.0f << std::endl;
+//	std::cout << (float)this->_level / 1000.0f << std::endl;
 	float posX1 = 0;
 	float posX2 = 1;
 	float posY1 = 0;
