@@ -106,9 +106,6 @@ shared_ptr<GLWindow>		GLWindow::create( int width, int height, std::string const
 	ss << "OpenGL shader language version supported " << glslVersion;
 	Logger::i( TAG, ss.str() );
 
-	glEnable( GL_DEPTH_TEST );
-	glDepthFunc( GL_LESS );
-
 	return ( window );
 }
 

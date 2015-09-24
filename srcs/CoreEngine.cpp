@@ -54,6 +54,7 @@ void			CoreEngine::createWindow( int width, int height, std::string const & titl
 	this->_window = GLWindow::create( width, height, title );
 	this->_renderEngine = new RenderEngine( * this->_window );
 	this->_physicsEngine = new PhysicsEngine(  );
+	this->_soundEngine = shared_ptr<SoundEngine>( new SoundEngine() );
 	return ;
 }
 
@@ -75,10 +76,10 @@ void			CoreEngine::run( void )
 	Input::init( this->_window );
 
 	ModulesFactory	modulesFactory;
-	modulesFactory.loadModules( "./resources/modules" );
+	modulesFactory.loadModules( "./assets/modules" );
 
 	modulesFactory.initModules( this->_game.getRootObject() );
-//	this->_game.addObject( new LuaGameObject( "./resources/modules/main_module/GameObject.lua", modulesFactory.getLuaState() ) );
+//	this->_game.addObject( new LuaGameObject( "./assets/modules/main_module/GameObject.lua", modulesFactory.getLuaState() ) );
 
 	this->_game.getRootObject()->initAll( * this );
 
@@ -119,6 +120,8 @@ void			CoreEngine::run( void )
 
 //		end_debug = glfwGetTime();
 //		std::cout << "Update: " << end_debug - begin_debug << std::endl;
+
+		this->_soundEngine->update( dt, this->_game.getCamera()->getParent() );
 
 		// RENDER
 //		begin_debug = end_debug;
@@ -176,6 +179,11 @@ RenderEngine &	CoreEngine::getRenderEngine( void ) const
 PhysicsEngine &	CoreEngine::getPhysicsEngine( void ) const
 {
 	return ( * this->_physicsEngine );
+}
+
+shared_ptr<SoundEngine> const &	CoreEngine::getSoundEngine( void ) const
+{
+	return ( this->_soundEngine );
 }
 
 void			CoreEngine::startDebugWindow( void )

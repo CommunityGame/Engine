@@ -6,6 +6,7 @@
 #include <sys/types.h>
 #include <sstream>
 #include "Timer.hpp"
+#include "../EngineException.hpp"
 
 # define INFO		( 1 )
 # define DEBUG		( 2 )
@@ -46,6 +47,7 @@ public:
 	{
 		if ( ( Logger::_VERBOSITY & ERROR ) == ERROR )
 			Logger::log( "ERROR", tag, msg );
+		throw EngineException( msg );
 	}
 
 	template < typename T >

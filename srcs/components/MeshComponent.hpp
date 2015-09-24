@@ -5,15 +5,15 @@
 #include "basic/RenderComponent.hpp"
 #include "../GameObject.hpp"
 
-class Mesh : public RenderComponent
+class MeshComponent : public RenderComponent
 {
 public:
-	Mesh( void );
-	Mesh( Mesh const & cpy );
-	Mesh( std::vector<Vertexf> const & vertex, std::vector<GLuint> const & indices );
-	virtual ~Mesh( void );
+	MeshComponent( void );
+	MeshComponent( MeshComponent const & cpy );
+	MeshComponent( std::vector<Vertexf> const & vertex, std::vector<GLuint> const & indices );
+	virtual ~MeshComponent( void );
 
-	Mesh &	operator=( Mesh const & rhs );
+	MeshComponent &	operator=( MeshComponent const & rhs );
 
 	virtual void			render( RenderEngine const & renderEngine, GameObject const & parent, Shader const & shader, Camera const & camera ) const;
 	virtual void			update( double delta );

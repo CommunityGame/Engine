@@ -1,14 +1,15 @@
-#include "MeshBuilder.hpp"
+#include "MeshFactory.hpp"
 
-const std::string	MeshBuilder::TAG = "MeshBuilder";
-std::map<std::string, shared_ptr<Mesh>>	MeshBuilder::_loadedMesh;
+const std::string	MeshFactory::TAG = "MeshFactory";
+std::map<std::string, shared_ptr<MeshComponent>>	MeshFactory::_loadedMesh;
 
-shared_ptr<Mesh> MeshBuilder::loadFromObj( const std::string & file )
+shared_ptr<MeshComponent> MeshFactory::loadObj( const std::string & file )
 {
-	std::map<std::string, shared_ptr<Mesh>>::const_iterator it;
+	//TODO: refactor this code
+	std::map<std::string, shared_ptr<MeshComponent>>::const_iterator it;
 
-	it = MeshBuilder::_loadedMesh.find( file );
-	if ( it != MeshBuilder::_loadedMesh.end() )
+	it = MeshFactory::_loadedMesh.find( file );
+	if ( it != MeshFactory::_loadedMesh.end() )
 	{
 		Logger::w( TAG, "Reuse an already load mesh :" + file );
 		return ( (*it).second );
@@ -22,18 +23,18 @@ shared_ptr<Mesh> MeshBuilder::loadFromObj( const std::string & file )
 	std::vector<Vertexf>	vertex;
 	std::vector<GLuint>		indices;
 
-	std::ifstream			inf( file );
+	std::ifstream			ifs( file );
 
-	if ( ! inf.is_open() )
+	if ( ! ifs.is_open() )
 	{
 		Logger::e( TAG, "Can't open: " + file );
 		return ( nullptr );
 	}
 
-	while ( inf.good() )
+	while ( ifs.good() )
 	{
 		std::string line;
-		std::getline( inf, line );
+		std::getline( ifs, line );
 
 		lineNb++;
 		if ( line.size() <= 1 || line[0] == '#' )
@@ -87,10 +88,10 @@ shared_ptr<Mesh> MeshBuilder::loadFromObj( const std::string & file )
 			}
 		}
 	}
-	shared_ptr<Mesh>	res( new Mesh( vertex, indices ) );
+	shared_ptr<MeshComponent>	res( new MeshComponent( vertex, indices ) );
 	res->calcNormal();
 	res->bufferData();
 
-	MeshBuilder::_loadedMesh.insert( std::pair<std::string, shared_ptr<Mesh>>( file, res ) );
+	MeshFactory::_loadedMesh.insert( std::pair<std::string, shared_ptr<MeshComponent>>( file, res ) );
 	return ( res );
 }

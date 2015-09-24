@@ -23,10 +23,10 @@ public:
 	static VGPaint		getFillPaint( void );
 
 private:
-	std::vector<shared_ptr<SVGPath>>	_paths;
+	std::vector<shared_ptr<ISVGElement>>	_elements;
 
-	static VGPaint						_strokePaint;
-	static VGPaint						_fillPaint;
+	static VGPaint							_strokePaint;
+	static VGPaint							_fillPaint;
 };
 
 #endif // ! _SCALABLE_VECTOR_GRAPHICS_HPP_

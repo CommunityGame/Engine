@@ -13,10 +13,10 @@ Shader::Shader( const std::string & file ) :
 		return ;
 	}
 
-	const std::string vertexFile = this->loadShader( "./resources/shaders/" + file + "_vert.glsl" );
+	const std::string vertexFile = this->loadShader( "./assets/shaders/" + file + "_vert.glsl" );
 	if ( vertexFile.empty() )
 		Logger::e( TAG, "Unable to load vertex shader" );
-	const std::string fragmentFile = this->loadShader( "./resources/shaders/" + file + "_frag.glsl" );
+	const std::string fragmentFile = this->loadShader( "./assets/shaders/" + file + "_frag.glsl" );
 	if ( fragmentFile.empty() )
 		Logger::e( TAG, "Unable to load fragment shader" );
 
@@ -136,6 +136,7 @@ const std::string		Shader::loadShader( const std::string & file )
 			result.append( line + "\n" );
 		}
 		fileStream.close();
+		Logger::i( TAG, "Loaded shader: " + file );
 	}
 	else
 		Logger::e( TAG, "Unable to open file: " + file );

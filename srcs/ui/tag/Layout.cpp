@@ -34,7 +34,7 @@ void			Layout::init( CoreEngine & coreEngine )
 	this->_component->putIndices( { 0, 1, 2, 2, 1, 3 } );
 }
 
-IFactory *		Layout::instantiate( void * params )
+ATag *			Layout::instantiate( void * params )
 {
 	rapidxml::xml_node<> * node = (rapidxml::xml_node<> *) params;
 	return ( new Layout( node ) );

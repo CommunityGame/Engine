@@ -7,6 +7,7 @@
 #include "render/RenderEngine.hpp"
 #include "debugs/Debugger.hpp"
 #include "physics/PhysicsEngine.hpp"
+#include "sound/SoundEngine.hpp"
 
 class AGame;
 
@@ -26,6 +27,7 @@ public:
 	GLWindow &				getWindow( void ) const;
 	RenderEngine &			getRenderEngine( void ) const;
 	PhysicsEngine &			getPhysicsEngine( void ) const;
+	shared_ptr<SoundEngine> const &	getSoundEngine( void ) const;
 	AGame &					getGame( void ) const;
 
 	// SETTER
@@ -38,6 +40,7 @@ private:
 	shared_ptr<GLWindow>	_window;
 	RenderEngine *			_renderEngine;
 	PhysicsEngine *			_physicsEngine;
+	shared_ptr<SoundEngine>	_soundEngine;
 	Debugger *				_debugger;
 	bool					_isRunning;
 	double					_fpsExpected;

@@ -11,7 +11,7 @@ public:
 
 	virtual void			init( CoreEngine & coreEngine );
 
-	static IFactory *		instantiate( void * params = nullptr );
+	static ATag *			instantiate( void * params = nullptr );
 
 	// SETTER
 	void					setColor( Colorf const & color );

@@ -28,9 +28,9 @@ public:
 	void				setCamera( shared_ptr<Camera> camera ) const;
 
 private:
-	const GLWindow &		_window;
-	mutable shared_ptr<Camera>	_camera;
-	Shader *			_defaultShader;
+	const GLWindow &				_window;
+	mutable shared_ptr<Camera>		_camera;
+	Shader *						_defaultShader;
 	std::vector<LightComponent *>	_lights;
 };
 

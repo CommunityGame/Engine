@@ -30,7 +30,7 @@ void ModulesFactory::loadModules( std::string const & path )
 	dict global( import( "__main__" ).attr( "__dict__" ) );
 	std::string _path;
 	_path += "import sys\n";
-	_path += "sys.path.append('./resources/modules/lib_module')\n";
+	_path += "sys.path.append('./assets/modules/lib_module')\n";
 	exec( _path.c_str(), global, global );
 
 	while ( ( dirp = readdir( dp ) ) != NULL )

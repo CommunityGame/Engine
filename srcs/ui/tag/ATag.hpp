@@ -5,12 +5,11 @@
 #include <string>
 #include <vector>
 #include <map>
-#include "../../utils/IFactory.hpp"
 #include "../../CoreEngine.hpp"
 
 class UiComponent;
 
-class ATag : public IFactory
+class ATag
 {
 public:
 	ATag( rapidxml::xml_node<> * node, ATag * parent = nullptr, UiComponent * component = nullptr, int level = 0 );

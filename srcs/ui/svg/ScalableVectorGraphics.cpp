@@ -46,7 +46,7 @@ void ScalableVectorGraphics::parseNode( rapidxml::xml_node<> * node, SVGAttribut
 				if ( g.haveAttributes )
 					ptr->setAttributes( g );
 				ptr->overrideAttributes( node );
-				this->_paths.push_back( ptr );
+				this->_elements.push_back( ptr );
 			}
 		}
 	}
@@ -64,9 +64,9 @@ void	ScalableVectorGraphics::render( RenderEngine const & renderEngine, GameObje
 //	vgTranslate( 900, 900 );
 //	vgRotate( 180 );
 
-	std::vector<shared_ptr<SVGPath>>::const_iterator it;
+	std::vector<shared_ptr<ISVGElement>>::const_iterator it;
 
-	for ( it = this->_paths.begin(); it != this->_paths.end(); it++ )
+	for ( it = this->_elements.begin(); it != this->_elements.end(); it++ )
 		(*it)->render();
 
 	glEnable( GL_CULL_FACE );

@@ -7,7 +7,7 @@ void		Factory::registerClass( std::string const & className, Factory::instantiat
 	Factory::_instantiateMap.insert( std::pair<std::string, Factory::instantiateFunction>( className, function ) );
 }
 
-IFactory *	Factory::instantiate( std::string const & name, void * params )
+void *		Factory::instantiate( std::string const & name, void * params )
 {
 	std::map<std::string, Factory::instantiateFunction>::iterator	it;
 

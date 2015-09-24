@@ -10,14 +10,12 @@ file( GLOB_RECURSE SOURCE_FILES "./srcs/**" )
 
 file( GLOB_RECURSE TESTS_FILES "./tests/**" )
 
-
-
 include_directories( "./libs/glfw-3.1/include"
                     "./libs/glfw-3.1/deps" )
 
 set( GLAD "./libs/glfw-3.1/deps/glad/glad.h"
          "./libs/glfw-3.1/deps/KHR/khrplatform.h"
-         "./libs/glfw-3.1/deps/glad.c" )
+         "./libs/glfw-3.1/deps/glad.c")
 
 add_executable( CommunityGame_Engine ${SOURCE_FILES} ${GLAD} ${TESTS_FILES} )
 
@@ -46,9 +44,6 @@ elseif( NOT Boost_FOUND )
 	message(FATAL_ERROR "Unable to find correct Boost version. Did you set BOOST_ROOT?")
 endif()
 
-# PYTHON MODULE
-add_subdirectory( ./resources/modules/lib_module )
-
 # GLFW
 find_package( PkgConfig REQUIRED )
 pkg_search_module( GLFW REQUIRED glfw3 )
@@ -70,27 +65,20 @@ include_directories( ./libs/rapidxml-${RAPIDXML_VERSION} )
 set( GLM_VERSION 0.9.7.0 )
 include_directories( ./libs/glm-${GLM_VERSION} )
 
-# NANO_SVG
-#include_directories( ./libs/svgpp )
-
-# GLU for OpenVG
+# OpenGL
 find_package( OpenGL REQUIRED )
 include_directories( ${OPENGL_INCLUDE_DIR} )
 target_link_libraries( CommunityGame_Engine ${OPENGL_LIBRARIES} )
-#find_package( GLEW REQUIRED )
-#include_directories( ${GLEW_INCLUDE_DIRS} )
-#target_link_libraries( CommunityGame_Engine ${GLEW_LIBRARIES} )
-#find_package( GLUT REQUIRED )
-#include_directories( ${GLUT_INCLUDE_DIRS} )
-#target_link_libraries( CommunityGame_Engine ${GLUT_LIBRARIES} )
 
-#include_directories( ./libs/glfw-3.1/deps/ )
+# OpenAL
+find_package( OpenAL REQUIRED )
+include_directories( ${OPENAL_INCLUDE_DIR} )
+target_link_libraries( CommunityGame_Engine ${OPENAL_LIBRARY} )
 
 # OpenVG
-#file( COPY ./libs/libOpenVG.so DESTINATION /usr/local/lib )
 include_directories( /usr/local/includes/ )
 find_library( OpenVG_Lib NAMES OpenVG PATHS /usr/local/lib/ )
 target_link_libraries( CommunityGame_Engine ${OpenVG_Lib} )
-#include_directories( includes/ )
-#find_library( ShivaVG_Lib NAMES ShivaVG PATHS ./libs/ )
-#target_link_libraries( CommunityGame_Engine ${ShivaVG_Lib} )
+
+# PYTHON MODULE
+add_subdirectory( ./assets/modules/lib_module )

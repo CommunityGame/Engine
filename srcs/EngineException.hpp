@@ -2,8 +2,6 @@
 # define _ENGINE_EXCEPTION_H_
 # include <exception>
 # include <string>
-# include "debugs/Logger.hpp"
-# include <typeinfo>
 
 class EngineException : public std::exception
 {
@@ -12,12 +10,11 @@ public:
 	EngineException( std::string const & msg ) :
 			_msg( msg )
 	{
-		Logger::e( typeid( EngineException ).name(), msg );
 		return;
 	}
 	virtual ~EngineException( void ) {};
 
-	virtual const char *	what( void )
+	virtual const char*		what() const throw()
 	{
 		return ( this->_msg.c_str() );
 	}

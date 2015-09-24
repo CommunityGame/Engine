@@ -1,6 +1,5 @@
 #include <dirent.h>
 #include "Module.hpp"
-#include "../components/MeshBuilder.hpp"
 
 const std::string	Module::TAG = "Module";
 

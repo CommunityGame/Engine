@@ -1,4 +1,4 @@
-from LibModule import Module, GameObject, Input, Mesh, Quat, Vec3, Mat4, Transform, Key, Joystick
+from LibModule import Module, GameObject, Input, MeshComponent, Quat, Vec3, Mat4, Transform, Key, Joystick
 
 
 print("main_module")
@@ -6,7 +6,7 @@ class TestObject( GameObject ):
 	def __init__(self):
 		GameObject.__init__(self)
 		meshO = GameObject()
-		mesh = Mesh.loadMeshFromObj( "./resources/modules/main_module/objs/Feisar_Ship.obj" )
+		mesh = MeshComponent.loadObj( "./assets/modules/main_module/objs/Feisar_Ship.obj" )
 		meshO.addComponent( mesh )
 		meshO.getTransform().setScale( Vec3( 0.01, 0.01, 0.01 ) )
 		self.addChild( meshO )

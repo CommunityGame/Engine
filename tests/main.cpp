@@ -25,7 +25,7 @@ int		main( int argc, const char *argv[] )
 		Logger::i( TAG, "NORMAL MODE" );
 	}
 
-	coreEngine->createWindow( 900, 900, "Test" );
+	coreEngine->createWindow( 850, 550, "Test" );
 	coreEngine->getWindow().setVsync( true );
 	coreEngine->start();
 

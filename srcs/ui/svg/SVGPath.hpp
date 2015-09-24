@@ -7,8 +7,9 @@
 #include <regex>
 #include "../../math/Math.hpp"
 #include "SVGAttributes.hpp"
+#include "ISVGElement.hpp"
 
-class SVGPath
+class SVGPath : public ISVGElement
 {
 public:
 	SVGPath( std::string const & path );

@@ -1,7 +1,6 @@
-#include "Mesh.hpp"
-#include "../render/Shader.hpp"
+#include "MeshComponent.hpp"
 
-Mesh::Mesh( void )
+MeshComponent::MeshComponent( void )
 {
 	glGenBuffers( 1, & this->_vertexBufferObject );
 	glGenBuffers( 1, & this->_indexBufferObject );
@@ -9,7 +8,7 @@ Mesh::Mesh( void )
 	return ;
 }
 
-Mesh::Mesh( std::vector<Vertexf> const & vertex, std::vector<GLuint> const & indices )
+MeshComponent::MeshComponent( std::vector<Vertexf> const & vertex, std::vector<GLuint> const & indices )
 {
 	glGenBuffers( 1, & this->_vertexBufferObject );
 	glGenBuffers( 1, & this->_indexBufferObject );
@@ -18,19 +17,19 @@ Mesh::Mesh( std::vector<Vertexf> const & vertex, std::vector<GLuint> const & ind
 	this->_index = (GLuint) indices.size();
 }
 
-Mesh::Mesh( Mesh const & cpy )
+MeshComponent::MeshComponent( MeshComponent const & cpy )
 {
 	*this = cpy;
 }
 
-Mesh::~Mesh( void )
+MeshComponent::~MeshComponent( void )
 {
 	glDeleteBuffers( 1, & this->_vertexBufferObject );
 	glDeleteBuffers( 1, & this->_indexBufferObject );
 	return ;
 }
 
-Mesh & Mesh::operator=( Mesh const & rhs )
+MeshComponent & MeshComponent::operator=( MeshComponent const & rhs )
 {
 	if ( this != &rhs )
 	{
@@ -43,7 +42,7 @@ Mesh & Mesh::operator=( Mesh const & rhs )
 	return ( *this );
 }
 
-void	Mesh::putVertex( Vertexf const & vertex )
+void	MeshComponent::putVertex( Vertexf const & vertex )
 {
 	this->_vertices.push_back( vertex );
 	if (this->_index >= 3)
@@ -57,7 +56,7 @@ void	Mesh::putVertex( Vertexf const & vertex )
 	return ;
 }
 
-void	Mesh::bufferData( void ) const
+void	MeshComponent::bufferData( void ) const
 {
 	glBindBuffer( GL_ARRAY_BUFFER, this->_vertexBufferObject );
 	glBufferData( GL_ARRAY_BUFFER, this->_vertices.size() * sizeof( this->_vertices[0] ), & this->_vertices[0], GL_STATIC_DRAW );
@@ -67,7 +66,7 @@ void	Mesh::bufferData( void ) const
 	return ;
 }
 
-void	Mesh::draw( void ) const
+void	MeshComponent::draw( void ) const
 {
 	glBindBuffer( GL_ARRAY_BUFFER, this->_vertexBufferObject );
 	glEnableVertexAttribArray( 0 );
@@ -88,12 +87,12 @@ void	Mesh::draw( void ) const
 	return ;
 }
 
-void	Mesh::update( double delta )
+void	MeshComponent::update( double delta )
 {
 	return ;
 }
 
-void	Mesh::render( RenderEngine const & renderEngine, GameObject const & parent, Shader const & shader, Camera const & camera ) const
+void	MeshComponent::render( RenderEngine const & renderEngine, GameObject const & parent, Shader const & shader, Camera const & camera ) const
 {
 	shader.bind();
 	shader.updateUniforms( renderEngine, parent.getTransform(), camera/*, material*/ ); //TODO: material
@@ -102,7 +101,7 @@ void	Mesh::render( RenderEngine const & renderEngine, GameObject const & parent,
 	return ;
 }
 
-void	Mesh::calcNormal( void )
+void	MeshComponent::calcNormal( void )
 {
 	std::vector< GLuint >::const_iterator it;
 	std::vector< Vertexf >::iterator it2;
@@ -124,27 +123,27 @@ void	Mesh::calcNormal( void )
 }
 
 // GETTER
-GLuint const &			Mesh::getVertexBufferObject( void ) const
+GLuint const & MeshComponent::getVertexBufferObject( void ) const
 {
 	return ( this->_vertexBufferObject );
 }
 
-GLuint const &			Mesh::getIndexBufferObject( void ) const
+GLuint const & MeshComponent::getIndexBufferObject( void ) const
 {
 	return ( this->_indexBufferObject );
 }
 
-std::vector<Vertexf> const & Mesh::getVertices( void ) const
+std::vector<Vertexf> const & MeshComponent::getVertices( void ) const
 {
 	return ( this->_vertices );
 }
 
-std::vector<GLuint> const &	Mesh::getIndices( void ) const
+std::vector<GLuint> const & MeshComponent::getIndices( void ) const
 {
 	return ( this->_indices );
 }
 
-GLuint const &			Mesh::getIndex( void ) const
+GLuint const & MeshComponent::getIndex( void ) const
 {
 	return ( this->_index );
 }

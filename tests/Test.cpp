@@ -1,28 +1,36 @@
 #include "Test.hpp"
-#include "../srcs/components/Mesh.hpp"
 #include "../srcs/components/Camera.hpp"
 #include "../srcs/components/CameraControl.hpp"
 #include "../srcs/components/LightComponent.hpp"
-#include "../srcs/components/MeshBuilder.hpp"
 #include "../srcs/physics/SphereCollider.hpp"
 #include "../srcs/physics/PlanCollider.hpp"
 #include "../srcs/ui/UiComponent.hpp"
-#include "../srcs/utils/Factory.hpp"
 #include "../srcs/ui/tag/Layout.hpp"
 #include "../srcs/ui/svg/ScalableVectorGraphics.hpp"
+#include "../srcs/components/MeshComponent.hpp"
+#include "../srcs/factories/MeshFactory.hpp"
+#include "../srcs/factories/SoundFactory.hpp"
+#include "../srcs/utils/Factory.hpp"
+#include "../srcs/sound/SoundSource.hpp"
 
 Test::Test( void ) : AGame()
 {
 	return ;
 }
 
+shared_ptr<SoundSource> soundSource;
 shared_ptr<GameObject> parent( new GameObject() );
 shared_ptr<GameObject> mesh1( new GameObject() );
+
+void soundCallback( enum SoundSource::Event e, SoundSource const & source )
+{
+	std::cout << "POK: " << e << std::endl;
+}
 
 void Test::init( void )
 {
 	// TODO main factory
-	Factory::registerClass( "layout", &Layout::instantiate );
+	Factory::registerClass( "layout", (Factory::instantiateFunction) &Layout::instantiate );
 
 	float aspectRatio = (float)this->_coreEngine->getWindow().getWidth() / (float)this->_coreEngine->getWindow().getHeight();
 	shared_ptr<GameObject>	cameraO( new GameObject() );
@@ -35,8 +43,8 @@ void Test::init( void )
 	setCamera( camera );
 	addObject( cameraO );
 
-	shared_ptr<GameObject>	meshO( new GameObject() );
-	shared_ptr<Mesh>		mesh( new Mesh() );
+	shared_ptr<GameObject>		meshO( new GameObject() );
+	shared_ptr<MeshComponent>	mesh( new MeshComponent() );
 	mesh->putVertex( Vertexf( Vec3f( -1, 0, -1 ) ) );
 	mesh->putVertex( Vertexf( Vec3f( -1, 0, 1 ) ) );
 	mesh->putVertex( Vertexf( Vec3f( 1, 0, -1 ) ) );
@@ -53,21 +61,22 @@ void Test::init( void )
 	meshO->addComponent( physicsComponent );
 	addObject( meshO );
 
-	mesh1->addComponent( MeshBuilder::loadFromObj( "./resources/modules/main_module/objs/Feisar_Ship.obj" ) );
+	//TODO: Attache to SoundEngine to update() it
+	soundSource = shared_ptr<SoundSource>( new SoundSource() );
+	soundSource->setSound( SoundFactory::loadWave( "./assets/sounds/11k16bitpcm.wav" ) );
+	soundSource->setPosition( Vec3f( 0, 0, 0 ) );
+	soundSource->setEventCallback( soundCallback );
+	soundSource->play();
+
+
+	mesh1->addComponent( MeshFactory::loadObj( "./assets/modules/main_module/objs/Feisar_Ship.obj" ) );
 	mesh1->getTransform().setScale( Vec3f( 0.02, 0.02, 0.02 ) );
 	mesh1->getTransform().setPosition( Vec3f( 2, 0, 0 ) );
 	parent->addChild( mesh1 );
 	addObject( parent );
 
-//	cube = new Cube( 2 );
-//	cube->getTransform()->setScale( Vec3f( 0.5, 0.5, 0.5 ) );
-//	physicsComponent = new PhysicsComponent();
-//	physicsComponent->setCollider( SphereCollider( Sphere( Vec3f( 0, 0, 0 ), 2 ) ) );
-//	cube->addComponent( physicsComponent );
-//	addObject( cube );
-
 //	shared_ptr<GameObject>		sphere( new GameObject() );
-//	sphere->addComponent( MeshBuilder::loadFromObj( "./resources/objs/sphere.obj" ) );
+//	sphere->addComponent( MeshFactory::loadObj( "./assets/objs/sphere.obj" ) );
 //	PhysicsComponent * physicsComponent1 = new PhysicsComponent();
 //	physicsComponent1->setCollider( new SphereCollider( Vec3f( 0, 0, 0 ), 1 ) );
 //	physicsComponent1->setVelocity( Vec3f( 0, -1, 0 ) );
@@ -77,7 +86,7 @@ void Test::init( void )
 //	addObject( sphere );
 
 //	shared_ptr<GameObject>		sphere2( new GameObject() );
-//	sphere2->addComponent( MeshBuilder::loadFromObj( "./resources/objs/sphere.obj" ) );
+//	sphere2->addComponent( MeshFactory::loadObj( "./assets/objs/sphere.obj" ) );
 //	PhysicsComponent * physicsComponent2 = new PhysicsComponent();
 //	physicsComponent2->setCollider( new SphereCollider( Vec3f( 0, 0, 0 ), 1 ) );
 //	physicsComponent2->setVelocity( Vec3f( -0.5f, -0.5f, 0 ) );
@@ -97,17 +106,17 @@ void Test::init( void )
 	addObject( lightO );
 
 
-	shared_ptr<GameObject>		svgObject( new GameObject() );
-//	svgObject->addComponent( shared_ptr<ScalableVectorGraphics>( new ScalableVectorGraphics( "./resources/svg/test.svg" ) ) );
-//	svgObject->addComponent( shared_ptr<ScalableVectorGraphics>( new ScalableVectorGraphics( "./resources/svg/test2.svg" ) ) );
-//	svgObject->addComponent( shared_ptr<ScalableVectorGraphics>( new ScalableVectorGraphics( "./resources/svg/tiger.svg" ) ) );
-	svgObject->addComponent( shared_ptr<ScalableVectorGraphics>( new ScalableVectorGraphics( "./resources/svg/gs_snowflak.svg" ) ) );
-	addObject( svgObject );
+//	shared_ptr<GameObject>		svgObject( new GameObject() );
+//	svgObject->addComponent( shared_ptr<ScalableVectorGraphics>( new ScalableVectorGraphics( "./assets/svg/test.svg" ) ) );
+//	svgObject->addComponent( shared_ptr<ScalableVectorGraphics>( new ScalableVectorGraphics( "./assets/svg/test2.svg" ) ) );
+//	svgObject->addComponent( shared_ptr<ScalableVectorGraphics>( new ScalableVectorGraphics( "./assets/svg/tiger.svg" ) ) );
+//	svgObject->addComponent( shared_ptr<ScalableVectorGraphics>( new ScalableVectorGraphics( "./assets/svg/gs_snowflak.svg" ) ) );
+//	addObject( svgObject );
 
 
 	// TODO: GUI
 //	shared_ptr<GameObject>		guiObject( new GameObject() );
-//	guiObject->addComponent( shared_ptr<UiComponent>( new UiComponent( "./resources/ui/test_ui.xml" ) ) );
+//	guiObject->addComponent( shared_ptr<UiComponent>( new UiComponent( "./assets/ui/test_ui.xml" ) ) );
 //	guiObject->getTransform().setScale( Vec3f( 0.5f, 0.5f, 0.5f ) );
 //	addObject( guiObject );
 
@@ -124,6 +133,8 @@ void Test::init( void )
 
 void Test::update( double delta )
 {
+//	soundSource->setPitch( soundSource->getPitch() - 0.001f );
+//	std::cout << soundSource->getState() << std::endl;
 //	parent->getTransform()->rotate( Quatf( Vec3f( 0, 1, 0 ), TO_RADIANS( 0.3 ) ) );
 	AGame::update( delta );
 }

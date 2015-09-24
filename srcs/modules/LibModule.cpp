@@ -1,7 +1,7 @@
 #include "LibModule.hpp"
 #include "Module.hpp"
-#include "../components/Mesh.hpp"
-#include "../components/MeshBuilder.hpp"
+#include "../components/MeshComponent.hpp"
+#include "../factories/MeshFactory.hpp"
 
 template <typename T, typename U = T>
 struct ArithmeticHelper
@@ -237,9 +237,9 @@ BOOST_PYTHON_MODULE(LibModule)
 	class_<AObjectComponent>( "AObjectComponent", no_init )
 		;
 
-	register_ptr_to_python<shared_ptr<Mesh>>();
-	class_<Mesh, bases<AObjectComponent>>( "Mesh", no_init )
-		.def( "loadMeshFromObj", MeshBuilder::loadFromObj );
+	register_ptr_to_python<shared_ptr<MeshComponent>>();
+	class_<MeshComponent, bases<AObjectComponent>>( "MeshComponent", no_init )
+		.def( "loadObj", MeshFactory::loadObj );
 	;
 
 	enum_<int>( "Mouse" )
