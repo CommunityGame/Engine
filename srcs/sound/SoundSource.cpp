@@ -40,10 +40,7 @@ void	SoundSource::play( bool looping ) const
 	alSourcei( this->_source, AL_LOOPING, looping );
 	alSourcePlay( this->_source );
 	if ( this->_onEventCallback )
-	{
-		std::cout << "pok" << std::endl;
 		this->_onEventCallback( Event::PLAY, * this );
-	}
 }
 
 void	SoundSource::pause( void ) const

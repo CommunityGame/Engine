@@ -24,7 +24,6 @@ shared_ptr<GameObject> mesh1( new GameObject() );
 
 void soundCallback( enum SoundSource::Event e, SoundSource const & source )
 {
-	std::cout << "POK: " << e << std::endl;
 }
 
 void Test::init( void )

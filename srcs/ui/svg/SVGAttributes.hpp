@@ -1,7 +1,7 @@
 #ifndef _SVG_GROUP_HPP_
 # define _SVG_GROUP_HPP_
 
-#include <rapidxml.hpp>
+#include <rapidxml/rapidxml.hpp>
 #include <vg/openvg.h>
 #include <string.h>
 #include "../../math/Math.hpp"

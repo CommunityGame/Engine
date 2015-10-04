@@ -17,7 +17,6 @@ void ModulesFactory::loadModules( std::string const & path )
 		return ;
 	}
 
-	// TODO: don't forget Py_Finalize()
 	try
 	{
 		Py_Initialize();
@@ -30,14 +29,14 @@ void ModulesFactory::loadModules( std::string const & path )
 	dict global( import( "__main__" ).attr( "__dict__" ) );
 	std::string _path;
 	_path += "import sys\n";
-	_path += "sys.path.append('./assets/modules/lib_module')\n";
+	_path += "sys.path.append('./libs/py_module/')\n";
 	exec( _path.c_str(), global, global );
 
 	while ( ( dirp = readdir( dp ) ) != NULL )
 	{
-		if ( dirp->d_name[0] == '.' || std::string( dirp->d_name ) == "lib_module" )
+		if ( dirp->d_name[0] == '.' || std::string( dirp->d_name ) == "py_module" )
 			continue ;
-		Module *	module = Module::load( path + "/", dirp->d_name );
+		Module *	module = Module::load( path, dirp->d_name );
 //		if ( module->isValid() )
 			this->_modules.push_back( module );
 	}
@@ -98,4 +97,9 @@ void ModulesFactory::inputModules( Input const & input )
 std::vector<Module *>	ModulesFactory::getModules( void ) const
 {
 	return ( this->_modules );
+}
+
+void ModulesFactory::unloadModules( void )
+{
+	Py_Finalize();
 }

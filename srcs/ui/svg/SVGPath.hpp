@@ -3,7 +3,7 @@
 
 #include <iostream>
 #include <vg/vgu.h>
-#include <rapidxml.hpp>
+#include <rapidxml/rapidxml.hpp>
 #include <regex>
 #include "../../math/Math.hpp"
 #include "SVGAttributes.hpp"

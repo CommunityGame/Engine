@@ -1,7 +1,7 @@
 #ifndef _A_TAG_H_
 # define _A_TAG_H_
 
-#include <rapidxml.hpp>
+#include <rapidxml/rapidxml.hpp>
 #include <string>
 #include <vector>
 #include <map>

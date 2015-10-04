@@ -164,6 +164,8 @@ void			CoreEngine::run( void )
 //				std::this_thread::sleep_for( std::chrono::microseconds( ( ( ( 1.0 / this->_fpsExpected ) - dt ) * SECOND ) ) );
 //		}
 	}
+
+	modulesFactory.unloadModules();
 }
 
 GLWindow &		CoreEngine::getWindow( void ) const

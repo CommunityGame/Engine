@@ -10,6 +10,7 @@ class ModulesFactory
 {
 public:
 	void					loadModules( std::string const & path );
+	void					unloadModules( void );
 
 	void					initModules( shared_ptr<GameObject> root );
 	void					updateModules( double delta );

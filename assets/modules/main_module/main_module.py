@@ -1,7 +1,5 @@
 from LibModule import Module, GameObject, Input, MeshComponent, Quat, Vec3, Mat4, Transform, Key, Joystick
 
-
-print("main_module")
 class TestObject( GameObject ):
 	def __init__(self):
 		GameObject.__init__(self)
@@ -10,7 +8,7 @@ class TestObject( GameObject ):
 		meshO.addComponent( mesh )
 		meshO.getTransform().setScale( Vec3( 0.01, 0.01, 0.01 ) )
 		self.addChild( meshO )
-		print("ok TestObject")
+		# print("ok TestObject")
 
 	def update(self, delta):
 		# print( delta )
@@ -36,10 +34,10 @@ class TestObject( GameObject ):
 class main_module( Module ):
 	def __init__(self):
 		Module.__init__(self)
-		print("ok main_module")
+		# print("ok main_module")
 
 	def init(self, rootObject):
-		print("init")
+		# print("init")
 		o1 = TestObject()
 		rootObject.addChild( o1 )
 
