@@ -11,31 +11,36 @@ file( GLOB_RECURSE SOURCE_FILES "./srcs/**" )
 file( GLOB_RECURSE TESTS_FILES "./tests/**" )
 
 include( ./cmake/FindYaml-Cpp.cmake )
+include( ./cmake/FindOpenVG.cmake )
+
+if ( NOT OPENVG_FOUND )
+	message(STATUS "To install OpenVG use this: cd /tmp && git clone git@github.com:procedural/shivavg.git && cd shivavg && cmake . && make && sudo make install")
+endif()
+if ( NOT Yaml-Cpp_FOUND )
+	message(STATUS "To install Yaml-Cpp use this: cd /tmp && git clone git@github.com:jbeder/yaml-cpp.git && cd yaml-cpp && cmake . && make && sudo make install")
+endif()
 
 include_directories( "./includes/" )
 
-# GLAD
-set( GLAD "./libs/glad/glad.c")
-add_executable( CommunityGame_Engine ${SOURCE_FILES} ${GLAD} ${TESTS_FILES} )
+add_executable( CommunityGame_Engine ${SOURCE_FILES} ${TESTS_FILES} )
 
 # PYTHON
-set( Python_ADDITIONAL_VERSIONS 3.4 )
+find_package( PythonInterp )
 find_package( PythonLibs )
-include_directories( ${PYTHON_INCLUDE_DIRS} )
+include_directories( ${Boost_INCLUDE_DIRS} ${PYTHON_INCLUDE_DIRS} )
 target_link_libraries( CommunityGame_Engine ${PYTHON_LIBRARIES} )
 
 # BOOST
 set( BOOST_LIBS
-	python-py34
+	python
 	regex
 )
-set( BOOST_VERSION 1.58.0 )
 
-find_package(Boost ${BOOST_VERSION} COMPONENTS ${BOOST_LIBS} REQUIRED )
+find_package(Boost COMPONENTS ${BOOST_LIBS} REQUIRED )
 set( Boost_USE_STATIC_LIBS OFF )
 set( Boost_USE_MULTITHREADED ON )
 set( Boost_USE_STATIC_RUNTIME OFF )
-include_directories( ${Boost_INCLUDE_DIRS} )
+include_directories( ${Boost_INCLUDE_DIR} )
 target_link_libraries( CommunityGame_Engine ${Boost_LIBRARIES} )
 
 # GLFW
@@ -45,8 +50,12 @@ include_directories( ${GLFW_INCLUDE_DIRS} )
 target_link_libraries( CommunityGame_Engine ${GLFW_STATIC_LIBRARIES} )
 
 # YAML
-include_directories( ${YAML_CPP_INCLUDE_DIRS} )
-target_link_libraries( CommunityGame_Engine ${YAML_CPP_LIBRARIES} )
+include_directories( ${YAML_CPP_INCLUDE_DIR} )
+target_link_libraries( CommunityGame_Engine ${YAML_CPP_LIBRARY} )
+
+# OpenVG
+include_directories( ${OPENVG_INCLUDE_DIR} )
+target_link_libraries( CommunityGame_Engine ${OPENVG_LIBRARY} )
 
 # OpenGL
 find_package( OpenGL REQUIRED )
@@ -57,10 +66,6 @@ target_link_libraries( CommunityGame_Engine ${OPENGL_LIBRARIES} )
 find_package( OpenAL REQUIRED )
 include_directories( ${OPENAL_INCLUDE_DIR} )
 target_link_libraries( CommunityGame_Engine ${OPENAL_LIBRARY} )
-
-# OpenVG
-find_library( OpenVG_Lib NAMES OpenVG PATHS ./libs/ )
-target_link_libraries( CommunityGame_Engine ${OpenVG_Lib} )
 
 # PYTHON MODULE
 add_subdirectory( libs/py_module )

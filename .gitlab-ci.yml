@@ -6,6 +6,9 @@ build:
   script:
     - apt-get update -y
     - apt-get upgrade -y
-    - apt-get install cmake -y
+    - apt-get install cmake boost_python glfw3 python -y
+    - mkdir tmp
+    - cd ./tmp && git clone git@github.com:procedural/shivavg.git && cd shivavg && cmake . && make && make install && cd ../../
+    - cd ./tmp && git clone git@github.com:jbeder/yaml-cpp.git && cd yaml-cpp && cmake . && make && make install && cd ../../
     - mkdir build
     - cd build && cmake ..
