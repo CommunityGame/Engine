@@ -1,4 +1,2 @@
-TODO: load FreeType font
+TODO: loader FreeType font
 TODO: reorganise game components (render, physics, input, ...)
-TODO: use std::shared_ptr<>
-TODO: use boost lib

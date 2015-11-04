@@ -4,20 +4,26 @@
 #include <string>
 #include <vector>
 #include "Uniform.hpp"
-#include "RenderEngine.hpp"
 #include "../utils/MappedValues.hpp"
+#include "../assets/IAsset.hpp"
 
-class Shader
+class RenderEngine;
+class Camera;
+
+class Shader : public IAsset
 {
 public:
-	Shader( const std::string & name );
+	Shader( void );
 	~Shader( void );
 
+	bool				addShaderFile( std::string const & file, GLenum type );
 	void				bind( void ) const;
 	void				unbind( void ) const;
 	void				updateUniforms( RenderEngine const & renderEngine, Transformf const & transform, Camera const & camera ) const;
-
+	bool				linkShaders( void );
 	MappedValues &		getUniformValues( void );
+	Uniform const *		getUniform( std::string const & name ) const;
+	Uniform const *		getConstUniform( std::string const & name ) const;
 	GLuint				getProgram( void ) const ;
 
 private:
@@ -30,6 +36,8 @@ private:
 	 */
 	const std::string	loadShader( const std::string & file );
 
+	void				parseUniforms( const std::string & text );
+
 	/*!
 	 * @function makeShader
 	 * Creates a shader object of the specified type using the specified text
@@ -40,12 +48,13 @@ private:
 	 */
 	static GLuint		makeShader( GLenum type, const std::string & text );
 
-	void				linkShaders( void );
-
 	GLuint					_program;
-	GLuint					_vertexShader;
-	GLuint					_fragmentShader;
+	std::vector<GLuint>		_shaders;
+
+//	GLuint					_vertexShader;
+//	GLuint					_fragmentShader;
 	std::vector<Uniform *>	_uniforms;
+	std::vector<Uniform *>	_constUniforms;
 	MappedValues			_uniformValues;
 
 	static const std::string	TAG;

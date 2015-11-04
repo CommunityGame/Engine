@@ -30,7 +30,7 @@ Module *	Module::load( std::string const & path, std::string const & name )
 		object module = import( name.c_str() );
 
 		if ( module.is_none() )
-			throw new EngineException( "Unable to load module: " + name );
+			throw new EngineException( "Unable to t_loader module: " + name );
 
 		object PyModule = module.attr( name.c_str() );
 		object instance = PyModule();
@@ -65,7 +65,7 @@ void	Module::addObject( GameObject * object )
 //		return ;
 //	}
 //	// TODO: check file or dir
-//	// TODO: load config.yml
+//	// TODO: t_loader config.yml
 //	// TODO: create luaLib instance
 //	while ( ( dirp = readdir( dp ) ) != NULL )
 //	{
@@ -75,12 +75,12 @@ void	Module::addObject( GameObject * object )
 //	}
 //	if ( ! dirs["config.yml"] )
 //	{
-//		Logger::e( TAG, "Failed to load module " + path + ", file not found 'config.yml' !" );
+//		Logger::e( TAG, "Failed to t_loader module " + path + ", file not found 'config.yml' !" );
 //		return ;
 //	}
 //	if ( ! dirs["main.lua"] )
 //	{
-//		Logger::e( TAG, "Failed to load module " + path + ", file not found 'main.lua' !" );
+//		Logger::e( TAG, "Failed to t_loader module " + path + ", file not found 'main.lua' !" );
 //		return ;
 //	}
 //

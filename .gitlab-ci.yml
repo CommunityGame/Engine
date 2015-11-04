@@ -1,0 +1,11 @@
+stages:
+- build
+
+build:
+  stage: build
+  script:
+    - apt-get update -y
+    - apt-get upgrade -y
+    - apt-get install cmake -y
+    - mkdir build
+    - cd build && cmake ..

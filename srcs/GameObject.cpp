@@ -2,6 +2,10 @@
 #include "GameObject.hpp"
 #include "utils/Utils.hpp"
 #include "AGame.hpp"
+#include "../srcs/components/basic/RenderComponent.hpp"
+#include "../srcs/components/basic/PhysicsComponent.hpp"
+#include "../srcs/components/basic/InputComponent.hpp"
+#include "../srcs/components/basic/LightComponent.hpp"
 
 GameObject::GameObject( void ) :
 	_transform( Transformf() ),
@@ -33,7 +37,7 @@ GameObject &	GameObject::operator=( GameObject const & rhs )
 	return ( *this );
 }
 
-void	GameObject::render( RenderEngine const & renderEngine, Shader const & shader, Camera const & camera ) const
+void	GameObject::render( RenderEngine const & renderEngine, Asset<Shader> const & shader, Camera const & camera ) const
 {
 	std::vector<shared_ptr<RenderComponent>>::const_iterator it;
 
@@ -60,6 +64,15 @@ void	GameObject::update( double delta )
 	return ;
 }
 
+int		GameObject::updateUniforms( Asset<Shader> const & shader, int numLight ) const
+{
+	std::vector<shared_ptr<LightComponent>>::const_iterator it;
+
+	for ( it = this->_lightComponents.begin(); it != this->_lightComponents.end(); it++ )
+		(*it)->updateUniforms( shader, "C_lights[" + std::to_string( numLight++ ) + "]" );
+	return ( numLight );
+}
+
 void	GameObject::init( CoreEngine & coreEngine )
 {
 	std::vector<shared_ptr<AObjectComponent>>::const_iterator it;
@@ -69,7 +82,7 @@ void	GameObject::init( CoreEngine & coreEngine )
 	return ;
 }
 
-void	GameObject::renderAll( RenderEngine const & renderEngine, Shader const & shader, Camera const & camera ) const
+void	GameObject::renderAll( RenderEngine const & renderEngine, Asset<Shader> const & shader, Camera const & camera ) const
 {
 	std::vector<shared_ptr<GameObject>>::const_iterator it;
 
@@ -85,6 +98,16 @@ void	GameObject::updateAll( double delta )
 	this->update( delta );
 	for ( it = this->_childrens.begin(); it != this->_childrens.end(); it++ )
 		(*it)->updateAll( delta );
+}
+
+int		GameObject::updateAllUniforms( Asset<Shader> const & shader, int numLight ) const
+{
+	std::vector<shared_ptr<GameObject>>::const_iterator it;
+
+	numLight = this->updateUniforms( shader, numLight );
+	for ( it = this->_childrens.begin(); it != this->_childrens.end(); it++ )
+		numLight += (*it)->updateAllUniforms( shader, numLight );
+	return ( numLight );
 }
 
 void	GameObject::initAll( CoreEngine & coreEngine )
@@ -108,13 +131,15 @@ void	GameObject::addComponent( shared_ptr<AObjectComponent> component )
 	component->setParent( this );
 	if ( Utils::instanceOf<RenderComponent>( * component.get() ) )
 		this->_renderComponents.push_back( shared_ptr<RenderComponent>( dynamic_cast<RenderComponent *>( component.get() ) ) );
-	else if ( Utils::instanceOf<PhysicsComponent>( * component.get() ) )
+	if ( Utils::instanceOf<LightComponent>( * component.get() ) )
+		this->_lightComponents.push_back( shared_ptr<LightComponent>( dynamic_cast<LightComponent *>( component.get() ) ) );
+	if ( Utils::instanceOf<InputComponent>( * component.get() ) )
+		this->_inputComponents.push_back( shared_ptr<InputComponent>( dynamic_cast<InputComponent *>( component.get() ) ) );
+	if ( Utils::instanceOf<PhysicsComponent>( * component.get() ) )
 	{
 		PhysicsEngine::refreshPhysicsObjectList( true );
 		this->_physicsComponents.push_back( shared_ptr<PhysicsComponent>( dynamic_cast<PhysicsComponent *>( component.get()  ) ) );
 	}
-	else if ( Utils::instanceOf<InputComponent>( * component.get() ) )
-		this->_inputComponents.push_back( shared_ptr<InputComponent>( dynamic_cast<InputComponent *>( component.get() ) ) );
 	this->_components.push_back( component );
 //	return ( shared_from_this() );
 }
@@ -136,7 +161,7 @@ CoreEngine *		GameObject::getCoreEngine( void ) const
 }
 
 
-std::vector<shared_ptr<GameObject>> const &		GameObject::getChildrens( void ) const
+std::vector<shared_ptr<GameObject>> const &			GameObject::getChildrens( void ) const
 {
 	return ( this->_childrens );
 }
@@ -146,9 +171,14 @@ std::vector<shared_ptr<AObjectComponent>> const &	GameObject::getComponents( voi
 	return ( this->_components );
 }
 
-std::vector<shared_ptr<PhysicsComponent>> const & GameObject::getPhysicsComponents( void ) const
+std::vector<shared_ptr<PhysicsComponent>> const &	GameObject::getPhysicsComponents( void ) const
 {
 	return ( this->_physicsComponents );
+}
+
+std::vector<shared_ptr<LightComponent>> const &		GameObject::getLightsComponents( void ) const
+{
+	return ( this->_lightComponents );
 }
 
 void GameObject::getPhysicsObjects( std::vector< GameObject * > & havePhysicComponent )

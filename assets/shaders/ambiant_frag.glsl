@@ -2,11 +2,11 @@
 
 in vec4			vertexColor;
 
-uniform vec3	ambiantColor;
+uniform vec3	ambientColor;
 
 out vec4		color;
 
 void main()
 {
-	color = vec4( ambiantColor, 1 ) * vertexColor;
+	color = vec4( ambientColor, 1 ) * vertexColor;
 }

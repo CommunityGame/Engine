@@ -1,10 +1,11 @@
 #include "Shader.hpp"
-#include "../components/Camera.hpp"
 #include "../utils/Utils.hpp"
+#include "RenderEngine.hpp"
+#include "../components/Camera.hpp"
 
 const std::string	Shader::TAG = "Shader";
 
-Shader::Shader( const std::string & file ) :
+Shader::Shader( void ) :
 	_program( glCreateProgram() )
 {
 	if ( this->_program == 0u )
@@ -12,30 +13,33 @@ Shader::Shader( const std::string & file ) :
 		Logger::e( TAG, "Failed to create program shader" );
 		return ;
 	}
-
-	const std::string vertexFile = this->loadShader( "./assets/shaders/" + file + "_vert.glsl" );
-	if ( vertexFile.empty() )
-		Logger::e( TAG, "Unable to load vertex shader" );
-	const std::string fragmentFile = this->loadShader( "./assets/shaders/" + file + "_frag.glsl" );
-	if ( fragmentFile.empty() )
-		Logger::e( TAG, "Unable to load fragment shader" );
-
-	this->_vertexShader = this->makeShader( GL_VERTEX_SHADER, vertexFile );
-	this->_fragmentShader = this->makeShader( GL_FRAGMENT_SHADER, fragmentFile );
-
-	this->linkShaders();
 }
 
 Shader::~Shader( void )
 {
-	glDetachShader( this->_program, this->_vertexShader );
-	glDetachShader( this->_program, this->_fragmentShader );
+	std::vector<GLuint>::iterator it;
 
-	glDeleteShader( this->_vertexShader );
-	glDeleteShader( this->_fragmentShader );
+	for ( it = this->_shaders.begin(); it != this->_shaders.end(); it++ )
+	{
+		glDetachShader( this->_program, *it );
+		glDeleteShader( *it );
+	}
 
 	glDeleteProgram( this->_program );
 	return ;
+}
+
+bool		Shader::addShaderFile( std::string const & file, GLenum type )
+{
+	const std::string shaderText = this->loadShader( file );
+
+	this->parseUniforms( shaderText );
+	GLuint shader = this->makeShader( type, shaderText );
+
+	if ( ! shader )
+		return ( false );
+	this->_shaders.push_back( shader );
+	return ( true );
 }
 
 GLuint		Shader::makeShader( GLenum type, const std::string & text )
@@ -69,14 +73,16 @@ GLuint		Shader::makeShader( GLenum type, const std::string & text )
 	return ( shader );
 }
 
-void		Shader::linkShaders( void )
+bool	Shader::linkShaders( void )
 {
 	GLint	program_ok;
 	GLsizei	log_length;
 	char 	info_log[8192];
+	std::vector<GLuint>::iterator it;
 
-	glAttachShader( this->_program, this->_vertexShader );
-	glAttachShader( this->_program, this->_fragmentShader );
+	for ( it = this->_shaders.begin(); it != this->_shaders.end(); it++ )
+		glAttachShader( this->_program, *it );
+
 	glLinkProgram( this->_program );
 	glGetProgramiv( this->_program, GL_LINK_STATUS, &program_ok );
 
@@ -87,7 +93,9 @@ void		Shader::linkShaders( void )
 		glGetProgramInfoLog( this->_program, 8192, &log_length, info_log );
 		ss << info_log;
 		Logger::e( TAG, ss.str() );
+		return ( false );
 	}
+	return ( true );
 }
 
 const std::string		Shader::loadShader( const std::string & file )
@@ -106,32 +114,12 @@ const std::string		Shader::loadShader( const std::string & file )
 			tokenLine.clear();
 			if ( Utils::split( line, tokenLine ).size() == 0 )
 				continue ;
-			if ( tokenLine[0] == "uniform" )
-			{
-				std::string type = tokenLine[1];
-				std::string name = tokenLine[2].substr( 0, tokenLine[2].find_last_not_of( ';' ) + 1 );
-				Logger::d( TAG, "Add uniform '" + name + "' to shader: " + file );
-
-				// if array
-				if ( name.find( '[' ) != std::string::npos )
-				{
-					int	nb;
-					Uniform::Type t = Uniform::stringToTypeEnum( type );
-
-					nb = atoi( name.substr( name.find( '[' ) + 1, name.length() - name.find( '[' ) - 2 ).c_str() );
-					name = name.substr( 0, name.find( '[' ) );
-					for ( int i = 0; i < nb; ++i )
-						this->_uniforms.push_back( new Uniform( this->_program, t, name + "[" + std::to_string( i ) + "]" ) );
-				}
-				else
-					this->_uniforms.push_back( new Uniform( this->_program, Uniform::stringToTypeEnum( type ), name ) );
-			}
-			else if ( tokenLine[0] == "#include" )
+			if ( tokenLine[0] == "#include" )
 			{
 				std::string includeFile = file.substr( 0, file.find_last_of( '/' ) + 1 ) + tokenLine[1];
 				Logger::d( TAG, "Include shader: " + includeFile );
 				result.append( loadShader( includeFile ) );
-				line = "//" + line;
+				line = "";
 			}
 			result.append( line + "\n" );
 		}
@@ -141,6 +129,87 @@ const std::string		Shader::loadShader( const std::string & file )
 	else
 		Logger::e( TAG, "Unable to open file: " + file );
 	return ( result );
+}
+
+void		Shader::parseUniforms( const std::string & text )
+{
+	std::map<std::string, std::map<std::string, std::string>> structsAttrs;
+	std::map<std::string, std::map<std::string, std::string>>::iterator it;
+	std::map<std::string, std::string>::iterator it2;
+	size_t begin = 0;
+	size_t end;
+	size_t begin2;
+	size_t end2;
+	std::vector<std::string>	tmp;
+	std::vector<std::string>	tmp2;
+
+	//Parse structs
+	while( ( begin = text.find( "struct", begin ) ) != std::string::npos )
+	{
+		end = text.find( "{", begin );
+		tmp.clear();
+		Utils::split( text.substr( begin, end - begin ), tmp );
+
+		structsAttrs[tmp[1]] = std::map<std::string, std::string>();
+
+		begin = text.find( "{", end ) + 1;
+		end = text.find( "}", begin );
+
+		std::string structData = text.substr( begin, end - begin );
+
+		begin2 = 0;
+		end2 = structData.find( ";", begin2 );
+		Utils::split( structData.substr( begin2, end2 - begin2 ), tmp2 );
+		while ( tmp2.size() >= 2 )
+		{
+			std::string attrType = tmp2[0];
+			std::string attrName = tmp2[1];
+			structsAttrs[tmp[1]][attrName] = attrType;
+			begin2 = end2 + 1;
+			end2 = structData.find( ";", begin2 );
+			tmp2.clear();
+			Utils::split( structData.substr( begin2, end2 - begin2 ), tmp2 );
+		}
+		tmp2.clear();
+		begin = end;
+	}
+
+	begin = 0;
+	//Parse uniform
+	while( ( begin = text.find( "uniform", begin ) ) != std::string::npos )
+	{
+		end = text.find( ";", begin );
+		std::string uniformDef = text.substr( begin, end - begin );
+
+		tmp.clear();
+		Utils::split( uniformDef, tmp );
+		std::string uniformType = tmp[1];
+		std::string uniformName = tmp[2];
+
+		size_t pos = uniformName.find( '[' );
+		int uniformArray = pos != std::string::npos ? atoi( uniformName.substr( pos + 1, uniformName.find( ']' ) - pos - 1 ).c_str() ) : 1;
+
+		if ( pos != std::string::npos )
+			uniformName = uniformName.substr( 0, pos );
+
+		std::vector<Uniform *> *	uniforms;
+		uniforms = ( uniformName.substr( 0, 2 ) == "C_" ) ? & this->_constUniforms : & this->_uniforms;
+
+		for ( size_t i = 0; i < uniformArray || pos == std::string::npos; i++ )
+		{
+			std::string name = ( pos != std::string::npos ) ? uniformName + "[" + std::to_string( i ) + "]" : uniformName;
+			if ( ( it = structsAttrs.find( uniformType ) ) != structsAttrs.end() )
+			{
+				it2 = (*it).second.begin();
+				for ( it2; it2 != (*it).second.end(); it2++ )
+					uniforms->push_back( new Uniform( this->_program, Uniform::stringToTypeEnum((*it2).second ), name + "." + (*it2).first ) );
+			}
+			else
+				uniforms->push_back( new Uniform( this->_program, Uniform::stringToTypeEnum( uniformType ), name ) );
+			pos = 0;
+		}
+		begin = end;
+	}
 }
 
 void		Shader::bind( void ) const
@@ -159,13 +228,13 @@ void		Shader::updateUniforms( RenderEngine const & renderEngine, Transformf cons
 
 	for ( it = this->_uniforms.begin(); it != this->_uniforms.end(); it++ )
 	{
-		Uniform *uniform = *it;
+		Uniform *	uniform = *it;
 		if ( uniform->getName() == "model" )
 			uniform->update( transform.getTransformedMatrix() );
-		else if ( uniform->getName() == "view" )
-			uniform->update( camera.getTransformedViewMatrix() );
-		else if ( uniform->getName() == "projection" )
-			uniform->update( camera.getPerspectiveMatrix() );
+//		else if ( uniform->getName() == "view" )
+//			uniform->update( camera.getTransformedViewMatrix() );
+//		else if ( uniform->getName() == "projection" )
+//			uniform->update( camera.getPerspectiveMatrix() );
 
 		else if ( uniform->getType() == Uniform::Type::INT )
 			uniform->update( this->_uniformValues.getInt( uniform->getName() ) );
@@ -174,17 +243,11 @@ void		Shader::updateUniforms( RenderEngine const & renderEngine, Transformf cons
 		else if ( uniform->getType() == Uniform::Type::DOUBLE )
 			uniform->update( this->_uniformValues.getDouble( uniform->getName() ) );
 		else if ( uniform->getType() == Uniform::Type::VEC2 )
-			uniform->update( this->_uniformValues.getVec2f( uniform->getName()) );
+			uniform->update( this->_uniformValues.getVec2f( uniform->getName() ) );
 		else if ( uniform->getType() == Uniform::Type::VEC3 )
-			uniform->update( this->_uniformValues.getVec3f( uniform->getName()) );
+			uniform->update( this->_uniformValues.getVec3f( uniform->getName() ) );
 		else if ( uniform->getType() == Uniform::Type::MAT4 )
-			uniform->update( this->_uniformValues.getMat4f( uniform->getName()) );
-		else if ( uniform->getType() == Uniform::Type::LIGHT )
-		{
-			LightUniform const * lightUniform = this->_uniformValues.getLight( uniform->getName() );
-			if ( lightUniform != nullptr )
-				lightUniform->update();
-		}
+			uniform->update( this->_uniformValues.getMat4f( uniform->getName() ) );
 	}
 }
 
@@ -193,6 +256,30 @@ void		Shader::updateUniforms( RenderEngine const & renderEngine, Transformf cons
 MappedValues &		Shader::getUniformValues( void )
 {
 	return ( this->_uniformValues );
+}
+
+Uniform const *		Shader::getUniform( std::string const & name ) const
+{
+	std::vector<Uniform *>::const_iterator it;
+
+	for ( it = this->_uniforms.begin(); it != this->_uniforms.end(); it++ )
+	{
+		if ( (*it)->getName() == name )
+			return ( (*it) );
+	}
+	return ( nullptr );
+}
+
+Uniform const *		Shader::getConstUniform( std::string const & name ) const
+{
+	std::vector<Uniform *>::const_iterator it;
+
+	for ( it = this->_constUniforms.begin(); it != this->_constUniforms.end(); it++ )
+	{
+		if ( (*it)->getName() == name )
+			return ( (*it) );
+	}
+	return ( nullptr );
 }
 
 GLuint				Shader::getProgram( void ) const

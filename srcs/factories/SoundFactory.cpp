@@ -3,7 +3,29 @@
 
 const std::string	SoundFactory::TAG = "SoundFactory";
 
-shared_ptr<Sound> SoundFactory::loadWave( std::string const & file )
+t_loader			SoundFactory::getLoader( void ) const
+{
+	return SoundFactory::load;
+}
+
+shared_ptr<Sound>	SoundFactory::load( std::string const & path )
+{
+	bool fullPath = path.find( '/' ) != std::string::npos;
+	std::string ext = path.substr( path.find_last_of( '.' ), path.length() );
+	std::string p;
+
+	p = path;
+	if ( ! fullPath )
+		p = "./assets/sounds/" + p;
+
+	if ( ext == ".wav" )
+		return SoundFactory::loadWave( p );
+	else
+		Logger::w( TAG, "Unsupported extension" );
+	return ( nullptr );
+}
+
+shared_ptr<Sound>	SoundFactory::loadWave( std::string const & file )
 {
 	std::ifstream		ifs( file, std::ios::in | std::ios::binary );
 	Sound *	sound;

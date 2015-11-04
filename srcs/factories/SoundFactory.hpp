@@ -8,9 +8,11 @@
 class SoundFactory : public IFactory
 {
 public:
-	static shared_ptr<Sound>	loadWave( std::string const & file );
+	virtual t_loader			getLoader( void ) const;
 
 private:
+	static shared_ptr<Sound>	load( std::string const & path );
+	static shared_ptr<Sound>	loadWave( std::string const & file );
 	static const std::string	TAG;
 };
 

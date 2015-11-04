@@ -32,10 +32,10 @@ void		MappedValues::addValue( std::string const & name, Mat4f const & value )
 	this->_mat4fValues[name] = value;
 }
 
-void		MappedValues::addValue( std::string const & name, LightUniform const * value )
-{
-	this->_lightValues[name] = value;
-}
+//void		MappedValues::addValue( std::string const & name, LightUniform const * value )
+//{
+//	this->_lightValues[name] = value;
+//}
 
 
 int			MappedValues::getInt( std::string const & name ) const
@@ -92,11 +92,11 @@ Mat4f const &	MappedValues::getMat4f( std::string const & name ) const
 	return ( Mat4f::ZERO );
 }
 
-LightUniform const *	MappedValues::getLight( std::string const & name ) const
-{
-	std::map<std::string, LightUniform const *>::const_iterator it = this->_lightValues.find( name );
-
-	if( it != this->_lightValues.end() )
-		return ( it->second );
-	return ( nullptr );
-}
+//LightUniform const *	MappedValues::getLight( std::string const & name ) const
+//{
+//	std::map<std::string, LightUniform const *>::const_iterator it = this->_lightValues.find( name );
+//
+//	if( it != this->_lightValues.end() )
+//		return ( it->second );
+//	return ( nullptr );
+//}

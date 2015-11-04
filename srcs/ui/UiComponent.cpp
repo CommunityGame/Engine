@@ -11,8 +11,8 @@ Shader *			UiComponent::_uiShader = nullptr;
 UiComponent::UiComponent( const std::string & xml_file )
 {
 	// create a box path
-//	path = vgCreatePath( VG_PATH_FORMAT_STANDARD, VG_PATH_DATATYPE_F, 1, 0, 0, 0, VG_PATH_CAPABILITY_ALL );
-//	vguRoundRect(path, -50,-30, 100,60, 30,30);
+	//	path = vgCreatePath( VG_PATH_FORMAT_STANDARD, VG_PATH_DATATYPE_F, 1, 0, 0, 0, VG_PATH_CAPABILITY_ALL );
+	//	vguRoundRect(path, -50,-30, 100,60, 30,30);
 
 //	if ( UiComponent::_uiShader == nullptr )
 //		UiComponent::_uiShader = new Shader( "ui" );

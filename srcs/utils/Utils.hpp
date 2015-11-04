@@ -18,7 +18,7 @@ public:
 	template<typename CheckType, typename InstanceType>
 	static bool instanceOf( InstanceType & instance )
 	{
-		return ( dynamic_cast<CheckType *>( & instance ) != NULL );
+		return ( dynamic_cast<CheckType *>( & instance ) != nullptr );
 	}
 
 private:

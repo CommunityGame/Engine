@@ -29,7 +29,7 @@ set( BOOST_LIBS
 	python-py34
 	regex
 )
-set( BOOST_VERSION 1.55.0 )
+set( BOOST_VERSION 1.58.0 )
 
 find_package(Boost ${BOOST_VERSION} COMPONENTS ${BOOST_LIBS} REQUIRED )
 set( Boost_USE_STATIC_LIBS OFF )
@@ -59,8 +59,7 @@ include_directories( ${OPENAL_INCLUDE_DIR} )
 target_link_libraries( CommunityGame_Engine ${OPENAL_LIBRARY} )
 
 # OpenVG
-include_directories( /usr/local/includes/ )
-find_library( OpenVG_Lib NAMES OpenVG PATHS /usr/local/lib/ )
+find_library( OpenVG_Lib NAMES OpenVG PATHS ./libs/ )
 target_link_libraries( CommunityGame_Engine ${OpenVG_Lib} )
 
 # PYTHON MODULE

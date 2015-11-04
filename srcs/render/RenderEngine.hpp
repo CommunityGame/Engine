@@ -5,11 +5,12 @@
 #include "GLWindow.hpp"
 #include "Uniform.hpp"
 #include "LightUniform.hpp"
+#include "../assets/Asset.hpp"
+#include "Shader.hpp"
 
 class GameObject;
 class LightComponent;
 class Camera;
-class Shader;
 
 class RenderEngine
 {
@@ -17,9 +18,7 @@ public:
 	RenderEngine( GLWindow const & window );
 	~RenderEngine( void );
 
-	void				render( GameObject const & object ) const;
-
-	void				addLight( LightComponent * light );
+	void				render( GameObject const & rootObject ) const;
 
 	//	GETTER
 	shared_ptr<Camera>	getCamera( void ) const;
@@ -30,8 +29,7 @@ public:
 private:
 	const GLWindow &				_window;
 	mutable shared_ptr<Camera>		_camera;
-	Shader *						_defaultShader;
-	std::vector<LightComponent *>	_lights;
+	Asset<Shader>					_defaultShader;
 };
 
 #endif // ! _RENDER_ENGINE_H_

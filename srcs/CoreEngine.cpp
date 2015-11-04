@@ -3,6 +3,7 @@
 #include "AGame.hpp"
 #include "modules/ModulesFactory.hpp"
 #include "components/Camera.hpp"
+#include "factories/Factories.hpp"
 
 const std::string	CoreEngine::TAG = "CoreEngine";
 
@@ -13,6 +14,7 @@ CoreEngine::CoreEngine( AGame & game, int fpsExpected ) :
 	_fpsExpected( fpsExpected ),
 	_debugMode( false )
 {
+	Factories::registerFactories();
 	return ;
 }
 
@@ -75,11 +77,10 @@ void			CoreEngine::run( void )
 	this->_game.init();
 	Input::init( this->_window );
 
-	ModulesFactory	modulesFactory;
-	modulesFactory.loadModules( "./assets/modules" );
-
-	modulesFactory.initModules( this->_game.getRootObject() );
-//	this->_game.addObject( new LuaGameObject( "./assets/modules/main_module/GameObject.lua", modulesFactory.getLuaState() ) );
+	//TODO: use AssetsManager
+//	ModulesFactory	modulesFactory;
+//	modulesFactory.loadModules( "./assets/modules" );
+//	modulesFactory.initModules( this->_game.getRootObject() );
 
 	this->_game.getRootObject()->initAll( * this );
 
@@ -108,18 +109,18 @@ void			CoreEngine::run( void )
 		this->_game.physics( * this->_physicsEngine, dt );
 
 //		end_debug = glfwGetTime();
-//		std::cout << "Physics: " << end_debug - begin_debug << std::endl;
+//		cout << "Physics: " << end_debug - begin_debug << endl;
 
 		// UPDATE
 //		begin_debug = end_debug;
-		modulesFactory.updateModules( dt );
+//		modulesFactory.updateModules( dt );
 		this->_game.update( dt );
 
 		if ( this->_game.getCamera() != this->_renderEngine->getCamera() )
 			this->_renderEngine->setCamera( this->_game.getCamera() );
 
 //		end_debug = glfwGetTime();
-//		std::cout << "Update: " << end_debug - begin_debug << std::endl;
+//		cout << "Update: " << end_debug - begin_debug << endl;
 
 		this->_soundEngine->update( dt, this->_game.getCamera()->getParent() );
 
@@ -128,14 +129,14 @@ void			CoreEngine::run( void )
 		this->_game.render( * this->_renderEngine );
 
 //		end_debug = glfwGetTime();
-//		std::cout << "Render: " << end_debug - begin_debug << std::endl;
+//		cout << "Render: " << end_debug - begin_debug << endl;
 
 		// REFRESH
 //		begin_debug = end_debug;
 		this->_window->refresh();
 
 //		end_debug = glfwGetTime();
-//		std::cout << "Refresh: " << end_debug - begin_debug << std::endl;
+//		cout << "Refresh: " << end_debug - begin_debug << endl;
 
 		end_ticks = glfwGetTime();
 		dt = ( end_ticks - begin_ticks );
@@ -143,10 +144,10 @@ void			CoreEngine::run( void )
 
 //		if ( 1 )
 //		{
-//			std::stringstream	title;
+//			stringstream	title;
 //			double fps = 1.0 / dt;
-//			std::cout << "dt: " << dt << std::endl;
-//			std::cout << fps << std::endl;
+//			cout << "dt: " << dt << endl;
+//			cout << fps << endl;
 //			if ( fps > this->_fpsExpected )
 //				title << this->_window->getTitle() << ", real FPS: " << this->_fpsExpected;
 //			else
@@ -156,16 +157,16 @@ void			CoreEngine::run( void )
 //
 //			if ( fps < this->_fpsExpected )
 //			{
-//				std::stringstream	log;
+//				stringstream	log;
 //				log << "Frames dropped: " << (this->_fpsExpected - fps);
 //				Logger::w( log.str() );
 //			}
 //			else
-//				std::this_thread::sleep_for( std::chrono::microseconds( ( ( ( 1.0 / this->_fpsExpected ) - dt ) * SECOND ) ) );
+//				this_thread::sleep_for( chrono::microseconds( ( ( ( 1.0 / this->_fpsExpected ) - dt ) * SECOND ) ) );
 //		}
 	}
 
-	modulesFactory.unloadModules();
+//	modulesFactory.unloadModules();
 }
 
 GLWindow &		CoreEngine::getWindow( void ) const

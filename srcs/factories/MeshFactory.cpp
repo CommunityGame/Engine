@@ -1,20 +1,31 @@
 #include "MeshFactory.hpp"
 
 const std::string	MeshFactory::TAG = "MeshFactory";
-std::map<std::string, shared_ptr<MeshComponent>>	MeshFactory::_loadedMesh;
 
-shared_ptr<MeshComponent> MeshFactory::loadObj( const std::string & file )
+t_loader			MeshFactory::getLoader( void ) const
 {
-	//TODO: refactor this code
-	std::map<std::string, shared_ptr<MeshComponent>>::const_iterator it;
+	return MeshFactory::load;
+}
 
-	it = MeshFactory::_loadedMesh.find( file );
-	if ( it != MeshFactory::_loadedMesh.end() )
-	{
-		Logger::w( TAG, "Reuse an already load mesh :" + file );
-		return ( (*it).second );
-	}
+shared_ptr<Mesh>	MeshFactory::load( std::string const & path )
+{
+	bool fullPath = path.find( '/' ) != std::string::npos;
+	std::string ext = path.substr( path.find_last_of( '.' ), path.length() );
+	std::string p;
 
+	p = path;
+	if ( ! fullPath )
+		p = "./assets/meshs/" + p;
+
+	if ( ext == ".obj" )
+		return MeshFactory::loadObj( p );
+	else
+		Logger::w( TAG, "Unsupported extension" );
+	return ( nullptr );
+}
+
+shared_ptr<Mesh>	MeshFactory::loadObj( const std::string & file )
+{
 	bool					flat = true;
 	GLuint					i = 0;
 
@@ -46,7 +57,7 @@ shared_ptr<MeshComponent> MeshFactory::loadObj( const std::string & file )
 			if ( std::sscanf( line.c_str(), "v %f %f %f", &v[0], &v[1], &v[2] ) != 3 )
 				Logger::w( TAG, "Missing value line: (" + std::to_string( lineNb ) + ") " + line );
 			if ( flat )
-				vertexTmp.push_back( Vertexf( v, Colorf( 0.6f, 0.9f, 0.2f, 1 ) ) );
+				vertexTmp.push_back( Vertexf( v, Colorf( 0.6f, 0.9f, 0.2f, 0.5 ) ) );
 			else
 				vertex.push_back( Vertexf( v ) );
 		}
@@ -88,10 +99,9 @@ shared_ptr<MeshComponent> MeshFactory::loadObj( const std::string & file )
 			}
 		}
 	}
-	shared_ptr<MeshComponent>	res( new MeshComponent( vertex, indices ) );
+
+	shared_ptr<Mesh>	res( new Mesh( vertex, indices ) );
 	res->calcNormal();
 	res->bufferData();
-
-	MeshFactory::_loadedMesh.insert( std::pair<std::string, shared_ptr<MeshComponent>>( file, res ) );
 	return ( res );
 }

@@ -8,11 +8,13 @@
 class MeshFactory : public IFactory
 {
 public:
-	static shared_ptr<MeshComponent>		loadObj( std::string const & file );
+	virtual t_loader			getLoader( void ) const;
 
 private:
+	static shared_ptr<Mesh>		load( std::string const & path );
+	static shared_ptr<Mesh>		loadObj( std::string const & file );
+
 	static const std::string	TAG;
-	static std::map<std::string, shared_ptr<MeshComponent>>	_loadedMesh;
 };
 
 #endif // ! _MESH_BUILDER_H_

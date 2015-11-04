@@ -1,39 +1,41 @@
 #ifndef _LIGHT_COMPONENT_H_
 # define _LIGHT_COMPONENT_H_
 
-#include "basic/RenderComponent.hpp"
+#include "basic/LightComponent.hpp"
 
-class LightComponent : public RenderComponent
+class PointLightComponent : public LightComponent
 {
 public:
-	LightComponent( void );
-//	LightComponent( Colorf const & color );
-//	~LightComponent( void );
+	PointLightComponent();
+//	PointLightComponent( Colorf const & color );
+//	~PointLightComponent( void );
 
-	virtual void		update( double delta );
-	virtual void		render( RenderEngine const & renderEngine, GameObject const & parent, Shader const & shader, Camera const & camera ) const;
-	virtual void		init( CoreEngine & coreEngine );
+	virtual void			update( double delta );
+	virtual void			updateUniforms( Asset<Shader> const & shader, std::string const & name ) const;
 
 	// SETTER
 	void					setAmbient( Colorf const & ambient );
 	void					setDiffuse( Colorf const & diffuse );
 	void					setSpecular( Colorf const & specular );
 	void					setShininess( float shininess );
-	void					setUniform( LightUniform * uniform );
+	void					setRadius( float radius );
+	void					setCutoff( float cutoff );
 
 	// GETTER
 	Colorf const &			getAmbient( void ) const;
 	Colorf const &			getDiffuse( void ) const;
 	Colorf const &			getSpecular( void ) const;
 	float					getShininess( void ) const;
-	LightUniform const *	getUniform( void ) const;
+	float					getRadius( void ) const;
+	float					getCutoff( void ) const;
 
 private:
 	Colorf				_ambient;
 	Colorf				_diffuse;
 	Colorf				_specular;
 	float				_shininess;
-	LightUniform *		_uniform;
+	float				_radius;
+	float				_cutoff;
 };
 
 #endif // ! _LIGHT_COMPONENT_H_

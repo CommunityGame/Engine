@@ -4,12 +4,12 @@
 #include <string>
 #include <map>
 
-class Factory
+class OldFactory
 {
 public:
 	typedef void *					(*instantiateFunction)( void * params );
 
-	static void						registerClass( std::string const & className, Factory::instantiateFunction function );
+	static void						registerClass( std::string const & className, OldFactory::instantiateFunction function );
 	static void *					instantiate( std::string const & name, void * params = nullptr );
 
 private:

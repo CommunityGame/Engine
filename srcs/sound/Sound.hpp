@@ -4,8 +4,9 @@
 #include <alc.h>
 #include <al.h>
 #include "../math/Math.hpp"
+#include "../assets/IAsset.hpp"
 
-class Sound
+class Sound : public IAsset
 {
 public:
 	Sound( void );

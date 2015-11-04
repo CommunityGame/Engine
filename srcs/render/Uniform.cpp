@@ -9,8 +9,7 @@ const char *	Uniform::typeEnum[] =
 		"double",
 		"vec2",
 		"vec3",
-		"mat4",
-		"light"
+		"mat4"
 };
 
 Uniform::Uniform( void )
@@ -24,7 +23,20 @@ Uniform::Uniform( GLuint const program, Type const & type, std::string const & n
 	_location( -1 ),
 	_program( program )
 {
+//	Logger::d( TAG, "Added uniform: " + this->_name );
 	return ;
+}
+
+Uniform &			Uniform::operator=( Uniform const & rhs )
+{
+	if ( this != & rhs )
+	{
+		this->_program = rhs.getProgram();
+		this->_name = rhs.getName();
+		this->_location = rhs.getLocation();
+		this->_type = rhs.getType();
+	}
+	return ( * this );
 }
 
 Uniform::Type		Uniform::stringToTypeEnum( std::string const & s )
@@ -64,8 +76,13 @@ Uniform::Type	Uniform::getType( void ) const
 GLint			Uniform::getLocation( void ) const
 {
 	if ( this->_location == -1 )
-		this->_location = glGetUniformLocation( this->_program, this->_name.c_str());
+		this->_location = glGetUniformLocation( this->_program, this->_name.c_str() );
 	return ( this->_location );
+}
+
+GLuint			Uniform::getProgram( void ) const
+{
+	return ( this->_program );
 }
 
 void			Uniform::update( int value ) const
@@ -95,6 +112,7 @@ void			Uniform::update( Vec3f value ) const
 
 void			Uniform::update( Colorf value ) const
 {
+//	std::cout << this->getLocation() << std::endl;
 	glUniform3f( this->getLocation(), value.getR(), value.getG(), value.getB() );
 }
 

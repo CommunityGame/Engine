@@ -1,18 +1,6 @@
 #version 330 core
-
-struct			light
-{
-	vec3		position;
-	vec3		ambient;
-	vec3		diffuse;
-	vec3		specular;
-	float		shininess;
-};
-
-struct			material
-{
-	vec4		ambiant;
-};
+//TODO: #inlude <> ""
+#include structs.glsl
 
 in vec3			vertexPos;
 in vec3			vertexNormal;
@@ -23,7 +11,9 @@ out vec4		color;
 
 uniform	int		numLights;
 uniform	vec3	eyePos;
-uniform	light	lights[64];
+uniform	Light	lights[64];
+
+const float screenGamma = 1;
 
 void main()
 {
@@ -33,42 +23,42 @@ void main()
 	vec4 matSpecular = vertexColor;
 	float matShininess = 1;
 
-//	vec3 N = normalize( ( normalMatrix * vec4 (vertexNormal, 1 ) ).xyz );
-	vec3 N = vertexNormal;
-
-	vec4 final_color = vec4( 0, 0, 0, 1 );
-
+	vec4 finalColor = vec4( 0, 0, 0, 0 );
 	for ( int i = 0; i < numLights; i++ )
 	{
-//	vec3 diffuse;
-//    vec3 spec;
-//    vec3 ambient;
-//
-//       vec3 L = normalize(lights[i].position.xyz - vertexPos);
-//       vec3 E = normalize(eyePos-vertexPos);
-//       vec3 R = normalize(reflect(-L,N));
-//
-//       	ambient = lights[i].ambient;
-//
-//      	diffuse = clamp( lights[i].diffuse * max(dot(N,L), 0.0)  , 0.0, 1.0 ) ;
-//       	spec = clamp ( lights[i].specular * pow(max(dot(R,E),0.0),0.3*20) , 0.0, 1.0 );
-//
-//		final_color += vec4( ambient + diffuse + spec , 1 );
-		final_color += sceneColor * matAmbient + vec4( lights[i].ambient, 1 ) * matAmbient;
+		Light l = lights[i];
 
-		vec3 L = normalize( lights[i].position - vertexPos );
+		vec3 normal = normalize(vertexNormal);
+		vec3 lightDir = normalize(l.position - vertexPos);
 
-		float lambertTerm = dot( N, L );
+		float lambertian = max(dot(lightDir,normal), 0.0) * l.shininess;
+		float specular = 0.0;
 
-		if ( lambertTerm > 0.0 )
+		if(lambertian > 0.0)
 		{
-			final_color += clamp( vec4( lights[i].diffuse, 1 ) * matDiffuse * lambertTerm, 0.0, 1.0 );
+			vec3 viewDir = normalize(eyePos-vertexPos);
 
-			vec3 E = normalize( eyePos - vertexPos );
-			vec3 R = reflect( -L, N );
-			float specular = pow( max( dot( R, E ), 0.0 ), matShininess * lights[i].shininess );
-			final_color += vec4( lights[i].specular, 1 ) * matSpecular * specular;
+			// this is blinn phong
+			vec3 halfDir = normalize(lightDir + viewDir);
+			float specAngle = max(dot(halfDir, normal), 0.0);
+			specular = pow(specAngle, 1 / l.shininess);
 		}
+		vec3 colorLinear = l.ambient * l.shininess + lambertian * l.diffuse + specular * l.specular;
+		// apply gamma correction (assume ambientColor, diffuseColor and specColor
+		// have been linearized, i.e. have no gamma correction in them)
+		vec3 colorGammaCorrected = pow(colorLinear, vec3(1.0/screenGamma));
+
+		float d = length( l.position - vertexPos ) - l.radius;
+		float denom = d / l.radius + 1;
+		float attenuation = 1 / (denom*denom);
+		// scale and bias attenuation such that:
+		//   attenuation == 0 at extent of max influence
+		//   attenuation == 1 when d == 0
+		attenuation = (attenuation - l.cutoff) / (1 - l.cutoff);
+		attenuation = max(attenuation, 0);
+
+		// use the gamma corrected color in the fragment
+		finalColor += vec4(colorGammaCorrected, 1.0) * attenuation;
 	}
-	color = final_color;
+	color = finalColor;
 }

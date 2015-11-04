@@ -1,5 +1,6 @@
 #include "PhysicsEngine.hpp"
 #include "../GameObject.hpp"
+# include "../components/basic/PhysicsComponent.hpp"
 
 bool	PhysicsEngine::_needRefreshPhysicsObjectList = true;
 

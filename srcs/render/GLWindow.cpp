@@ -23,9 +23,9 @@ GLWindow::~GLWindow( void )
 		GLWindow::_glfwIsInit = false;
 	}
 
-	std::stringstream ss;
-	ss << "Destroy window: " << this->_title << " [" << this->_width << " x " << this->_height << "]";
-	Logger::i( TAG, ss.str() );
+//	std::stringstream ss;
+//	ss << "Destroy window: " << this->_title << " [" << this->_width << " x " << this->_height << "]";
+//	Logger::i( TAG, ss.str() );
 	return ;
 }
 

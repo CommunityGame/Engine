@@ -16,7 +16,6 @@ public:
 		VEC2,
 		VEC3,
 		MAT4,
-		LIGHT,
 		_SIZE
 	};
 
@@ -25,10 +24,13 @@ public:
 	Uniform( void );
 	Uniform( GLuint const program, Type const & type, std::string const & name );
 
+	Uniform &			operator=( Uniform const & rhs );
+
 	// GETTER
 	const std::string &	getName( void ) const;
 	Type				getType( void ) const;
 	GLint				getLocation( void ) const;
+	GLuint				getProgram( void ) const;
 
 	void				update( int value ) const;
 	void				update( float value ) const;

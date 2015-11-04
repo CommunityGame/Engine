@@ -2,7 +2,9 @@
 #include "Shader.hpp"
 #include "../GameObject.hpp"
 #include "../components/Camera.hpp"
-#include "../components/LightComponent.hpp"
+#include "../components/PointLightComponent.hpp"
+#include "../assets/AssetsManager.hpp"
+#include "../components/basic/LightComponent.hpp"
 
 RenderEngine::RenderEngine( GLWindow const & window ) :
 	_window( window )
@@ -27,10 +29,9 @@ RenderEngine::RenderEngine( GLWindow const & window ) :
 //	glGenVertexArrays( 1, &vertexArrayID );
 //	glBindVertexArray( vertexArrayID );
 
-//	this->_defaultShader = new Shader( "ambiant" );
-	this->_defaultShader = new Shader( "phong" );
-	this->_defaultShader->getUniformValues().addValue( "ambiantColor", Vec3f( 0.3f, 0.3f, 0.3f ) );
-	this->_defaultShader->getUniformValues().addValue( "numLights", 0 );
+	this->_defaultShader = AssetsManager::loadAsset<Shader>( "point_phong", "point_phong" );
+	this->_defaultShader->getUniformValues().addValue( "ambientColor", Vec3f( 0.3f, 0.3f, 0.3f ) );
+//	this->_defaultShader->getUniformValues().addValue( "numLights", 0 );
 //	int maxLights = 10;
 //	for ( int i = 0; i < maxLights; ++i )
 //	{
@@ -42,28 +43,34 @@ RenderEngine::RenderEngine( GLWindow const & window ) :
 }
 RenderEngine::~RenderEngine( void )
 {
-	delete this->_defaultShader;
 	return ;
 }
 
-void			RenderEngine::render( GameObject const & object ) const
+void			RenderEngine::render( GameObject const & rootObject ) const
 {
 	glClearColor( 0.0f, 0.0f, 0.0f, 0.0f );
 	glClear( GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT );
 
-	this->_defaultShader->getUniformValues().addValue( "numLights", (int)this->_lights.size() );
-	this->_defaultShader->getUniformValues().addValue( "eyePos", this->_camera->getTransform().getPosition() );
+	this->_defaultShader->bind();
 
+	Uniform const *	uniform;
+	if ( ( uniform = this->_defaultShader->getConstUniform( "C_eyePos" ) ) != nullptr )
+		uniform->update( this->_camera->getTransform().getPosition() );
+	if ( ( uniform = this->_defaultShader->getConstUniform( "C_view" ) ) != nullptr )
+		uniform->update( this->_camera->getTransformedViewMatrix() );
+	if ( ( uniform = this->_defaultShader->getConstUniform( "C_projection" ) ) != nullptr )
+		uniform->update( this->_camera->getPerspectiveMatrix() );
 
-	std::vector<LightComponent *>::const_iterator it;
-	int i = 0;
-	for ( it = this->_lights.begin(); it != this->_lights.end(); it++ )
-	{
-		this->_defaultShader->getUniformValues().addValue( "lights[" + std::to_string( i ) + "]", (*it)->getUniform() );
-		i++;
-	}
+	int numLights = rootObject.updateAllUniforms( this->_defaultShader );
+	if ( ( uniform = this->_defaultShader->getConstUniform( "C_numLights" ) ) != nullptr )
+		uniform->update( numLights );
 
-	object.renderAll( * this, * this->_defaultShader, * this->_camera );
+	rootObject.renderAll( * this, this->_defaultShader, * this->_camera );
+
+	this->_defaultShader->unbind();
+
+	//TODO: post process shaders
+	//TODO: scattering light
 }
 
 //	GETTER
@@ -77,10 +84,4 @@ void				RenderEngine::setCamera( shared_ptr<Camera> camera ) const
 {
 	this->_camera = camera;
 	return ;
-}
-
-void RenderEngine::addLight( LightComponent * light )
-{
-	light->setUniform( new LightUniform( light, this->_defaultShader->getProgram(), "lights[" + std::to_string( this->_lights.size() ) + "]" ) );
-	this->_lights.push_back( light );
 }

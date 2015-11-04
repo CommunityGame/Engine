@@ -13,7 +13,7 @@ public:
 	 *
 	 * @return void
 	*/
-	virtual void		render( RenderEngine const & renderEngine, GameObject const & parent, Shader const & shader, Camera const & camera ) const = 0;
+	virtual void		render( RenderEngine const & renderEngine, GameObject const & parent, Asset<Shader> const & shader, Camera const & camera ) const = 0;
 
 	virtual void		update( double delta ) {};
 	virtual void		init( CoreEngine & coreEngine ) {};

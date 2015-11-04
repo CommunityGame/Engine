@@ -237,10 +237,11 @@ BOOST_PYTHON_MODULE(LibModule)
 	class_<AObjectComponent>( "AObjectComponent", no_init )
 		;
 
-	register_ptr_to_python<shared_ptr<MeshComponent>>();
-	class_<MeshComponent, bases<AObjectComponent>>( "MeshComponent", no_init )
-		.def( "loadObj", MeshFactory::loadObj );
-	;
+	//TODO: AssetsManager for python
+//	register_ptr_to_python<shared_ptr<MeshComponent>>();
+//	class_<MeshComponent, bases<AObjectComponent>>( "MeshComponent", no_init )
+//		.def( "loadObj", MeshFactory::loadObj );
+//	;
 
 	enum_<int>( "Mouse" )
 		.value( "BUTTON_1", GLFW_MOUSE_BUTTON_1 )

@@ -4,6 +4,7 @@
 
 const std::string	ModulesFactory::TAG = "ModulesFactory";
 
+//TODO: extends IFactory and load module by module
 void ModulesFactory::loadModules( std::string const & path )
 {
 	using namespace boost::python;

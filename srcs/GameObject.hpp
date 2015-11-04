@@ -7,13 +7,14 @@
 # include "render/RenderEngine.hpp"
 # include "render/Shader.hpp"
 # include "CoreEngine.hpp"
-# include "components/basic/AObjectComponent.hpp"
-# include "components/basic/PhysicsComponent.hpp"
-# include "components/basic/RenderComponent.hpp"
-# include "components/basic/InputComponent.hpp"
 # include <boost/enable_shared_from_this.hpp>
 
 class Camera;
+class AObjectComponent;
+class PhysicsComponent;
+class RenderComponent;
+class InputComponent;
+class LightComponent;
 
 class GameObject : public enable_shared_from_this<GameObject>
 {
@@ -35,13 +36,22 @@ public:
 	virtual void		update( double delta );
 
 	/*!
+	 * @function updateUniforms
+	 * @param delta: time passed to run the previous loop
+	 * update this GameObject
+	 *
+	 * @return int
+	 */
+	virtual int			updateUniforms( Asset<Shader> const & shader, int numLight ) const;
+
+	/*!
 	 * @function render
 	 * @param renderEngine: is a reference to the instance of RenderEngine
 	 * render this GameObject
 	 *
 	 * @return void
 	*/
-	virtual void		render( RenderEngine const & renderEngine, Shader const & shader, Camera const & camera ) const;
+	virtual void		render( RenderEngine const & renderEngine, Asset<Shader> const & shader, Camera const & camera ) const;
 
 	/*!
 	 * @function physics
@@ -71,13 +81,22 @@ public:
 	void				updateAll( double delta );
 
 	/*!
+	 * @function updateAllUniforms
+	 * @param delta: time passed to run the previous loop
+	 * call update and updateAll for all children of this GameObject
+	 *
+	 * @return int
+	 */
+	int					updateAllUniforms( Asset<Shader> const & shader, int numLight = 0 ) const;
+
+	/*!
 	 * @function renderAll
 	 * @param renderEngine: is a reference to the instance of RenderEngine
 	 * call render and renderAll for all children of this GameObject
 	 *
 	 * @return void
 	*/
-	void				renderAll( RenderEngine const & renderEngine, Shader const & shader, Camera const & camera ) const;
+	void				renderAll( RenderEngine const & renderEngine, Asset<Shader> const & shader, Camera const & camera ) const;
 
 	/*!
 	 * @function initAll
@@ -113,6 +132,7 @@ public:
 	std::vector<shared_ptr<GameObject>> const &			getChildrens( void ) const;
 	std::vector<shared_ptr<AObjectComponent>> const &	getComponents( void ) const;
 	std::vector<shared_ptr<PhysicsComponent>> const &	getPhysicsComponents( void ) const;
+	std::vector<shared_ptr<LightComponent>> const & getLightsComponents( void ) const;
 	void				getPhysicsObjects( std::vector< GameObject * > & havePhysicComponent );
 
 	//	SETTER
@@ -124,6 +144,7 @@ private:
 	std::vector<shared_ptr<GameObject>>			_childrens;
 	std::vector<shared_ptr<AObjectComponent>>	_components;
 	std::vector<shared_ptr<RenderComponent>>	_renderComponents;
+	std::vector<shared_ptr<LightComponent>>		_lightComponents;
 	std::vector<shared_ptr<InputComponent>>		_inputComponents;
 	std::vector<shared_ptr<PhysicsComponent>>	_physicsComponents;
 	GameObject *		_parent;

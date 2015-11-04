@@ -4,6 +4,7 @@
 #include "../../math/Math.hpp"
 #include "../../Input.hpp"
 #include "../../CoreEngine.hpp"
+#include "../../GameObject.hpp"
 
 class AObjectComponent
 {

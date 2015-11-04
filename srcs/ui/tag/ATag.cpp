@@ -2,7 +2,7 @@
 #include <algorithm>
 #include "ATag.hpp"
 #include "../../debugs/Logger.hpp"
-#include "../../utils/Factory.hpp"
+#include "../../utils/OldFactory.hpp"
 
 const std::string		ATag::TAG = "ATag";
 
@@ -18,7 +18,7 @@ ATag::ATag( rapidxml::xml_node<> * node, ATag * parent, UiComponent * component,
 		std::string name( node->name() );
 		std::transform( name.begin(), name.end(), name.begin(), ::tolower );
 
-		ATag *	tag = static_cast<ATag *>( Factory::instantiate( name, node ) );
+		ATag *	tag = static_cast<ATag *>( OldFactory::instantiate( name, node ) );
 		tag->_level = this->_level + 1;
 		tag->_component = this->_component;
 		if ( tag )

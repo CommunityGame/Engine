@@ -6,6 +6,7 @@
 std::regex	SVGPath::regex( "([ZzMmLlHhVvQqCcTtSsAa])([^ZzMmLlHhVvQqCcTtSsAa]*)" );
 std::regex	SVGPath::regex2( "([-+]?\\.?[0-9][^, +-]*)" );
 
+//TODO: improve SVGPath parser
 SVGPath::SVGPath( std::string const & path )
 {
 	VGint					numSegments;
@@ -75,6 +76,7 @@ SVGPath::~SVGPath( void )
 	vgDestroyPath( this->_vgPath );
 }
 
+//TODO: rewrite c|c++ lib for svg
 void		SVGPath::render( void ) const
 {
 	float style[] = {
@@ -88,7 +90,7 @@ void		SVGPath::render( void ) const
 	vgSetf( VG_STROKE_LINE_WIDTH, this->_attributes.strokeWidth );
 //	vgSetf( VG_STROKE_CAP_STYLE, this->_attributes.strokeLineCap );
 	vgSetf( VG_STROKE_JOIN_STYLE, VG_JOIN_ROUND ); //VG_JOIN_MITER, VG_JOIN_BEVEL, VG_JOIN_ROUND
-	vgDrawPath( this->_vgPath, this->_attributes.mode );
+	vgDrawPath( this->_vgPath, this->_attributes.mode );//TODO: find antialiasing bug
 }
 
 void		SVGPath::setAttributes( SVGAttributes const & a )
